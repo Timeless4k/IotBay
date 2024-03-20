@@ -6,3 +6,4 @@ Group Members
 - William
 - Grace
 - Zihad Burhan
+- Ariel
