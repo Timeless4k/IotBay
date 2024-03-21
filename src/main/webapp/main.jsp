@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>IoTBay - Main</title>
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Add any other scripts or stylesheets you need -->
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>IoTBay - Main</title>
+        <link rel="stylesheet" href="css/style.css">
+        <!-- Add any other scripts or stylesheets you need -->
+    </head>    
 <body>
 
     <header>

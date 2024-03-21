@@ -1,0 +1,114 @@
+/* Reset some basic elements */
+body, h1, h2, h3, p, ul, li, nav, header, main, footer {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Apply a base font to the body element */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+/* Header styles */
+header {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1em 2em;
+}
+
+header h1 {
+    margin-bottom: 0.5em;
+}
+
+header h1 a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1.8em;
+}
+
+/* Navigation menu styles */
+nav ul {
+    padding: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1.1em;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #007bff;
+}
+
+/* Main content styles */
+main {
+    padding: 2em;
+    background-color: #ffffff;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    min-height: 400px; /* Adjust as needed */
+}
+
+main h2 {
+    color: #333;
+    margin-bottom: 1em;
+}
+
+/* Quick links styles */
+.quick-links {
+    text-align: center;
+    padding: 1em 0;
+}
+
+.quick-links a {
+    display: inline-block;
+    margin: 0.5em;
+    padding: 0.5em 1em;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.quick-links a:hover {
+    background-color: #0056b3;
+}
+
+/* Footer styles */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em 2em;
+}
+
+/* Utility classes for spacing */
+.mt-1 { margin-top: 1em; }
+.mb-1 { margin-bottom: 1em; }
+.mt-2 { margin-top: 2em; }
+.mb-2 { margin-bottom: 2em; }
+
+/* Responsive typography */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    header h1 {
+        font-size: 1.5em;
+    }
+}
