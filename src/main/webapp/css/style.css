@@ -1,114 +1,242 @@
-/* Reset some basic elements */
-body, h1, h2, h3, p, ul, li, nav, header, main, footer {
+/* Basic Reset */
+* {
     margin: 0;
     padding: 0;
-    list-style: none;
+    box-sizing: border-box;
 }
 
-/* Apply a base font to the body element */
+/* Fonts */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 1.6;
     color: #333;
     background-color: #f4f4f4;
 }
 
-/* Header styles */
-header {
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1em 2em;
-}
-
-header h1 {
-    margin-bottom: 0.5em;
-}
-
-header h1 a {
-    text-decoration: none;
-    color: #333;
-    font-size: 1.8em;
-}
-
-/* Navigation menu styles */
-nav ul {
-    padding: 0;
+/* Top Banner */
+.top-banner {
+    background-color: #007bff;
+    color: white;
     text-align: center;
+    padding: 0.5em 0;
+    font-size: 0.9em;
 }
 
-nav ul li {
-    display: inline;
-    margin-right: 20px;
+/* Header */
+header {
+    background-color: #fff;
+    padding: 1em 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-nav ul li a {
+.logo {
+    cursor: pointer;
+    height: 200px; /* Logo height */
+}
+
+/* Navigation */
+.navbar {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Pushes the navbar to the right */
+}
+
+.navbar a,
+.cart-icon,
+.account-icon {
+    margin-left: 15px; /* Spacing between nav items */
+}
+
+.navbar a {
     text-decoration: none;
     color: #333;
-    font-size: 1.1em;
-    transition: color 0.3s ease;
+    font-weight: 500;
 }
 
-nav ul li a:hover {
+.navbar a:hover {
     color: #007bff;
 }
 
-/* Main content styles */
-main {
-    padding: 2em;
-    background-color: #ffffff;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    min-height: 400px; /* Adjust as needed */
+/* Search Bar */
+.search-bar {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 15px; /* To ensure it doesn't touch the logo or nav items */
 }
 
-main h2 {
+.search-bar input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 1em;
+}
+
+/* Cart and Account Icons */
+.cart-icon,
+.account-icon {
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
+}
+
+/* Dropdown Content for Account Menu */
+.account-menu {
+    position: relative;
+}
+
+.account-menu:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    right: 0;
+    min-width: 160px;
+    z-index: 100;
+}
+
+.dropdown-content a {
     color: #333;
-    margin-bottom: 1em;
-}
-
-/* Quick links styles */
-.quick-links {
-    text-align: center;
-    padding: 1em 0;
-}
-
-.quick-links a {
-    display: inline-block;
-    margin: 0.5em;
-    padding: 0.5em 1em;
-    background-color: #007bff;
-    color: white;
+    padding: 12px 16px;
     text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    display: block;
 }
 
-.quick-links a:hover {
-    background-color: #0056b3;
+.dropdown-content a:hover {
+    background-color: #f6f6f6;
 }
 
-/* Footer styles */
 footer {
-    background-color: #333;
-    color: white;
     text-align: center;
-    padding: 1em 2em;
+    padding: 20px 0;
+    background-color: #f8f9fa;
+    color: #6c757d;
+    font-size: 0.75em;
 }
 
-/* Utility classes for spacing */
-.mt-1 { margin-top: 1em; }
-.mb-1 { margin-bottom: 1em; }
-.mt-2 { margin-top: 2em; }
-.mb-2 { margin-bottom: 2em; }
+footer p {
+    margin: 5px 0;
+}
 
-/* Responsive typography */
+.attribution {
+    font-size: 0.65em; /* Smaller font size for attribution text */
+}
+
+.attribution a {
+    color: inherit; /* Ensures the links use the current text color */
+    text-decoration: none; /* Removes underline from links */
+}
+
+.attribution a:hover {
+    text-decoration: underline; /* Adds an underline on hover for better UX */
+}
+
+.attribution span {
+    margin: 0 5px; /* Space out the separator */
+}
+
+
+/* Hero Section */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    background-color: #f4f4f4; 
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 3rem; 
+    color: #333; 
+    margin-bottom: 20px; 
+}
+
+.hero p {
+    font-size: 1.5rem; 
+    color: #555;
+    margin-bottom: 30px; 
+}
+
+.hero-button {
+    padding: 15px 30px; 
+    font-size: 1rem; 
+    color: #fff; 
+    background-color: #007bff; 
+    border: none; 
+    border-radius: 5px; 
+    text-decoration: none; 
+    transition: background-color 0.3s ease; 
+}
+
+.hero-button:hover {
+    background-color: #0056b3; 
+}
+
+/* Responsive Adjustments for Hero Section */
 @media (max-width: 768px) {
-    body {
-        font-size: 14px;
+    .hero h1 {
+        font-size: 2.5rem; 
     }
 
-    header h1 {
-        font-size: 1.5em;
+    .hero p {
+        font-size: 1rem; 
+    }
+
+    .hero-button {
+        padding: 10px 20px; 
+        font-size: 0.9rem; 
     }
 }
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .search-bar {
+        order: -1; /* Moves search bar to the top on mobile */
+        padding: 0.5em 1em;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar a,
+    .cart-icon,
+    .account-icon {
+        margin: 5px 0;
+    }
+
+    .navbar a {
+        margin-left: 0; /* Removes left margin for alignment on mobile */
+    }
+
+    header {
+        flex-wrap: wrap;
+    }
+
+    .logo {
+        flex: 100%; /* Logo takes full width on small screens */
+        text-align: center; /* Centers logo */
+        margin-bottom: 10px; /* Space below logo */
+    }
+
+    .account-menu {
+        order: 1; /* Moves account icon next to the search bar on mobile */
+    }
+}
+
