@@ -41,6 +41,15 @@
         <a href="product.jsp" class="hero-button">Shop Now</a>
     </div>
 
+    <div class="newsletter-signup">
+        <h2>Stay Updated!</h2>
+        <p>Subscribe to our newsletter for the latest updates on IoT devices.</p>
+        <form action="subscribeNewsletter.jsp" method="post">
+            <input type="email" name="email" placeholder="Enter your email address" required>
+            <button type="submit">Subscribe</button>
+        </form>
+    </div>
+
 
     <footer>
         <p>&copy; 2024 IoTBay. All rights reserved.</p>
