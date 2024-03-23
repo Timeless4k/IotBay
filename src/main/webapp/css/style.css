@@ -78,43 +78,9 @@ header {
     gap: 20px;
 }
 
-.search-icon {
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 8px;
-    display: flex;
-    justify-content: flex-end;
-    flex-grow: 0;
-}
-
-.search-bar {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    padding: 10px;
-    background: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-}
-
-.search-bar.active {
-    display: flex; /* Show the search bar */
-}
-
-.search-bar input[type="text"] {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 8px;
-    font-size: 1em;
-}
-
 /* Cart and Account Icons */
 .cart-icon,
-.account-icon,
-.magnify-glass {
+.account-icon {
     height: 40px;
     width: 40px;
     cursor: pointer;
@@ -125,8 +91,7 @@ header {
     position: relative;
 }
 
-.account-menu:hover .dropdown-content,
-.search-icon:hover + .search-bar {
+.account-menu:hover .dropdown-content{
     display: block;
 }
 

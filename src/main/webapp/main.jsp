@@ -13,7 +13,7 @@
     </div>
 
     <header>
-        <img src="images/Logo.webp" alt="IoTBay Logo" class="logo" onclick="window.location='index.jsp'">
+        <img src="images/Logo.png" alt="IoTBay Logo" class="logo" onclick="window.location='index.jsp'">
         
         <nav class="navbar">
             <ul>
