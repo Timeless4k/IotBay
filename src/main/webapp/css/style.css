@@ -19,8 +19,16 @@ body {
     background-color: #007bff;
     color: white;
     text-align: center;
-    padding: 0.5em 0;
+    padding: 0.6em 0;
     font-size: 0.9em;
+}
+
+/* Header */
+
+.logo {
+    cursor: pointer;
+    height: 100px; /* Adjust logo size as necessary */
+    flex-shrink: 0;
 }
 
 /* Header */
@@ -30,59 +38,85 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.logo {
-    cursor: pointer;
-    height: 200px; /* Logo height */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
 }
 
 /* Navigation */
 .navbar {
     display: flex;
+    justify-content: center;
     align-items: center;
-    margin-left: auto; /* Pushes the navbar to the right */
+    flex-grow: 2; /* Give navbar more space to allow centering */
 }
 
-.navbar a,
-.cart-icon,
-.account-icon {
-    margin-left: 15px; /* Spacing between nav items */
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0; /* Reset margin to ensure centering */
+    align-items: center; 
 }
 
-.navbar a {
+.navbar li a {
     text-decoration: none;
     color: #333;
-    font-weight: 500;
+    font-weight: 600;
+    padding: 8px 16px;
 }
 
-.navbar a:hover {
+.navbar li a:hover {
     color: #007bff;
 }
 
-/* Search Bar */
-.search-bar {
-    flex: 1;
+/* Icons and Search Bar */
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-icon {
+    cursor: pointer;
     display: flex;
     justify-content: center;
-    padding: 0 15px; /* To ensure it doesn't touch the logo or nav items */
+    align-items: center;
+    padding: 8px;
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 0;
+}
+
+.search-bar {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    padding: 10px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.search-bar.active {
+    display: flex; /* Show the search bar */
 }
 
 .search-bar input[type="text"] {
-    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
     padding: 8px;
-    margin: 0 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
     font-size: 1em;
 }
 
 /* Cart and Account Icons */
 .cart-icon,
-.account-icon {
-    height: 24px;
-    width: 24px;
+.account-icon,
+.magnify-glass {
+    height: 40px;
+    width: 40px;
     cursor: pointer;
 }
 
@@ -91,7 +125,8 @@ header {
     position: relative;
 }
 
-.account-menu:hover .dropdown-content {
+.account-menu:hover .dropdown-content,
+.search-icon:hover + .search-bar {
     display: block;
 }
 
@@ -99,7 +134,7 @@ header {
     display: none;
     position: absolute;
     background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
     right: 0;
     min-width: 160px;
     z-index: 100;
@@ -116,6 +151,7 @@ header {
     background-color: #f6f6f6;
 }
 
+/* Footer styles */
 footer {
     text-align: center;
     padding: 20px 0;
@@ -124,121 +160,104 @@ footer {
     font-size: 0.75em;
 }
 
+.welcome-message {
+    position: absolute;
+    top: -30px; /* Adjust this as needed */
+    right: 0;
+    background: white;
+    padding: 5px 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    z-index: 100;
+}
+
+
 footer p {
     margin: 5px 0;
 }
 
 .attribution {
-    font-size: 0.65em; /* Smaller font size for attribution text */
+    font-size: 0.65em;
 }
 
 .attribution a {
-    color: inherit; /* Ensures the links use the current text color */
-    text-decoration: none; /* Removes underline from links */
+    color: inherit;
+    text-decoration: none;
 }
 
 .attribution a:hover {
-    text-decoration: underline; /* Adds an underline on hover for better UX */
+    text-decoration: underline;
 }
 
 .attribution span {
-    margin: 0 5px; /* Space out the separator */
+    margin: 0 5px;
 }
-
 
 /* Hero Section */
 .hero {
+    position: relative;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 50px 20px;
-    background-color: #f4f4f4; 
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    padding: 200px 20px;
+    background: url('../images/hero.jpeg') no-repeat center center;
+    background-size: cover;
     text-align: center;
+    color: #ffffff;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay for better readability */
+    z-index: -1;
+}
+
+/* Hero Text with Background Overlay */
+.hero h1, .hero p {
+    background: rgba(0, 0, 0, 0.7); /* Background for text readability */
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    display: block; /* Full width */
 }
 
 .hero h1 {
-    font-size: 3rem; 
-    color: #333; 
-    margin-bottom: 20px; 
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem; /* Space between the title and subtitle */
 }
 
 .hero p {
-    font-size: 1.5rem; 
-    color: #555;
-    margin-bottom: 30px; 
+    font-size: 1.5rem;
+    margin-bottom: 2rem; /* Space between text and button */
 }
 
-.hero-button {
-    padding: 15px 30px; 
-    font-size: 1rem; 
-    color: #fff; 
-    background-color: #007bff; 
-    border: none; 
-    border-radius: 5px; 
-    text-decoration: none; 
-    transition: background-color 0.3s ease; 
+/* Shop Now Button */
+.hero a.hero-button {
+    padding: 1em 2em;
+    font-size: 1.25rem;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    display: block; /* Adjust display for proper padding */
+    font-weight: bold; /* Make the text weight bold */
+    margin-bottom: 1rem; /* Adjust as needed for space below button */
 }
 
-.hero-button:hover {
-    background-color: #0056b3; 
+.hero a.hero-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
 }
 
-/* Responsive Adjustments for Hero Section */
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2.5rem; 
-    }
-
-    .hero p {
-        font-size: 1rem; 
-    }
-
-    .hero-button {
-        padding: 10px 20px; 
-        font-size: 0.9rem; 
-    }
-}
-
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .search-bar {
-        order: -1; /* Moves search bar to the top on mobile */
-        padding: 0.5em 1em;
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .navbar a,
-    .cart-icon,
-    .account-icon {
-        margin: 5px 0;
-    }
-
-    .navbar a {
-        margin-left: 0; /* Removes left margin for alignment on mobile */
-    }
-
-    header {
-        flex-wrap: wrap;
-    }
-
-    .logo {
-        flex: 100%; /* Logo takes full width on small screens */
-        text-align: center; /* Centers logo */
-        margin-bottom: 10px; /* Space below logo */
-    }
-
-    .account-menu {
-        order: 1; /* Moves account icon next to the search bar on mobile */
-    }
-}
 
 /* Newsletter Sign-Up */
 .newsletter-signup {
@@ -294,10 +313,77 @@ footer p {
     background-color: #0056b3;
 }
 
+    /* Responsive Adjustments for smaller screens */
+    @media (max-width: 768px) {
+        .top-banner {
+            padding: 0.3em 0; /* Adjusted padding for smaller screens */
+        }
 
-@media (max-width: 768px) {
-    .newsletter-signup form {
-        flex-direction: column;
+        header {
+            padding: 0.5em 1em; /* Adjusted padding for smaller screens */
+        }
+
+        .logo {
+            height: 60px; /* Smaller logo for smaller screens */
+        }
+
+        .navbar {
+            flex-direction: column; /* Stack the navbar items vertically */
+            align-items: flex-start;
+            margin-left: 0; /* Remove margin to align with the edge */
+        }
+
+        .navbar a,
+        .cart-icon,
+        .account-icon {
+            margin: 10px 0; /* Adjusted margin for stacked items */
+            font-size: 0.9em; /* Smaller font size for smaller screens */
+        }
+
+        .search-bar {
+            order: -1; /* Moves the search bar to the top */
+            padding: 0.5em 1em;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 0.25em 0.5em; /* Adjusted padding for the search bar */
+        }
+
+        .cart-icon,
+        .account-icon {
+            height: 30px; /* Smaller icons for smaller screens */
+            width: 30px;
+        }
+
+        .hero {
+            padding: 100px 20px; /* Smaller padding on mobile */
+        }
+        .hero h1 {
+            font-size: 2.5rem; /* Smaller font size on mobile */
+        }
+        .hero p {
+            font-size: 1rem; /* Smaller font size on mobile */
+        }
+        .hero a.hero-button {
+            padding: 10px 20px; /* Smaller padding on mobile */
+            font-size: 1rem; /* Smaller font size on mobile */
+        }
+
+        .newsletter-signup {
+            padding: 1em; /* Smaller padding for the newsletter section */
+            margin: 1em auto;
+        }
+
+        .newsletter-signup form {
+            flex-direction: column; /* Stack form elements vertically */
+        }
+
+        .newsletter-signup input[type="email"],
+        .newsletter-signup button {
+            width: 100%; /* Full width for form elements */
+            margin-bottom: 10px; /* Space between stacked elements */
+        }
     }
 
-}
