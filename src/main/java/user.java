@@ -3,6 +3,7 @@
 //  - can also be used to set while running? mainly just placeholders
 
 import java.sql.*; //Java sql tools and JDBC
+import java.io.Serializable;
 public class user {
     
 }
