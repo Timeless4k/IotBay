@@ -30,23 +30,23 @@
             </div>
             <div>
                 <label for="firstName">First name:</label>
-                <input type="text" id="firstName" name="firstName">
+                <input type="text" id="firstName" name="firstName" required>
             </div>
             <div>
                 <label for="middleName">Middle name:</label>
-                <input type="text" id="middleName" name="middleName">
+                <input type="text" id="middleName" name="middleName" optional>
             </div>
             <div>
                 <label for="lastName">Last name:</label>
-                <input type="text" id="lastName" name="lastName">
+                <input type="text" id="lastName" name="lastName" optional>
             </div>
             <div>
                 <label for="birthDate">Birth date:</label>
-                <input type="date" id="birthDate" name="birthDate">
+                <input type="date" id="birthDate" name="birthDate" required>
             </div>
             <div>
                 <label for="mobilePhone">Mobile phone:</label>
-                <input type="tel" id="mobilePhone" name="mobilePhone">
+                <input type="tel" id="mobilePhone" name="mobilePhone" optional>
             </div>
             <div>
                 <input type="submit" value="Register">
