@@ -14,6 +14,14 @@ public class register extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
 
+            // Retrieve form data
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String firstName = request.getParameter("firstName");
+            String middleName = request.getParameter("middleName");
+            String lastName = request.getParameter("lastName");
+            String birthDate = request.getParameter("birthDate");
+            String mobilePhone = request.getParameter("mobilePhone");            
 
         } catch (ServletException e) {
             e.printStackTrace(); // Log ServletException
