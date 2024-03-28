@@ -1,4 +1,4 @@
-
+package model;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +24,7 @@ public class register extends HttpServlet {
             String mobilePhone = request.getParameter("mobilePhone");           
             
             // Create a User instance and set its properties
-            User user = new User();
+            user user = new user();
             user.setEmail(email);
             user.setPassword(password);
             user.setFirstName(firstName);
