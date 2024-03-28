@@ -13,12 +13,13 @@ public class user implements Serializable{
     private String mobilePhone;
     private String gender;
     private String creationDate;
+    private String uType;
     // private int ID;
 
     //Setters
     public user() {}
 
-    public user(String emai, String pass, String fName, String mname, String lName, String bday, String mPhone, String g, String cd) {
+    public user(String emai, String pass, String fName, String mname, String lName, String bday, String mPhone, String g, String cd, String Type) {
         this.email = emai;
         this.password = pass;
         this.firstName = fName;
@@ -28,9 +29,13 @@ public class user implements Serializable{
         this.mobilePhone = mPhone;
         this.gender = g;
         this.creationDate = cd;
+        this.uType = Type;
     }
 
     
+    public void setuType(String a) {
+        this.uType = a;
+    }
 
     public void setEmail(String a) {
         this.email = a;
@@ -101,5 +106,9 @@ public class user implements Serializable{
 
     public String getCreationDate() {
         return this.creationDate;
+    }
+
+    public String getuType() {
+        return this.uType;
     }
 }

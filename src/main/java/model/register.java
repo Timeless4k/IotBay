@@ -36,6 +36,7 @@ public class register extends HttpServlet {
             user.setMobilePhone(mobilePhone);
             user.setGender(gender);
             user.setCreationDate(date);
+            user.setuType("Customer");
             //user.genID(); // Possible future implement 
 
             // Create a session to store user data
