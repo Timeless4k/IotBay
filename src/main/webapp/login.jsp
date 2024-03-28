@@ -1,3 +1,4 @@
+<%@ page import="model.*"%>
 <!DOCTYPE html>
 <html>
 

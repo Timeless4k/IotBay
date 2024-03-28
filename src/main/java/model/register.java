@@ -21,8 +21,10 @@ public class register extends HttpServlet {
             String middleName = request.getParameter("middleName");
             String lastName = request.getParameter("lastName");
             String birthDate = request.getParameter("birthDate");
-            String mobilePhone = request.getParameter("mobilePhone");           
-            
+            String mobilePhone = request.getParameter("mobilePhone");   
+            String gender = request.getParameter("gender");   
+            String date = request.getParameter("date");
+                        
             // Create a User instance and set its properties
             user user = new user();
             user.setEmail(email);
@@ -32,6 +34,9 @@ public class register extends HttpServlet {
             user.setLastName(lastName);
             user.setBirthDate(birthDate);
             user.setMobilePhone(mobilePhone);
+            user.setGender(gender);
+            user.setCreationDate(date);
+            //user.genID(); // Possible future implement 
 
             // Create a session to store user data
             HttpSession session = request.getSession();

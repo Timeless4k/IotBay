@@ -1,6 +1,7 @@
 // 'User.java' for User object class
 package model;
 import java.io.Serializable;
+// import java.math.*;
 
 public class user implements Serializable{
     private String email;
@@ -10,11 +11,14 @@ public class user implements Serializable{
     private String lastName;
     private String birthDate;
     private String mobilePhone;
+    private String gender;
+    private String creationDate;
+    // private int ID;
 
     //Setters
     public user() {}
 
-    public user(String emai, String pass, String fName, String mname, String lName, String bday, String mPhone) {
+    public user(String emai, String pass, String fName, String mname, String lName, String bday, String mPhone, String g, String cd) {
         this.email = emai;
         this.password = pass;
         this.firstName = fName;
@@ -22,7 +26,11 @@ public class user implements Serializable{
         this.lastName = lName;
         this.birthDate = bday;
         this.mobilePhone = mPhone;
+        this.gender = g;
+        this.creationDate = cd;
     }
+
+    
 
     public void setEmail(String a) {
         this.email = a;
@@ -51,6 +59,14 @@ public class user implements Serializable{
         this.mobilePhone = a;
     }
 
+    public void setGender(String a) {
+        this.gender = a;
+    }
+
+    public void setCreationDate(String a) {
+        this.creationDate = a;
+    }
+
     public String getEmail() {
         return this.email;
     }
@@ -74,7 +90,16 @@ public class user implements Serializable{
     public String getBirthDate() {
         return this.birthDate;
     }
+
     public String getMobilePhone() {
         return this.mobilePhone;
+    }
+
+    public String getGender() {
+        return this.gender;
+    }
+
+    public String getCreationDate() {
+        return this.creationDate;
     }
 }
