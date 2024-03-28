@@ -37,6 +37,9 @@ public class register extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 
+            // Redirect user to welcome page 
+            response.sendRedirect("welcome.jsp");
+
         } catch (ServletException e) {
             e.printStackTrace(); // Log ServletException
             // Handle ServletException
