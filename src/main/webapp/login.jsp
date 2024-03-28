@@ -1,6 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
 <html>
 
 <head>
@@ -12,9 +10,12 @@
 
 <body>
 
-<div class="login-button">
-    <a href="register.jsp" class="button-link">Return to registration</a>
-</div>
+    <header>
+        <img src="images/Logo.png" alt="IoTBay Logo" class="logo" onclick="window.location='index.jsp'">
+        <div class="login-button">
+            <a href="index.jsp" class="button-link">Back to Page</a>
+        </div>
+    </header>
 
 <div class="center-screen">
     <div class="form-container">
@@ -30,7 +31,6 @@
             <div>
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
-                <!-- Adding the 'Forgot password?' link -->
                 <div style="margin-top: 5px;">
                     <a href="forgotPassword.jsp" style="font-size: 14px; color: #008CBA; text-decoration: none;">Forgot password?</a>
                 </div>
@@ -39,6 +39,10 @@
                 <input type="submit" value="Login">
             </div>
         </form>
+        <hr>
+        <div style="text-align: center; margin-top: 20px;">
+            <p>Not an IoTBay customer yet? <a href="register.jsp">Register now.</a></p>
+        </div>
     </div>
 </div>
 
