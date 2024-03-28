@@ -1,0 +1,26 @@
+
+body {
+    background-color: black !important;
+    font-family: FreeMono, monospace;
+}
+
+.welcome {
+    position: fixed;
+    top: 40%;
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    font-size: 90px; 
+    color: white; 
+    text-align: center;
+    z-index: 1;
+}
+
+#countdown {
+    position: fixed;
+    top: 75%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 38px;
+    color: white;
+    text-align: center;
+}
