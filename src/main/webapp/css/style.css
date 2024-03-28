@@ -352,3 +352,75 @@ footer p {
         }
     }
 
+
+/* Continue with your existing styles and add these new ones */
+
+.header-logout {
+    display: flex;
+    justify-content: center; /* Center the logo */
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative; /* For absolute positioning of the login button */
+}
+
+.logo-container-logout img {
+    max-width: 120px; /* Adjust as needed */
+    cursor: pointer;
+}
+
+.login-container-logout {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%); /* Center the login button vertically */
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.logout-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 160px); /* Adjust based on header and footer */
+    padding: 0 20px; /* Padding on smaller screens */
+}
+
+.logout-container {
+    background-color: #ffffff;
+    padding: 40px;
+    margin-top: -8rem; /* Adjust as needed to pull card up */
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px; /* Maximum width of the card */
+    text-align: center;
+}
+
+.footer-logout {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f8f9fa;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0; /* Ensure it spans the full width */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure your media queries are included to handle responsiveness */

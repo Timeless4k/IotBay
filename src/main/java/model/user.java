@@ -2,6 +2,9 @@
 package model;
 import java.io.Serializable;
 
+// import java.math.*;
+
+
 public class user implements Serializable{
     private String email;
     private String password;
@@ -10,11 +13,16 @@ public class user implements Serializable{
     private String lastName;
     private String birthDate;
     private String mobilePhone;
+    private String gender;
+    private String creationDate;
+    private String uType;
+    // private int ID;
+
 
     //Setters
     public user() {}
 
-    public user(String emai, String pass, String fName, String mname, String lName, String bday, String mPhone) {
+    public user(String emai, String pass, String fName, String mname, String lName, String bday, String mPhone, String g, String cd, String Type) {
         this.email = emai;
         this.password = pass;
         this.firstName = fName;
@@ -22,6 +30,14 @@ public class user implements Serializable{
         this.lastName = lName;
         this.birthDate = bday;
         this.mobilePhone = mPhone;
+        this.gender = g;
+        this.creationDate = cd;
+        this.uType = Type;
+    }
+
+    
+    public void setuType(String a) {
+        this.uType = a;
     }
 
     public void setEmail(String a) {
@@ -51,6 +67,14 @@ public class user implements Serializable{
         this.mobilePhone = a;
     }
 
+    public void setGender(String a) {
+        this.gender = a;
+    }
+
+    public void setCreationDate(String a) {
+        this.creationDate = a;
+    }
+
     public String getEmail() {
         return this.email;
     }
@@ -74,7 +98,20 @@ public class user implements Serializable{
     public String getBirthDate() {
         return this.birthDate;
     }
+  
     public String getMobilePhone() {
         return this.mobilePhone;
+    }
+
+    public String getGender() {
+        return this.gender;
+    }
+
+    public String getCreationDate() {
+        return this.creationDate;
+    }
+
+    public String getuType() {
+        return this.uType;
     }
 }
