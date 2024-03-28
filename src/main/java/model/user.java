@@ -1,7 +1,9 @@
 // 'User.java' for User object class
 package model;
 import java.io.Serializable;
+
 // import java.math.*;
+
 
 public class user implements Serializable{
     private String email;
@@ -15,6 +17,7 @@ public class user implements Serializable{
     private String creationDate;
     private String uType;
     // private int ID;
+
 
     //Setters
     public user() {}
@@ -95,7 +98,7 @@ public class user implements Serializable{
     public String getBirthDate() {
         return this.birthDate;
     }
-
+  
     public String getMobilePhone() {
         return this.mobilePhone;
     }
