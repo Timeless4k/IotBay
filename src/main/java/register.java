@@ -33,6 +33,10 @@ public class register extends HttpServlet {
             user.setBirthDate(birthDate);
             user.setMobilePhone(mobilePhone);
 
+            // Create a session to store user data
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+
         } catch (ServletException e) {
             e.printStackTrace(); // Log ServletException
             // Handle ServletException
