@@ -21,7 +21,17 @@ public class register extends HttpServlet {
             String middleName = request.getParameter("middleName");
             String lastName = request.getParameter("lastName");
             String birthDate = request.getParameter("birthDate");
-            String mobilePhone = request.getParameter("mobilePhone");            
+            String mobilePhone = request.getParameter("mobilePhone");           
+            
+            // Create a User instance and set its properties
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setFirstName(firstName);
+            user.setMiddleName(middleName);
+            user.setLastName(lastName);
+            user.setBirthDate(birthDate);
+            user.setMobilePhone(mobilePhone);
 
         } catch (ServletException e) {
             e.printStackTrace(); // Log ServletException
