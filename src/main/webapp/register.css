@@ -1,21 +1,33 @@
-/* General body styling for a consistent font and alignment */
+/* General body styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f5f5f5;
-    height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Ensures a vertical flow */
     align-items: center;
 }
 
-/* Style for the 'Return to login' button positioned at the top right */
+/* Header styling */
+header {
+    width: 100%;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between; /* Spaces out logo and button */
+    align-items: center; /* Vertically centers items */
+    background-color: #ffffff;
+}
+
+.logo {
+    height: 60px; /* Adjust based on your logo's size */
+    cursor: pointer;
+}
+
+/* Style for the 'Back to Page' button */
 .login-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000; /* Ensure it's above other content */
+    /* Positioning removed to allow flex in header */
 }
 
 a.button-link {
