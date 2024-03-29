@@ -424,3 +424,38 @@ footer p {
 }
 
 /* Ensure your media queries are included to handle responsiveness */
+
+/* Style adjustments for Register and Login buttons */
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-buttons a {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #007bff; /* Match hero button color */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+    text-align: center;
+    display: inline-block;
+    font-weight: 600;
+}
+
+.auth-buttons a:hover {
+    background-color: #0056b3; /* Darker shade on hover, match hero button */
+    transform: translateY(-2px);
+}
+
+/* Adjust login and register button sizes for smaller screens */
+@media (max-width: 768px) {
+    .auth-buttons a {
+        padding: 8px 16px;
+        font-size: 0.9rem; /* Smaller font size on mobile */
+    }
+}

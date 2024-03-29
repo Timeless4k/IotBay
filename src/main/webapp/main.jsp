@@ -31,11 +31,7 @@
                 <img src="images/user.png" alt="Account" class="account-icon" onmouseover="showWelcomeMessage()" onmouseout="hideWelcomeMessage()">
                 <div class="dropdown-content">
                     <div >
-                        <% if (session.getAttribute("username") != null) { %>
-                            Welcome back, <%= session.getAttribute("username") %>
-                        <% } else { %>
-                            Error | Log In
-                        <% } %>
+                        ${user.firstName} ${user.lastName}
                     </div>
                     <a href="settings.jsp">Settings</a>
                     <a href="logout.jsp">Logout</a>
