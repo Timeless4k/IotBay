@@ -13,7 +13,7 @@
         <nav class="navbar">
             <ul>
                 <li><a href="#about_us">About Us</a></li>
-                <li><a href="#FAQs">FAqs</a></li>
+                <li><a href="#FAQs">FAQs</a></li>
                 <li><a href="product.jsp">Catalog</a></li>
             </ul>
         </nav>
