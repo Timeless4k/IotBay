@@ -7,12 +7,16 @@
     <title>Register your account</title>
     <!-- Link to your CSS file -->
     <link rel="stylesheet" type="text/css" href="register.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="login-button">
-    <a href="login.jsp" class="button-link">Return to login</a>
-</div>
+    <header>
+        <img src="images/Logo.png" alt="IoTBay Logo" class="logo" onclick="window.location='index.jsp'">
+        <div class="login-button">
+            <a href="index.jsp" class="button-link">Back to Page</a>
+        </div>
+    </header>
 
 <div class="center-screen">
     <div class="form-container">
