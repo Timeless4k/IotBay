@@ -2,7 +2,13 @@
 /* CSS for account.jsp */
 
 body {
-    padding: 20px;
+    font-family: FreeMono, monospace;
+    /* padding: 20px; */
+    background-color: rgb(244, 244, 244);
+    padding-top: 50px;
+    padding-left: 50px;
+    padding-right: 40px;
+    padding-bottom: 50px;
 }
 
 .back-button {
@@ -21,44 +27,44 @@ body {
     display: flex;
 }
 
-.column {
+.column-left {
     float: left;
-    width: 50%;
+    width: 25%;
     padding: 10px;
-    height: 300px;
 }
 
-/* .main-content {
-    float: right;
-
-    width: 70%;
-    background-color: #fff; 
-    padding: 20px;
-}
-
-.sidebar {
+.column-right {
     float: left;
-
-    width: 15%;
-    background-color: #fce4c4;
+    width: 75%;
+    height: 100vh;
     padding: 20px;
-} */
+    padding-top: 30px;
+    padding-left: 60px;
+    /* height: 300px; */
 
-/* 
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar li {
-    margin-bottom: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
 }
 
 .sidebar a {
-    text-decoration: none;
-    color: #333;
+    text-decoration: none; /* Remove underline */
+    color: rgb(0, 44, 131); /* Set link color */
+    display: block; /* Make each link a block element */
+    padding: 20px; /* Adjust padding to include top and bottom */
+    padding-left: 10px;
+}
+
+.sidebar hr {
+    margin: 0; 
+    border: none; 
+    border-top: 1px solid #ccc; 
+    color: black;
+    /* padding: 10px 0;  */
+
+    width: 85%;
 }
 
 .sidebar a:hover {
-    color: #666;
-} */
+    background-color: rgb(255, 237, 215);
+    width: 75.5%;
+} 

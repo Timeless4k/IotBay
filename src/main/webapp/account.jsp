@@ -12,44 +12,52 @@
 
         <h1>My Account</h1>
 
+        <br> <br> 
+
         <div class="row">
-            <div class="column">
+            <div class="column-left">
                 <div class="sidebar">
-                    <ul>
-                        <li><a href="#profile">Profile</a></li>
-                        <li><a href="#orders">Orders</a></li>
-                        <li><a href="#payments">Payments</a></li>
-                        <li><a href="#settings">Settings</a></li>
-                        <li><a href="#logout">Logout</a></li>
-                    </ul>
+                    <!-- <ul> -->
+                        <a href="#profile">Profile</a>
+                        <hr>
+                        <a href="#orders">Orders</a>
+                        <hr>
+                        <a href="#payments">Payments</a>
+                        <hr>
+                        <a href="#settings">Settings</a>
+                        <hr>
+                        <a href="#logout">Logout</a>
+                    <!-- </ul> -->
                 </div>
             </div>
 
-            <div class="column">
+            <div class="column-right">
                 <div class="main-content">
-                    <div id="profile" style="display: none;">
-                        <h2>Profile</h2>
+                    <div id="profile">
+                        <u><h1>Profile</h1></u>
                         <!-- Profile content goes here -->
                     </div>
                     <div id="orders" style="display: none;">
-                        <h2>Orders</h2>
+                        <u><h1>Orders</h1></u>
                         <!-- Orders content goes here -->
                     </div>
                     <div id="payments" style="display: none;">
-                        <h2>Payments</h2>
+                        <u><h1>Payments</h1></u>
                         <!-- Payments content goes here -->
                     </div>
                     <div id="settings" style="display: none;">
-                        <h2>Settings</h2>
+                        <u><h1>Settings</h1></u>
                         <!-- Settings content goes here -->
                     </div>
                     <div id="logout" style="display: none;">
-                        <h2>Logout</h2>
+                        <u><h1>Logout</h1></u>
                         <!-- Logout content goes here -->
                     </div>
                 </div>
             </div>
         </div>
+
+        <br> <br> <br> <br> <br> <br>
 
         <footer>
             <p>&copy; 2024 IoTBay. All rights reserved.</p>
