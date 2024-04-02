@@ -17,15 +17,30 @@
         <div class="row">
             <div class="column-left">
                 <div class="sidebar">
-                    <a href="#profile">Profile</a>
+                    <a href="#profile">
+                        <img src="images/profile.png" alt="Profile Icon" width="25" height="25" class="profile-icon">
+                        <p class="profile-option">Profile</p>   
+                    </a>                          
                     <hr>
-                    <a href="#orders">Orders</a>
+                    <a href="#orders">
+                        <img src="images/cart.png" alt="Cart Icon" width="35" height="35">
+                        <p class="order-option">Orders</p>
+                    </a>  
                     <hr>
-                    <a href="#payments">Payments</a>
+                    <a href="#payments">
+                        <img src="images/payment.png" alt="Payment Icon" width="56" height="56" class="payment-icon">
+                        <p class="payment-option">Payments</p>
+                    </a>  
                     <hr>
-                    <a href="#settings">Settings</a>
+                    <a href="#settings">
+                        <img src="images/settings.png" alt="Settings Icon" width="29" height="29" class="settings-icon">
+                        <p class="settings-option">Settings</p>
+                    </a>  
                     <hr>
-                    <a href="#logout">Logout</a>
+                    <a href="#logout">
+                        <img src="images/logout.png" alt="Logout Icon" width="45" height="45" class="logout-icon">
+                        <p class="logout-option">Logout</p>
+                    </a>  
                 </div>
             </div>
 

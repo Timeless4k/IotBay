@@ -3,7 +3,6 @@
 
 body {
     font-family: FreeMono, monospace;
-    /* padding: 20px; */
     background-color: rgb(244, 244, 244);
     padding-top: 50px;
     padding-left: 50px;
@@ -52,6 +51,8 @@ body {
     display: block; /* Make each link a block element */
     padding: 20px; /* Adjust padding to include top and bottom */
     padding-left: 10px;
+    
+    height: 30px;
 }
 
 .sidebar hr {
@@ -66,5 +67,52 @@ body {
 
 .sidebar a:hover {
     background-color: rgb(255, 237, 215);
-    width: 75.5%;
+    /* width: 75.5%; */
 } 
+
+.profile-icon {
+    margin-left: 7px;
+}
+
+.profile-option {
+    padding-right: 57%;
+    float: right;
+    margin-top: 5px;
+}
+
+.order-option {
+    padding-right: 60%;
+    float: right;
+    margin-top: 9px;
+}
+
+.payment-icon {
+    margin-left: -10px;
+    margin-top: -10px;
+}
+
+.payment-option {
+    padding-right: 53%;
+    float: right;
+    margin-top: 10px;
+}
+
+.settings-icon {
+    margin-left: 4px;
+}
+
+.settings-option {
+    padding-right: 53%;
+    float: right;
+    margin-top: 7px;
+}
+
+.logout-icon {
+    margin-left: -6px;
+}
+
+.logout-option {
+    padding-right: 60%;
+    float: right;
+    margin-top: 10px;
+}
