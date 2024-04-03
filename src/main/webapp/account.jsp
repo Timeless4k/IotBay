@@ -46,22 +46,30 @@
 
             <div class="column-right">
                 <div class="main-content">
-                    <div id="profile">
-                        <u><h1>Profile</h1></u>
-                        <br>
-                        <p><b>First Name:</b><br>${user.firstName}</p>
-                        <p><b>Middle Name:</b><br>${user.middleName}</p>
-                        <p><b>Last Name:</b><br>${user.lastName}</p>
-                        <p><b>Email:</b><br>${user.email}</p>
-                        <p><b>Password:</b><br>
-                            <span id="passwordField">${user.password.replaceAll(".", "*")}</span>
-                            <button onclick="togglePassword()">Show Password</button>
-                        </p>                                                                 
-                        <p><b>Birth Date:</b><br>${user.birthDate}</p>
-                        <p><b>Mobile Phone:</b><br>${user.mobilePhone}</p>
+                    <!-- <div class="profile-details-container"> -->
+                        <div id="profile">
+                            <u><h1>Profile</h1></u>
+                            <br>
+                            <p><b>First Name:</b><br>${user.firstName}</p>
+                            <p><b>Middle Name:</b><br>${user.middleName}</p>
+                            <p><b>Last Name:</b><br>${user.lastName}</p>
+                            <p><b>Email:</b><br>${user.email}</p>
+                            <p><b>Password:</b><br>
+                                <span id="passwordField">${user.password.replaceAll(".", "*")}</span>
+                                <button onclick="togglePassword()">Show Password</button>
+                            </p>                                                                 
+                            <p><b>Birth Date:</b><br>${user.birthDate}</p>
+                            <p><b>Mobile Phone:</b><br>${user.mobilePhone}</p>
 
-                        <!-- Profile content goes here -->
-                    </div>
+                            <!-- Profile content goes here -->
+                        </div>
+                        
+                        <div>
+                            <img src="images/profile-image.png" alt="Profile Icon" width="230" height="230" style="float: right; margin-top: -400px; margin-right: 150px;">
+                            <button type="button" style="float: right; margin-top: -160px; margin-right: 195px;">Select Profile Photo</button>
+                        </div>
+                    <!-- </div> -->
+
                     <div id="orders" style="display: none;">
                         <u><h1>Orders</h1></u>
                         <br><p>Orders content goes here...</p>
