@@ -34,7 +34,7 @@
                         <div >
                             ${user.firstName} ${user.lastName}
                         </div>
-                        <a href="settings.jsp">Settings</a>
+                        <a href="account.jsp">Account</a>
                         <a href="logout.jsp">Logout</a>
                     </div>
                 </div>
