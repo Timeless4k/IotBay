@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <% session.invalidate(); %>
     <header class="header-logout">
         <div class="logo-container-logout">
             <img src="images/Logo.png" alt="IoTBay Logo" onclick="window.location='index.jsp'">
