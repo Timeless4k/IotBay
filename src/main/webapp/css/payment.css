@@ -1,0 +1,139 @@
+/* Include your reset and basic styles here */
+
+/* Payment Form Styles */
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.form-group input[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.form-group input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Footer styles */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f8f9fa;
+    color: #6c757d;
+    font-size: 0.75em;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    footer {
+        position: relative;
+    }
+}
+
+
+/* Previous styles */
+
+/* Checkout Page Layout */
+.checkout-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px auto;
+    max-width: 1200px; /* Adjust based on your content width */
+    padding: 20px;
+}
+
+.payment-info,
+.cart-summary {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 48%; /* Adjust based on your preference */
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Other form styling */
+
+/* Cart Summary Styling */
+.cart-summary h2 {
+    text-align: left; /* Aligns the cart summary title to the left */
+}
+
+.cart-summary p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.cart-summary p strong {
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .checkout-container {
+        flex-direction: column;
+    }
+
+    .payment-info,
+    .cart-summary {
+        width: 100%; /* Full width for mobile */
+        margin-bottom: 20px; /* Add space between the sections */
+    }
+
+    /* Adjust footer when positioned absolutely */
+    footer {
+        position: relative;
+    }
+}
+
+
