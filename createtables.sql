@@ -14,9 +14,6 @@ CREATE TABLE User(
     PasswordHash varchar(64),
     UserCreationDate datetime,
     ActivationFlag boolean,
-    LogID int(10), --needs fk
-    CardID int(10), --needs fk
-    OrderID int(10), --needs fk
     VerificationCode varchar(10),
 );
 
@@ -30,37 +27,35 @@ CREATE TABLE ProductData(
     ProductType varchar(50)
 );
 
-CREATE TABLE Order(
-    OrderID int(10),
-    OrderDate datetime,
-    OrderStatus varchar(20),
-    OrderDeliveryStatus varchar(20),
-    PaymentID int(10),
-    ShippingID int(10),
-    UserID int(10)
-);
-
-CREATE TABLE Payments(
-    PaymentID int(10) primary key,
-    PaymentAmount decimal(13,2),
-    PaymentMethod varchar(50),
-    PaymentDate datetime,
-    PaymentStatus varchar(20), --ahhhh there are errors in the report
-    OrderID int(10),
-    CardID int(10)
-);
-
-CREATE TABLE OrderLineItem(
-    OrderID int(10),
-    ProductID int(10),
-    OrderAmount int(99)
-);
-
 CREATE TABLE AccessData(
     LogID int(10),
     UserID int(10),
     LoginTime datetime,
-    LogoutTime datetime
+    LogoutTime datetime,
+    primary key(LogID),
+    foreign key(UserID) references User(UserID)
+);
+
+CREATE TABLE CardInformation(
+    CardID int(10),
+    CardNumber int(10),
+    CardHolderName varchar(128),
+    CardExpiry date,
+    CardCVV int(3),
+    UserID int(10),
+    primary key(CardID),
+    foreign key(UserID) references User(UserID)
+);
+
+CREATE TABLE Payments(
+    PaymentID int(10),
+    PaymentAmount decimal(13,2),
+    PaymentMethod varchar(50),
+    PaymentDate datetime,
+    PaymentStatus varchar(20), --ahhhh there are errors in the report in regards to type
+    CardID int(10),
+    primary key(PaymentID),
+    foreign key(CardID) references CardInformation(CardID)
 );
 
 CREATE TABLE ShipmentData(
@@ -69,16 +64,33 @@ CREATE TABLE ShipmentData(
     ShipmentType varchar(30),
     ShipmentTrackingNumber varchar(10),
     ShipmentExpectedDate datetime,
-    OrderID int(10)
+    primary key(ShipmentID)
 );
 
-CREATE TABLE CardInformation(
-    CardID int(10),
-    CardNumber int(10),
-    CardHolderName varchar(128),
-    CardExpiry date,
-    CardCVV int(3)
+CREATE TABLE Order(
+    OrderID int(10),
+    OrderDate datetime,
+    OrderStatus varchar(20),
+    OrderDeliveryStatus varchar(20),
+    PaymentID int(10),
+    ShippingID int(10),
+    UserID int(10),
+    primary key(OrderID),
+    foreign key(UserID) references User(UserID),
+    foreign key(PaymentID) references Payments(PaymentID),
+    foreign key(ShippingID) references ShipmentData(ShipmentID)
 );
+
+CREATE TABLE OrderLineItem(
+    OrderID int(10),
+    ProductID int(10),
+    OrderAmount int(99),
+    primary key(OrderID, ProductID),
+    foreign key(OrderID) references Order(OrderID),
+    foreign key(ProductID) references ProductData(ProductID)
+);
+
+
 
 
 
