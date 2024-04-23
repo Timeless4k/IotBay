@@ -21,10 +21,11 @@ CREATE TABLE ProductData(
     ProductID BIGINT primary key,
     ProductName varchar(50),
     ProductStatus varchar(20),
-    ProductReleaseDate varchar(11),
+    ProductReleaseDate varchar(11), -- update to be a datetime
     ProductStockLevel BIGINT,
-    ProductDescription varchar(50),
-    ProductType varchar(50)
+    ProductDescription varchar(150),
+    ProductType varchar(50),
+    ProductCost float
 );
 
 CREATE TABLE AccessData(
@@ -169,3 +170,68 @@ insert into user values(
     '2FA444' -- 2fa code
 );
 
+insert into ProductData values(
+    2111111111,
+    'ADXL345',
+    'InStock',
+    'Aug20th',
+    500,
+    'The ADXL345 is a 3 axis accelerometer with a 10bit resolution and capable of up to 16 g of acceleration',
+    'Sensor',
+    5.99
+);
+
+insert into ProductData values(
+    2222222222,
+    'Arduino Uno R3',
+    'NotInStock',
+    'Aug32nd',
+    0,
+    'The Arduino Uno R3 is a 8bit microcontroller development board with 14 digital in and output pins',
+    'Microcontroller',
+    25.99
+);
+
+insert into ProductData values(
+    2333333333,
+    'Raspberry Pi 1b+',
+    'InStock',
+    'Feb25th',
+    4,
+    'The Raspberry Pi 1b+ is a unix single board computer featuring GPIO pins for interacting with the physical world',
+    'Computer',
+    500.99
+);
+
+insert into ProductData values(
+    2444444444,
+    'Smart Bulb',
+    'InStock',
+    'Aug20th',
+    270,
+    'Smart bulb has wifi and makes your home colourful',
+    'Home Iot',
+    22.99
+);
+
+insert into ProductData values(
+    2555555555,
+    'Smart Watch',
+    'InStock',
+    'Aug20th',
+    3500,
+    'This Smart Watch has the latest and greatest features such as heart rate monitoring',
+    'Gear',
+    160
+);
+
+insert into ProductData values(
+    2666666666,
+    'Thermostat',
+    'InStock',
+    'Aug20th',
+    500,
+    'This Thermostat enables maintaining of precise home temperatures',
+    'Home Iot',
+    200
+);
