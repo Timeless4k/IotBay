@@ -132,7 +132,7 @@ insert into user values(
     'Employee',
     'sss@gmail.com',
     '5553333333',
-    'Employee',
+    'Female',
     'A4DD5658EC0219465B705EA7C7435D9786A3C66D4F448CABD7488DABCEAFB699',
     '2024-01-01 11:11:11',
     true,
