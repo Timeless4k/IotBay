@@ -44,7 +44,15 @@ public class productDAO {
 		return products;
 	}
 
-	public void updateProduct() throws SQLException{
+	public boolean addProduct() throws SQLException{
+		return true; // temp for failing to update db
+	}
 
+	public boolean removeProduct() throws SQLException{
+		return true; // temp for failing to update db
+	}
+
+	public boolean updateProduct() throws SQLException{
+		return true; // temp for failing to update db
 	}
 }
