@@ -95,7 +95,7 @@ CREATE TABLE OrderLineItem(
 
 
 
-insert into user values(
+insert into User values(
     1111111111,
     'Jim',
     'Jimmy',
@@ -110,7 +110,7 @@ insert into user values(
     '2FA111' -- 2fa code
 );
 
-insert into user values(
+insert into User values(
     2222222222,
     'Marvin',
     'Mellachlan',
@@ -125,7 +125,7 @@ insert into user values(
     '2FA222' -- 2fa code
 );
 
-insert into user values(
+insert into User values(
     3333333333,
     'Sammy',
     'Something',
@@ -140,7 +140,7 @@ insert into user values(
     '2FA333' -- 2fa code
 );
 
-insert into user values(
+insert into User values(
     4444444444,
     'Aron',
     'Abacus',
@@ -155,7 +155,7 @@ insert into user values(
     '2FA444' -- 2fa code
 );
 
-insert into user values(
+insert into User values(
     5555555555,
     'Zylus',
     'Zebra',
