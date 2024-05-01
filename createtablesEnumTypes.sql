@@ -231,7 +231,7 @@ insert into ProductData values(
     'InStock',
     'Aug20th',
     500,
-    'This Thermostat enables maintaining of precise home temperatures',
+    'This Thermostat enables maintaining of precise and stable home temperatures',
     'Home Iot',
     200
 );
