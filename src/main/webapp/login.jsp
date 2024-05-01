@@ -47,6 +47,15 @@
     </div>
 </div>
 
+<script>
+    function redirectToVerification() {
+        // Here you would normally validate credentials
+        // If valid, redirect to the verification page
+        window.location.href = 'verification.jsp'; // Change 'verification.jsp' to the actual path if different
+        return false; // Prevent the default form submission
+    }
+</script>
+
 </body>
 
 </html>
