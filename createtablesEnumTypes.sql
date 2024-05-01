@@ -95,7 +95,7 @@ CREATE TABLE OrderLineItem(
 
 
 
-insert into user values(
+insert into User values(
     1111111111,
     'Jim',
     'Jimmy',
@@ -110,7 +110,7 @@ insert into user values(
     '2FA111' -- 2fa code
 );
 
-insert into user values(
+insert into User values(
     2222222222,
     'Marvin',
     'Mellachlan',
@@ -125,7 +125,7 @@ insert into user values(
     '2FA222' -- 2fa code
 );
 
-insert into user values(
+insert into User values(
     3333333333,
     'Sammy',
     'Something',
@@ -140,7 +140,7 @@ insert into user values(
     '2FA333' -- 2fa code
 );
 
-insert into user values(
+insert into User values(
     4444444444,
     'Aron',
     'Abacus',
@@ -155,7 +155,7 @@ insert into user values(
     '2FA444' -- 2fa code
 );
 
-insert into user values(
+insert into User values(
     5555555555,
     'Zylus',
     'Zebra',
@@ -184,7 +184,7 @@ insert into ProductData values(
 insert into ProductData values(
     2222222222,
     'Arduino Uno R3',
-    'NotInStock',
+    'OutOfStock',
     'Aug32nd',
     0,
     'The Arduino Uno R3 is a 8bit microcontroller development board with 14 digital in and output pins',
@@ -234,4 +234,41 @@ insert into ProductData values(
     'This Thermostat enables maintaining of precise home temperatures',
     'Home Iot',
     200
+);
+
+insert into CardInformation values (
+    8111111111,
+    3566000020000410,
+    "Jim J Jamerson",
+    '2024-07-01',
+    123,
+    1111111111
+);
+
+insert into CardInformation values (
+    8222222222,
+    4263982640269299,
+    "Jim J Jamerson",
+    '2024-03-01',
+    837,
+    1111111111
+);
+
+
+insert into CardInformation values (
+    8333333333,
+    4263982640269299,
+    "Marvin M Murdoc",
+    '2024-07-01',
+    738,
+    2222222222
+);
+
+insert into CardInformation values (
+    8444444444,
+    4263982640269299,
+    "Marvin M Murdoc",
+    '2026-04-01',
+    887,
+    2222222222
 );
