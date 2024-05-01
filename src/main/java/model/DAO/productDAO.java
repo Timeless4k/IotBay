@@ -19,14 +19,14 @@ public class productDAO {
 
 		ArrayList<product> products = new ArrayList<product>(); // ArrayList to hold products
 		while (rs.next()) { // go to next item in rs table then run
-			int pID = rs.getInt(0); //retrieve variables from db query
-            String pName = rs.getString(1);
-            String pStatus = rs.getString(2);
-            String pReleaseDate = rs.getString(3);
-            int pStockLevel = rs.getInt(4);
-            String pDescription = rs.getString(5);
-			String pType = rs.getString(6);
-            int pPrice = rs.getInt(7);
+			long pID = rs.getLong(1); //retrieve variables from db query
+            String pName = rs.getString(2);
+            String pStatus = rs.getString(3);
+            String pReleaseDate = rs.getString(4);
+            long pStockLevel = rs.getLong(5);
+            String pDescription = rs.getString(6);
+			String pType = rs.getString(7);
+            long pPrice = rs.getLong(8);
 
 			product p = new product();
 			p.setpID(pID);
@@ -44,7 +44,7 @@ public class productDAO {
 		return products;
 	}
 
-	public boolean addProduct() throws SQLException{
+	public boolean addProduct(long pID, String Name, String Status, String rDate, long Slevel, String desc, long price) throws SQLException{
 		return true; // temp for failing to update db
 	}
 

@@ -1,17 +1,17 @@
 package model;
 
 public class payment {
-    private int pID;
-    private int pAmount;
+    private long pID;
+    private long pAmount;
     private String pMethod;
     private String pDate;
     private String pStatus;
 
-    public int getpID() {
+    public long getpID() {
         return this.pID;
     }
 
-    public int getpAmount() {
+    public long getpAmount() {
         return this.pAmount;
     }
 
@@ -27,11 +27,11 @@ public class payment {
         return this.pStatus;
     }
 
-    public void setpID(int id) {
+    public void setpID(long id) {
         this.pID = id;
     }
 
-    public void setpAmount(int amount) {
+    public void setpAmount(long amount) {
         this.pAmount = amount;
     }
 

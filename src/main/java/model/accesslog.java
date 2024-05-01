@@ -1,16 +1,16 @@
 package model;
 
 public class accesslog {
-    private int logID;
-    private int userID;
+    private long logID;
+    private long userID;
     private String loginTime;
     private String logoutTime;
 
-    public int getlogID() {
+    public long getlogID() {
         return this.logID;
     }
 
-    public int getuserID() {
+    public long getuserID() {
         return this.userID;
     }
 
@@ -22,11 +22,11 @@ public class accesslog {
         return this.logoutTime;
     }
 
-    public void setlogID(int id) {
+    public void setlogID(long id) {
         this.logID = id;
     }
 
-    public void setuserID(int id) {
+    public void setuserID(long id) {
         this.userID = id;
     }
 

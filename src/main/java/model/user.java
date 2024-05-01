@@ -16,7 +16,7 @@ public class user implements Serializable{
     private String gender;
     private String creationDate;
     private String uType;
-    // private int ID;
+    private long uID;
 
 
     //Setters
@@ -113,5 +113,13 @@ public class user implements Serializable{
 
     public String getuType() {
         return this.uType;
+    }
+
+    public long getuID() {
+        return this.uID;
+    }
+
+    public void setuID(long id) {
+        this.uID = id;
     }
 }
