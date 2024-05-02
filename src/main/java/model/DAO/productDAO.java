@@ -27,6 +27,12 @@ public class productDAO {
 		searchProductSt = connection.prepareStatement(SearchQuery);
 	}
 
+	
+	/**
+	 * This Method retreives products from the DB using result sets and prepared statements
+	 * @return ArrayList containing all products
+	 * @throws SQLException
+	 */
 	public ArrayList<product> fetchProducts() throws SQLException {
 		ResultSet rs = fetchProdSt.executeQuery();
 
@@ -56,7 +62,18 @@ public class productDAO {
 
 		return products;
 	}
-
+	/**
+	 * Adds a row to the DB using given params
+	 * @param pID
+	 * @param Name
+	 * @param Status
+	 * @param rDate
+	 * @param Slevel
+	 * @param desc
+	 * @param pType
+	 * @param price
+	 * @throws SQLException
+	 */
 	public void addProduct(long pID, String Name, String Status, String rDate, long Slevel, String desc, String pType, double price) throws SQLException{
 		addProductSt.setLong(1, pID);
 		addProductSt.setString(2, Name);
@@ -68,12 +85,28 @@ public class productDAO {
 		addProductSt.setDouble(8, price);
 		addProductSt.executeUpdate();
 	}
-
+	/**
+	 * Removes a product from the DB based off product ID
+	 * @param pID
+	 * @throws SQLException
+	 */
 	public void removeProduct(long pID) throws SQLException{
 		removeProductSt.setLong(1, pID);
 		removeProductSt.executeUpdate();
 	}
-
+	/**
+	 * Should be used by first reading old entry then allowing the user to alter then updating the DB row based off
+	 * product ID
+	 * @param pID
+	 * @param Name
+	 * @param Status
+	 * @param rDate
+	 * @param Slevel
+	 * @param desc
+	 * @param pType
+	 * @param price
+	 * @throws SQLException
+	 */
 	public void updateProduct(long pID, String Name, String Status, String rDate, long Slevel, String desc, String pType, double price) throws SQLException{
 		updateProductSt.setLong(8, pID);
 		updateProductSt.setString(1, Name);
@@ -86,7 +119,13 @@ public class productDAO {
 		updateProductSt.executeUpdate();
 	}
 
-
+	/**
+	 * Similar to regular search except that it uses a where statement for filtering
+	 * @param type The name of the column to search, either ProductName or ProductType
+	 * @param query The phrase to search for
+	 * @return an ArrayList Containing the searched Products
+	 * @throws SQLException
+	 */
 	public ArrayList<product> searchProdBy(String type, String query) throws SQLException{
 		searchProductSt.setString(1, type);
 		searchProductSt.setString(2, query);
