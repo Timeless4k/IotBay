@@ -40,6 +40,18 @@
                 </div>
             </div>
         </header>
+
+        <div class="prodsearchbar">
+            <form method="get" action="ProductServlet">
+                <select name="SearchType" id="SearchType">
+                    <option value="ProductName">Name</option>
+                    <option value="ProductType">Type</option>
+                </select>
+                <input id="SearchQuery" type="search">
+                <button type="submit"> <img src="images/search.svg"> </button>
+            </form>
+
+        </div>
        
         <div class="product-container">
             <div>
