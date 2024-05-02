@@ -15,7 +15,7 @@ public class productDAO {
 	private String CreateQuery = "INSERT INTO productdata VALUES (?,?,?,?,?,?,?,?)";
 	private String DeleteQuery = "DELETE FROM productdata WHERE ProductID=?";
 	private String UpdateQuery = "UPDATE productdata SET ProductName = '?', ProductStatus = '?', ProductReleaseDate = '?', ProductStockLevel = ?, ProductDescription = '?', ProductType = '?', ProductCost = ? WHERE ProductID=?";
-	private String SearchQuery = "SELECT * FROM productdata WHERE ? = '?'";
+	private String SearchQuery = "SELECT * FROM productdata WHERE ? LIKE '%?%'";
 
     public productDAO(Connection connection) throws SQLException {
 		this.conn = connection;
