@@ -14,10 +14,6 @@ import model.DAO.DBConnector;
 import model.DAO.productDAO;
 import model.DAO.userDAO;
 
-
-
-
-
 public class ConnServlet extends HttpServlet {
     public DBConnector connector;
     public Connection conn;
