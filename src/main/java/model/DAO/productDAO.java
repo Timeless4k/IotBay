@@ -1,6 +1,9 @@
 package model.DAO;
 
 import java.util.ArrayList;
+
+import javax.naming.spi.DirStateFactory.Result;
+
 import java.sql.*;
 import model.product;
 
@@ -9,18 +12,19 @@ public class productDAO {
 	private PreparedStatement addProductSt;
 	private PreparedStatement removeProductSt;
 	private PreparedStatement updateProductSt;
+	private PreparedStatement searchProductSt;
 	private String readQuery = "SELECT * FROM productdata";
 	private String CreateQuery = "INSERT INTO productdata VALUES (?,?,?,?,?,?,?,?)";
 	private String DeleteQuery = "DELETE FROM productdata WHERE ProductID=?";
 	private String UpdateQuery = "UPDATE productdata SET ProductName = '?', ProductStatus = '?', ProductReleaseDate = '?', ProductStockLevel = ?, ProductDescription = '?', ProductType = '?', ProductCost = ? WHERE ProductID=?";
-
+	private String SearchQuery = "SELECT * FROM productdata WHERE ? = '?'";
     public productDAO(Connection connection) throws SQLException {
 		connection.setAutoCommit(true);
 		fetchProdSt = connection.prepareStatement(readQuery);
 		addProductSt = connection.prepareStatement(CreateQuery);
 		removeProductSt = connection.prepareStatement(DeleteQuery);
 		updateProductSt = connection.prepareStatement(UpdateQuery);
-
+		searchProductSt = connection.prepareStatement(SearchQuery);
 	}
 
 	public ArrayList<product> fetchProducts() throws SQLException {
@@ -80,5 +84,38 @@ public class productDAO {
 		updateProductSt.setString(6, pType);
 		updateProductSt.setDouble(7, price);
 		updateProductSt.executeUpdate();
+	}
+
+
+	public ArrayList<product> searchProdBy(String type, String query) throws SQLException{
+		searchProductSt.setString(1, type);
+		searchProductSt.setString(2, query);
+		ResultSet rs = searchProductSt.executeQuery();
+
+		ArrayList<product> products = new ArrayList<product>(); // ArrayList to hold products
+		while (rs.next()) { // go to next item in rs table then run
+			long pID = rs.getLong(1); //retrieve variables from db query
+            String pName = rs.getString(2);
+            String pStatus = rs.getString(3);
+            String pReleaseDate = rs.getString(4);
+            long pStockLevel = rs.getLong(5);
+            String pDescription = rs.getString(6);
+			String pType = rs.getString(7);
+            double pPrice = rs.getLong(8);
+
+			product p = new product();
+			p.setpID(pID);
+			p.setName(pName);
+			p.setStatus(pStatus);
+			p.setReleaseDate(pReleaseDate);
+			p.setStock(pStockLevel);
+			p.setDescription(pDescription);
+			p.setType(pType);
+			p.setPrice(pPrice);
+
+			products.add(p); // add object to end of product array
+		}
+
+		return products;
 	}
 }
