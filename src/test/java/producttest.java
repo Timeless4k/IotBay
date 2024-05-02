@@ -65,6 +65,17 @@ public class producttest {
     }
 
 
+
+    @Test
+    public void createWrongEntry() throws SQLException, ClassNotFoundException{
+        intPDAO();
+        assertThrows(SQLException.class, () -> {
+            PDDAO.addProduct(9999, "TestOBJ", "baDTExt", "2024-01-01", 500, "A Test Thinggy", "Test", 500.99);
+        });
+        
+    }
+
+
     @Test
     public void deleteTest() throws SQLException, ClassNotFoundException{
         intPDAO();
@@ -77,6 +88,6 @@ public class producttest {
 
     @Test
     public void updateTest() throws SQLException, ClassNotFoundException{
-        
+
     }
 }
