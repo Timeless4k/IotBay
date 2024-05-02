@@ -1,13 +1,11 @@
 package model.DAO;
 
 import java.util.ArrayList;
-
-import javax.naming.spi.DirStateFactory.Result;
-
 import java.sql.*;
 import model.product;
 
 public class productDAO {
+	private Connection conn; // store active connection here
     private PreparedStatement fetchProdSt;
 	private PreparedStatement addProductSt;
 	private PreparedStatement removeProductSt;
@@ -18,13 +16,15 @@ public class productDAO {
 	private String DeleteQuery = "DELETE FROM productdata WHERE ProductID=?";
 	private String UpdateQuery = "UPDATE productdata SET ProductName = '?', ProductStatus = '?', ProductReleaseDate = '?', ProductStockLevel = ?, ProductDescription = '?', ProductType = '?', ProductCost = ? WHERE ProductID=?";
 	private String SearchQuery = "SELECT * FROM productdata WHERE ? = '?'";
+
     public productDAO(Connection connection) throws SQLException {
-		connection.setAutoCommit(true);
-		fetchProdSt = connection.prepareStatement(readQuery);
-		addProductSt = connection.prepareStatement(CreateQuery);
-		removeProductSt = connection.prepareStatement(DeleteQuery);
-		updateProductSt = connection.prepareStatement(UpdateQuery);
-		searchProductSt = connection.prepareStatement(SearchQuery);
+		this.conn = connection;
+		conn.setAutoCommit(true);
+		fetchProdSt = conn.prepareStatement(readQuery);
+		addProductSt = conn.prepareStatement(CreateQuery);
+		removeProductSt = conn.prepareStatement(DeleteQuery);
+		updateProductSt = conn.prepareStatement(UpdateQuery);
+		searchProductSt = conn.prepareStatement(SearchQuery);
 	}
 
 	
