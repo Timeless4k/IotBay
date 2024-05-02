@@ -8,7 +8,7 @@ public class product {
     public long pStockLevel;
     public String pDescription;
     public String pType;
-    public long pPrice;
+    public double pPrice;
     
 
     public boolean inStock() {
@@ -50,11 +50,11 @@ public class product {
         this.pStockLevel = quant;
     }
 
-    public void setPrice(long amount) {
+    public void setPrice(double amount) {
         this.pPrice = amount;
     }
 
-    public long getPrice() {
+    public double getPrice() {
         return this.pPrice;
     }
 
