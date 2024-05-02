@@ -1,6 +1,6 @@
-CREATE schema IotBay;
+CREATE schema iotbay;
 
-USE IotBay;
+USE iotbay;
 
 CREATE TABLE User(
     UserID BIGINT primary key,
