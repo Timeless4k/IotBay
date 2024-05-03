@@ -73,6 +73,13 @@
             <version>${mockito.version}</version>
         </dependency>
 
+        <dependency>
+        <groupId>javax.mail</groupId>
+        <artifactId>javax.mail-api</artifactId>
+        <version>1.6.2</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
