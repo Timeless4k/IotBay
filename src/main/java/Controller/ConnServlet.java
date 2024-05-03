@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.DAO.DBConnector;
-import model.DAO.productDAO;
 import model.DAO.userDAO;
 
 public class ConnServlet extends HttpServlet {

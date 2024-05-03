@@ -37,7 +37,7 @@ public class EmailSender {
 
     public static void main(String[] args) {
         try {
-            sendEmail("recipient@example.com", "Test Mail", "Hello, this is a test email from IoTBay!");
+            sendEmail("burhan2rahul@gmail.com", "Test Mail", "Hello, this is a test email from IoTBay!");
         } catch (MessagingException e) {
             e.printStackTrace();
             System.out.println("Failed to send the email.");
