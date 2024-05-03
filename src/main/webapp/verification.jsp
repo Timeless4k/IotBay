@@ -17,7 +17,7 @@
             <h1>Enter Verification Code</h1>
         </div>
         
-        <form action="verifyCode" method="post">
+        <form action="LoginServlet" method="post">
             <div>
                 <label for="verificationCode">Verification Code:</label>
                 <input type="text" id="verificationCode" name="verificationCode" required>
