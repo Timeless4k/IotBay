@@ -11,18 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.DAO.DBConnector;
-import model.DAO.productDAO;
-import model.DAO.userDAO;
 
 public class ConnServlet extends HttpServlet {
     public DBConnector connector;
     public Connection conn;
-    public userDAO UDAO;
 
     @Override
     public void init() {
         try {
             connector = new DBConnector();
+            conn = connector.openConnection();
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println(ex);
         }
@@ -32,15 +30,7 @@ public class ConnServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
-		conn = connector.openConnection();
-
-		try {
-			UDAO = new userDAO(conn);
-		} catch (SQLException e) {
-			System.out.print(e);
-		}
-
-		session.setAttribute("userDAO", UDAO);
+		session.setAttribute("acticonn", conn);
 		request.getRequestDispatcher("index.jsp").include(request, response);
     }
 
