@@ -42,7 +42,7 @@
         </header>
 
         <div class="prodsearchbar">
-            <form method="get" action="ProductServlet">
+            <form method="get" action="SearchAllProductServlet">
                 <select name="SearchType" id="SearchType">
                     <option value="ProductName">Name</option>
                     <option value="ProductType">Type</option>
