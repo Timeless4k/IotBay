@@ -10,9 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.DAO.productDAO;
-public class ProductServlet extends HttpServlet{
+public class SearchAllProductServlet extends HttpServlet{
     private Connection conn;
     private productDAO PDAO;
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -20,10 +21,11 @@ public class ProductServlet extends HttpServlet{
         conn = (Connection) session.getAttribute("acticonn");
         try{
             PDAO = new productDAO(conn);
+            session.setAttribute("productList", PDAO.fetchProducts());
         } catch (SQLException ex) {
             System.out.println(ex);
-        }
-        
-        
+        }   
+
+        // request.getRequestDispatcher("product.jsp").include(request, response); // redirect to page
     }
 }
