@@ -31,6 +31,13 @@ public class PaymentDAOTest {
     }
 
     @Test
+    public void testConnectionNotNull() {
+        assertNotNull(conn, "Database connection should not be null");
+        System.out.println("Connection test passed: Connection is not null.");
+    }
+
+
+    @Test
     public void testCreatePayment() throws SQLException {
         payment payment = new payment(0, 100.0, "Credit Card", "2024-01-01", "Pending");
         boolean isCreated = paymentDAO.createPayment(payment);

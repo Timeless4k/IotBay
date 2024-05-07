@@ -20,6 +20,7 @@ public class UserServlet extends HttpServlet {
             switch (action) {
                 case "register":
                     // Collect all user parameters from the request
+                    int userId = Integer.parseInt(request.getParameter("userId")); // Manually assign user ID
                     String email = request.getParameter("email");
                     String password = request.getParameter("password"); // Hash this password before setting
                     String firstName = request.getParameter("firstName");
@@ -31,7 +32,7 @@ public class UserServlet extends HttpServlet {
                     String creationDate = request.getParameter("creationDate"); // Format and set correctly
 
                     // Create and populate user object
-                    user newUser = new user(email, password, firstName, middleName, lastName, "", phone, gender, creationDate, userType);
+                    user newUser = new user(userId, email, password, firstName, middleName, lastName, phone, gender, creationDate, userType, email);
                     boolean success = userDao.createUser(newUser);
                     if (success) {
                         response.sendRedirect("userCreated.jsp"); // Redirect to success page
