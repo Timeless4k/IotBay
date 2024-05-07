@@ -1,6 +1,5 @@
 package model.DAO;
 
-import java.util.ArrayList;
 import java.sql.*;
 import model.user;
 
@@ -15,7 +14,7 @@ public class userDAO {
         this.conn = connection;
         conn.setAutoCommit(false);  // Start with transaction block
         createUserSt = conn.prepareStatement(
-            "INSERT INTO User (UserFirstName, UserMiddleName, UserLastName, UserType, UserEmail, UserPhone, UserGender, PasswordHash, UserCreationDate, ActivationFlag, VerificationCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO User (UserID, UserFirstName, UserMiddleName, UserLastName, UserType, UserEmail, UserPhone, UserGender, PasswordHash, UserCreationDate, ActivationFlag, VerificationCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             Statement.RETURN_GENERATED_KEYS);
         getUserByEmailSt = conn.prepareStatement("SELECT * FROM User WHERE UserEmail = ?");
         updateUserSt = conn.prepareStatement(
@@ -25,28 +24,26 @@ public class userDAO {
 
     public boolean createUser(user newUser) {
         try {
-            createUserSt.setString(1, newUser.getFirstName());
-            createUserSt.setString(2, newUser.getMiddleName());
-            createUserSt.setString(3, newUser.getLastName());
-            createUserSt.setString(4, newUser.getuType());
-            createUserSt.setString(5, newUser.getEmail());
-            createUserSt.setLong(6, Long.parseLong(newUser.getMobilePhone()));
-            createUserSt.setString(7, newUser.getGender());
-            createUserSt.setString(8, newUser.getPassword());
-            createUserSt.setString(9, newUser.getCreationDate());
+            createUserSt.setLong(1, newUser.getuID());
+            createUserSt.setString(2, newUser.getFirstName());
+            createUserSt.setString(3, newUser.getMiddleName());
+            createUserSt.setString(4, newUser.getLastName());
+            createUserSt.setString(5, newUser.getuType());
+            createUserSt.setString(6, newUser.getEmail());
+            createUserSt.setString(7, newUser.getMobilePhone());
+            createUserSt.setString(8, newUser.getGender());
+            createUserSt.setString(9, newUser.getPassword());
+            createUserSt.setString(10, newUser.getCreationDate());
+            createUserSt.setString(11, "0");
+            createUserSt.setString(12, "");
             int rowsAffected = createUserSt.executeUpdate();
             if (rowsAffected > 0) {
-                ResultSet rs = createUserSt.getGeneratedKeys();
-                if (rs.next()) {
-                    newUser.setuID(rs.getLong(1));
-                }
-                conn.commit();  // Commit transaction
                 return true;
             }
         } catch (SQLException e) {
             System.err.println("Create user failed: " + e.getMessage());
             try {
-                conn.rollback();  // Rollback transaction on error
+                conn.rollback();
             } catch (SQLException ex) {
                 System.err.println("Rollback failed: " + ex.getMessage());
             }
@@ -73,20 +70,21 @@ public class userDAO {
             updateUserSt.setString(2, user.getMiddleName());
             updateUserSt.setString(3, user.getLastName());
             updateUserSt.setString(4, user.getuType());
-            updateUserSt.setLong(5, Long.parseLong(user.getMobilePhone()));
+            updateUserSt.setString(5, user.getMobilePhone());
             updateUserSt.setString(6, user.getGender());
             updateUserSt.setString(7, user.getPassword());
             updateUserSt.setString(8, user.getCreationDate());
+            updateUserSt.setString(9, "0");  // Assuming no changes to ActivationFlag and VerificationCode
+            updateUserSt.setString(10, ""); // Assuming no changes to ActivationFlag and VerificationCode
             updateUserSt.setString(11, user.getEmail());
             int rowsAffected = updateUserSt.executeUpdate();
             if (rowsAffected > 0) {
-                conn.commit();  // Commit transaction
                 return true;
             }
         } catch (SQLException e) {
             System.err.println("Update user failed: " + e.getMessage());
             try {
-                conn.rollback();  // Rollback on error
+                conn.rollback();
             } catch (SQLException ex) {
                 System.err.println("Rollback failed: " + ex.getMessage());
             }
@@ -99,13 +97,12 @@ public class userDAO {
             deleteUserSt.setString(1, email);
             int rowsAffected = deleteUserSt.executeUpdate();
             if (rowsAffected > 0) {
-                conn.commit();  // Commit the transaction
                 return true;
             }
         } catch (SQLException e) {
             System.err.println("Delete user failed: " + e.getMessage());
             try {
-                conn.rollback();  // Rollback on error
+                conn.rollback();
             } catch (SQLException ex) {
                 System.err.println("Rollback failed: " + ex.getMessage());
             }
