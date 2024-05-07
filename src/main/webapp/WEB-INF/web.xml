@@ -22,6 +22,26 @@
   </servlet>
 
   <servlet>
+    <servlet-name>RemoveProductServlet</servlet-name>
+    <servlet-class>Controller.RemoveProductServlet</servlet-class>
+  </servlet>
+
+<servlet>
+    <servlet-name>UpdateProductServlet</servlet-name>
+    <servlet-class>Controller.UpdateProductServlet</servlet-class>
+  </servlet>
+
+<servlet>
+    <servlet-name>ProductNameSearchServlet</servlet-name>
+    <servlet-class>Controller.ProductNameSearchServlet</servlet-class>
+  </servlet>
+
+<servlet>
+    <servlet-name>AddProductServlet</servlet-name>
+    <servlet-class>Controller.AddProductServlet</servlet-class>
+  </servlet>
+
+<servlet>
     <servlet-name>LoginServlet</servlet-name>
     <servlet-class>Controller.LoginServlet</servlet-class>
   </servlet>
@@ -39,6 +59,27 @@
   <servlet-mapping>
     <servlet-name>SearchAllProductServlet</servlet-name>
     <url-pattern>/SearchAllProductServlet</url-pattern>
+  </servlet-mapping>
+
+<servlet-mapping>
+    <servlet-name>RemoveProductServlet</servlet-name>
+    <url-pattern>/RemoveProductServlet</url-pattern>
+  </servlet-mapping>
+
+<servlet-mapping>
+    <servlet-name>UpdateProductServlet</servlet-name>
+    <url-pattern>/UpdateProductServlet</url-pattern>
+  </servlet-mapping>
+
+
+<servlet-mapping>
+    <servlet-name>ProductNameSearchServlet</servlet-name>
+    <url-pattern>/ProductNameSearchServlet</url-pattern>
+  </servlet-mapping>
+
+<servlet-mapping>
+    <servlet-name>AddProductServlet</servlet-name>
+    <url-pattern>/AddProductServlet</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
