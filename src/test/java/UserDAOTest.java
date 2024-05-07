@@ -37,11 +37,14 @@ public class UserDAOTest {
             }
         } catch (SQLException e) {
             System.err.println("Error during cleanup: " + e.getMessage());
+        } finally {
+            // Reset userIDCounter to its initial value
+            userIDCounter = 10000;
         }
     }
 
     private long generateUniqueUserID() {
-        return ++userIDCounter;
+        return userIDCounter++;
     }
 
     @Test
@@ -59,18 +62,20 @@ public class UserDAOTest {
         // Start transaction
         conn.setAutoCommit(false);
 
-        boolean result = userDao.createUser(newUser);
-        assertTrue(result, "User creation failed when it should have succeeded.");
-        System.out.println("User creation test passed: User was successfully created.");
+        try {
+            boolean result = userDao.createUser(newUser);
+            assertTrue(result, "User creation failed when it should have succeeded.");
+            System.out.println("User creation test passed: User was successfully created.");
 
-        user fetchedUser = userDao.getUserByEmail("testemail@example.com");
+            user fetchedUser = userDao.getUserByEmail("testemail@example.com");
         assertNotNull(fetchedUser, "Failed to fetch the user after creation.");
         assertEquals("John", fetchedUser.getFirstName(), "Mismatch in the first name of the created user.");
         System.out.println("Fetch after creation test passed: User details match.");
-
+    } finally {
         // Roll back transaction
         conn.rollback();
     }
+}
 
 
     @Test

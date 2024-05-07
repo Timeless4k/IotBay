@@ -38,7 +38,6 @@ public class userDAO {
             createUserSt.setString(12, "");
             int rowsAffected = createUserSt.executeUpdate();
             if (rowsAffected > 0) {
-                conn.commit();
                 return true;
             }
         } catch (SQLException e) {
@@ -80,7 +79,6 @@ public class userDAO {
             updateUserSt.setString(11, user.getEmail());
             int rowsAffected = updateUserSt.executeUpdate();
             if (rowsAffected > 0) {
-                conn.commit();
                 return true;
             }
         } catch (SQLException e) {
@@ -99,7 +97,6 @@ public class userDAO {
             deleteUserSt.setString(1, email);
             int rowsAffected = deleteUserSt.executeUpdate();
             if (rowsAffected > 0) {
-                conn.commit();
                 return true;
             }
         } catch (SQLException e) {
