@@ -12,12 +12,13 @@ public class paymentDAO {
     }
 
     public boolean createPayment(payment payment) throws SQLException {
-        String sql = "INSERT INTO Payments (PaymentAmount, PaymentMethod, PaymentDate, PaymentStatus) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Payments (PaymentID, PaymentAmount, PaymentMethod, PaymentDate, PaymentStatus) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDouble(1, payment.getAmount());
-            pstmt.setString(2, payment.getMethod());
-            pstmt.setString(3, payment.getDate());
-            pstmt.setString(4, payment.getStatus());
+            pstmt.setLong(1, payment.getPaymentID()); // Set ID
+            pstmt.setDouble(2, payment.getAmount());
+            pstmt.setString(3, payment.getMethod());
+            pstmt.setString(4, payment.getDate());
+            pstmt.setString(5, payment.getStatus());
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
         }

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +25,7 @@ public class PaymentDAOTest {
         System.out.println("Setup complete: Database connected and DAO initialized.");
     }
 
-    @AfterEach
+    @AfterAll
     public void tearDown() throws SQLException {
         conn.rollback(); // Rollback transaction to avoid saving test data
         conn.close();
