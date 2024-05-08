@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="model.product" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -9,6 +11,7 @@
     </head>
 
     <body>
+    <% ArrayList<product> productlist = (ArrayList<product>) session.getAttribute("productList"); %>
         <div class="top-banner">
             Free Shipping Over $49 (AUD)
         </div>
@@ -50,70 +53,27 @@
                 <input id="SearchQuery" type="search">
                 <button type="submit"> <img src="images/search.svg"> </button>
             </form>
-
         </div>
-       
+
         <div class="product-container">
-            <div>
-                <img src="images/nodeMCU.png" alt="nodeMCU">
-                <h1> Node MCU </h1>
-                <p> <span>from</span> $58.20 </p>
-                <p> 50 in stock </p>
-            </div>
-            <div>
-                <img src="images/raspberryPi.png">
-                <h1> Node MCU </h1>
-                <p> <span>from</span> $58.20 </p>
-                <p> 50 in stock </p>
-            </div>
-            <div>
-                <img src="images/thermostats.png">
-                <h1> Smart Thermostat </h1>
-                <p> <span>from</span> $58.20 </p>
-                <p> 50 in stock </p>
-            </div>
-            <div>
-                <img src="images/smartWatch.png">
-                <h1> Smart Watch </h1>
-                <p> <span>from</span> $58.20 </p>
-                <p> 50 in stock </p>
-            </div>
-            <div>
-                <img src="images/smartBulb.png">
-                <h1> SmartBulb </h1>
-                <p> <span>from</span> $58.20 </p>
-                <p> 50 in stock </p>
-            </div>
-            <div>
-                <img src="images/adxl345.jpg">
-                <h1> ADXL345 </h1>
-                <p> <span>from</span> $58.20 </p>
-                <p> 50 in stock </p>
-            </div>
-            <div>
-                <img src="images/lora-e5.jpg">
-                <h1> LoRa Module </h1>
-                <p> <span>from</span> $58.20 </p>
-                <p> 50 in stock </p>
-            </div>
-            <div>
-                <img src="images/nucleo-f446re.jpg">
-                <h1> STM32 Development Board </h1>
-                <p> <span>from</span> $58.20 </p>
-                <p> 50 in stock </p>
-            </div>
-            <div>
-                <img src="images/arduino-uno-r3.jpg">
-                <h1> Arduino Uno R3 </h1>
-                <p> <span>from</span> $58.20 </p>
-                <p> 50 in stock </p>
-            </div>
-            <div>
-                <img src="images/Lipo-3.7v-1100mAh.jpg">
-                <h1> Lithium Battery </h1>
-                <p> <span>from</span> $58.20 </p>
-                <p> 50 in stock </p>
-            </div>
+            <% 
+            if(productlist != null) {
+                for(product i: productlist) {
+                    %> 
+                        <div>
+                            <img src="images/nodeMCU.png" alt="nodeMCU">
+                            <h1> <% i.getName(); %> </h1>
+                            <p> <span>from</span> <% i.getPrice(); %> </p>
+                            <p> <% i.getStockLevel(); %> in stock </p>
+                        </div>
+                    <%
+                }
+            } else {
+                %> 
+                <h2> No Products Found </h2>
+                <%
+            }
+            %>
 
         </div>
 

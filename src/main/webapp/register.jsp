@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Register your account</title>
     <!-- Link to your CSS file -->
-    <link rel="stylesheet" type="text/css" href="register.css">
+    <link rel="stylesheet" href="register.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
