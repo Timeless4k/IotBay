@@ -24,8 +24,8 @@ public class ProductNameSearchServlet extends HttpServlet {
 		HttpSession session = request.getSession();
         conn = (Connection) session.getAttribute("acticonn");
 
-        type = (String) request.getParameter("sType");
-        query = (String) request.getParameter("sQuery");
+        type = (String) request.getParameter("SearchType");
+        query = (String) request.getParameter("SearchQuery");
 
         try{
             PDAO = new productDAO(conn);
@@ -34,6 +34,6 @@ public class ProductNameSearchServlet extends HttpServlet {
             System.out.println(ex);
         }   
 
-        // request.getRequestDispatcher("product.jsp").include(request, response); // redirect to page
+        request.getRequestDispatcher("product.jsp").include(request, response); // redirect to page
     }
 }

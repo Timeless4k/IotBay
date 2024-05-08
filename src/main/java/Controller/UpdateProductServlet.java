@@ -15,17 +15,7 @@ public class UpdateProductServlet extends HttpServlet {
     private Connection conn;
     private productDAO PDAO;
 
-    private String email;
-    private String password;
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private String birthDate;
-    private String mobilePhone;
-    private String gender;
-    private String creationDate;
-    private String uType;
-    private long uID;
+    
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -39,6 +29,17 @@ public class UpdateProductServlet extends HttpServlet {
             System.out.println(ex);
         }   
 
+        String email = request.getParameter("newEmail");
+        String password = request.getParameter("newEmail");
+        String firstName = request.getParameter("newEmail");
+        String middleName = request.getParameter("newEmail");
+        String lastName = request.getParameter("newEmail");
+        String birthDate = request.getParameter("newEmail");
+        String mobilePhone = request.getParameter("newEmail");
+        String gender = request.getParameter("newEmail");
+        String creationDate = request.getParameter("newEmail");
+        String uType = request.getParameter("newEmail");
+        long uID = Long.parseLong(request.getParameter("newEmail"));
         
     }
 }

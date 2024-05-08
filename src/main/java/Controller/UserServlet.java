@@ -31,7 +31,7 @@ public class UserServlet extends HttpServlet {
                     String creationDate = request.getParameter("creationDate"); // Format and set correctly
 
                     // Create and populate user object
-                    user newUser = new user(email, password, firstName, middleName, lastName, "", phone, gender, creationDate, userType);
+                    user newUser = new user(1111111, email, password, firstName, middleName, lastName, "", phone, gender, creationDate, userType);
                     boolean success = userDao.createUser(newUser);
                     if (success) {
                         response.sendRedirect("userCreated.jsp"); // Redirect to success page
