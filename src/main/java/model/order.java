@@ -4,13 +4,13 @@ import model.product;
 
 public class order {
     // contains array list of products
-    private int oID;
+    private long oID;
     private String oDate;
     private String oStatus;
     private String oDeliveryStatus;
     // private ArrayList<product> orderitems;
 
-    public int getID() {
+    public long getID() {
         return this.oID;
     }
 
@@ -26,7 +26,7 @@ public class order {
         return this.oDeliveryStatus;
     }
 
-    public void setID(int id) {
+    public void setID(long id) {
         this.oID = id;
     }
 

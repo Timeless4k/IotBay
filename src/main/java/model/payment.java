@@ -1,51 +1,61 @@
 package model;
 
 public class payment {
-    private int pID;
-    private int pAmount;
-    private String pMethod;
-    private String pDate;
-    private String pStatus;
+    private long paymentID;
+    private double amount;
+    private String method; // e.g., Credit Card, PayPal
+    private String date; // Consider using java.time.LocalDate
+    private String status; // e.g., Pending, Completed
 
-    public int getpID() {
-        return this.pID;
+    // Constructors
+    public payment() {}
+
+    public payment(long paymentID, double amount, String method, String date, String status) {
+        this.paymentID = paymentID;
+        this.amount = amount;
+        this.method = method;
+        this.date = date;
+        this.status = status;
     }
 
-    public int getpAmount() {
-        return this.pAmount;
+    // Getters and setters
+    public long getPaymentID() {
+        return paymentID;
     }
 
-    public String getpMethod() {
-        return this.pMethod;
+    public void setPaymentID(long paymentID) {
+        this.paymentID = paymentID;
     }
 
-    public String getpDate() {
-        return this.pDate;
+    public double getAmount() {
+        return amount;
     }
 
-    public String getpStatus() {
-        return this.pStatus;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
-    public void setpID(int id) {
-        this.pID = id;
+    public String getMethod() {
+        return method;
     }
 
-    public void setpAmount(int amount) {
-        this.pAmount = amount;
+    public void setMethod(String method) {
+        this.method = method;
     }
 
-    public void setpMethod(String method) {
-        this.pMethod = method;
+    public String getDate() {
+        return date;
     }
 
-    public void setpDate(String date) {
-        this.pDate = date;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public void setpStatus(String status) {
-        this.pStatus = status;
+    public String getStatus() {
+        return status;
     }
 
-
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

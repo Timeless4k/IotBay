@@ -16,13 +16,14 @@ public class user implements Serializable{
     private String gender;
     private String creationDate;
     private String uType;
-    // private int ID;
+    private long uID;
 
 
     //Setters
     public user() {}
 
-    public user(String emai, String pass, String fName, String mname, String lName, String bday, String mPhone, String g, String cd, String Type) {
+    public user(long uid, String emai, String pass, String fName, String mname, String lName, String bday, String mPhone, String g, String cd, String Type) {
+        this.uID = uid;
         this.email = emai;
         this.password = pass;
         this.firstName = fName;
@@ -113,5 +114,13 @@ public class user implements Serializable{
 
     public String getuType() {
         return this.uType;
+    }
+
+    public long getuID() {
+        return this.uID;
+    }
+
+    public void setuID(long id) {
+        this.uID = id;
     }
 }

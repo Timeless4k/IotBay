@@ -1,14 +1,14 @@
 package model;
 
 public class product {
-    public int pID;
+    public long pID;
     public String pName;
     public String pStatus;
     public String pReleaseDate;
-    public int pStockLevel;
+    public long pStockLevel;
     public String pDescription;
     public String pType;
-    public int pPrice;
+    public double pPrice;
     
 
     public boolean inStock() {
@@ -18,7 +18,7 @@ public class product {
         return false;
     }
 
-    public int getStockLevel() {
+    public long getStockLevel() {
         return pStockLevel;
     }
 
@@ -30,31 +30,31 @@ public class product {
         this.pStatus = stat;
     }
 
-    public void setpID(int var) {
+    public void setpID(long var) {
         this.pID = var;
     }
 
-    public int getpID() {
+    public long getpID() {
         return this.pID;
     }
 
-    public void reduceStock(int quant) {
+    public void reduceStock(long quant) {
         this.pStockLevel = this.pStockLevel-quant;
     }
 
-    public void increaseStock(int quant) {
+    public void increaseStock(long quant) {
         this.pStockLevel = this.pStockLevel+quant;
     }
 
-    public void setStock(int quant) {
+    public void setStock(long quant) {
         this.pStockLevel = quant;
     }
 
-    public void setPrice(int amount) {
+    public void setPrice(double amount) {
         this.pPrice = amount;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return this.pPrice;
     }
 

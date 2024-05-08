@@ -1,11 +1,11 @@
 package model;
 public class shipment{
-    private int sID;
+    private long sID;
     private String sAddr;
     private String sType;
     private String sTrackNumber;
 
-    public int getsID() {
+    public long getsID() {
         return this.sID;
     }
 
@@ -21,7 +21,7 @@ public class shipment{
         return this.sTrackNumber;
     }
 
-    public void setsID(int id) {
+    public void setsID(long id) {
         this.sID = id;
     }
 

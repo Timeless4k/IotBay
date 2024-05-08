@@ -31,3 +31,8 @@ span {
     font-weight: 500;
     color: rgb(31, 31, 31);
 }
+
+.prodsearchbar form {
+    margin-left: auto;
+    width: 30%;
+}

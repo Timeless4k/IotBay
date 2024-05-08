@@ -1,18 +1,18 @@
 package model;
 
 public class card {
-    private int cID;
-    private int cNumber;
+    private long cID;
+    private long cNumber;
     private String CardHolderName;
     private String CardExpiry;
     private int CCV;
-    private int UserID;
+    private long UserID;
 
-    public int getcID() {
+    public long getcID() {
         return this.cID;
     }
 
-    public int getcNumber() {
+    public long getcNumber() {
         return this.cNumber;
     }
 
@@ -28,15 +28,15 @@ public class card {
         return this.CCV;
     }
 
-    public int getUserID() {
+    public long getUserID() {
         return this.UserID;
     }
 
-    public void setcID(int id) {
+    public void setcID(long id) {
         this.cID = id;
     }
 
-    public void setcNumber(int cNumber) {
+    public void setcNumber(long cNumber) {
         this.cNumber = cNumber;
     }
 
@@ -48,7 +48,11 @@ public class card {
         this.CardExpiry = exp;
     }
 
-    public void setUserID(int uID) {
+    public void setUserID(long uID) {
         this.UserID = uID;
+    }
+
+    public void setCCV(int ccv) {
+        this.CCV = ccv;
     }
 }
