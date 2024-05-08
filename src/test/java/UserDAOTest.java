@@ -7,6 +7,7 @@ import model.DAO.userDAO;
 import model.user;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -128,5 +129,14 @@ public class UserDAOTest {
         System.out.println("Verification of deletion passed: No user found post-deletion.");
         // Roll back transaction
         conn.rollback();
+    }
+
+    @Test
+    public void testGetAllUsers() throws SQLException {
+        List<user> users = userDao.getAllUsers();
+        assertNotNull(users, "The fetched user list should not be null");
+        assertFalse(users.isEmpty(), "The fetched user list should not be empty");
+        assertEquals(5, users.size(), "The fetched user list should have one user"); //Dummy Data is 5
+        // Add more assertions as needed
     }
 }

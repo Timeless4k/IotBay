@@ -1,6 +1,9 @@
 package model.DAO;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import model.user;
 
 public class userDAO {
@@ -109,6 +112,27 @@ public class userDAO {
         }
         return false;
     }
+
+    public List<user> getAllUsers() throws SQLException {
+        List<user> userList = new ArrayList<>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM User");
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                user usr = extractUserFromResultSet(rs);
+                userList.add(usr);
+                System.out.println("User found: " + usr.getFirstName()); // Debugging line
+            }
+        } finally {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+        }
+        return userList;
+    }
+    
+
 
     private user extractUserFromResultSet(ResultSet rs) throws SQLException {
         user usr = new user();
