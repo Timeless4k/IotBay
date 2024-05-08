@@ -17,7 +17,7 @@ public class productDAO {
 	private String UpdateQuery = "UPDATE productdata SET ProductName = '?', ProductStatus = '?', ProductReleaseDate = '?', ProductStockLevel = ?, ProductDescription = '?', ProductType = '?', ProductCost = ? WHERE ProductID=?";
 	private String SearchQuery = "SELECT * FROM productdata WHERE ? LIKE '%?%'";
 
-    public productDAO(Connection connection) throws SQLException {
+    public productDAO(Connection connection) throws SQLException, NullPointerException {
 		this.conn = connection;
 		conn.setAutoCommit(true);
 		fetchProdSt = conn.prepareStatement(readQuery);
