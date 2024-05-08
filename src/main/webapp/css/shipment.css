@@ -130,3 +130,19 @@ body {
     margin-top: -73px;
     margin-right: 20px;
 }
+
+.shipment_submit_button {
+    float: right;
+    margin-top: 40px;
+    margin-right: 10px;
+
+    width: 200px;
+    height: 60px;
+
+    font-size: large;
+}
+
+.shipment_submit_button:hover {
+    color: white;
+    background-color: black;;
+}

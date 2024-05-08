@@ -132,7 +132,7 @@ Implement:
 
 
 
-                <input type="submit" class="button" value="Place Order">
+                <input type="submit" value="Next  &#10132;" class="shipment_submit_button">
 
             </div>
 
