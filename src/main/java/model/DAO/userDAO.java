@@ -3,6 +3,7 @@ package model.DAO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.ResultSet;
 
 import model.user;
 
@@ -12,6 +13,7 @@ public class userDAO {
     private PreparedStatement getUserByEmailSt;
     private PreparedStatement updateUserSt;
     private PreparedStatement deleteUserSt;
+    private PreparedStatement loginst;
 
     public userDAO(Connection connection) throws SQLException {
         this.conn = connection;
@@ -23,6 +25,7 @@ public class userDAO {
         updateUserSt = conn.prepareStatement(
             "UPDATE User SET UserFirstName = ?, UserMiddleName = ?, UserLastName = ?, UserType = ?, UserPhone = ?, UserGender = ?, PasswordHash = ?, UserCreationDate = ?, ActivationFlag = ?, VerificationCode = ? WHERE UserEmail = ?");
         deleteUserSt = conn.prepareStatement("DELETE FROM User WHERE UserEmail = ?");
+        loginst = conn.prepareStatement("SELECT * FROM User WHERE UserEmail = ? AND PasswordHash = ?");
     }
 
     public boolean createUser(user newUser) {
@@ -65,6 +68,14 @@ public class userDAO {
             System.err.println("Fetch user failed: " + e.getMessage());
         }
         return null;
+    }
+
+    public user loginUserByEmailPassHash(String email, String passwordHash) {
+        loginst.setString(1, email);
+        loginst.setString(2, passwordHash);
+        ResultSet exists = loginst.executeQuery();
+        if(exists) {
+        }
     }
 
     public boolean updateUser(user user) {

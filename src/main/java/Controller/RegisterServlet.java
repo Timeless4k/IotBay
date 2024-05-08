@@ -43,6 +43,11 @@ public class RegisterServlet extends HttpServlet {
         String mobilePhone = request.getParameter("mobilePhone");
         String gender = request.getParameter("gender");
 
+
+        if(email.length() > 200) {
+            response.sendRedirect("register.jsp?error=true");
+            return;
+        }
         // Create a User instance and set its properties
         user newUser = new user();
         newUser.setEmail(email);
