@@ -12,23 +12,24 @@ import javax.servlet.http.HttpSession;
 import model.DAO.userDAO;
 import model.user;
 
-
 public class RegisterServlet extends HttpServlet {
     private Connection conn;
     private userDAO UDAO;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Retrieve the DAO from the session or request
         HttpSession session = request.getSession();
-        
         
         try {
             conn = (Connection) session.getAttribute("acticonn");
+            if (conn == null) {
+                throw new SQLException("Database connection not established");
+            }
             UDAO = new userDAO(conn);
         } catch (SQLException ex) {
-            System.err.println(ex);
+            System.err.println("Database connection error: " + ex.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error");
+            return; // Stop further execution in case of error
         }
-
 
         // Retrieve form data
         String email = request.getParameter("email");
@@ -43,7 +44,7 @@ public class RegisterServlet extends HttpServlet {
         // Create a User instance and set its properties
         user newUser = new user();
         newUser.setEmail(email);
-        newUser.setPassword(password);  // Here you should hash the password before setting it
+        newUser.setPassword(password);  // Consider hashing the password before setting
         newUser.setFirstName(firstName);
         newUser.setMiddleName(middleName);
         newUser.setLastName(lastName);
@@ -54,12 +55,17 @@ public class RegisterServlet extends HttpServlet {
         newUser.setCreationDate(birthDate);  // Consider using the current date/time instead
 
         // Attempt to create user
-        boolean createUserSuccess = UDAO.createUser(newUser);
-        if (createUserSuccess) {
-            session.setAttribute("user", newUser);
-            response.sendRedirect("welcome.jsp");
-        } else {
-            response.sendRedirect("register.jsp?error=true");
+        try {
+            boolean createUserSuccess = UDAO.createUser(newUser);
+            if (createUserSuccess) {
+                session.setAttribute("user", newUser);
+                response.sendRedirect("welcome.jsp");
+            } else {
+                response.sendRedirect("register.jsp?error=true");
+            }
+        } catch (Exception e) {
+            System.err.println("User creation failed: " + e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error creating user");
         }
     }
 }
