@@ -17,11 +17,51 @@ body {
     padding: 3%;
 }
 
-.shipment_input_field {
+.shipment_input {
     /* padding-top: 20px; */
-    padding-bottom: 40px;
+    padding-bottom: 30px;
+}
+
+.vertical_spacing {
+    height: 10px; 
 }
 
 .shipment_input_header {
     font-size: 17px;
+    font-weight: bold;
+    line-height: 2.5;
 }
+
+.shipment_input_field {
+    height: 30px;
+    width: 45%;
+}
+
+/* Create two equal columns that floats next to each other */
+.column:first-child {
+    margin-right: 30px; /* Add space between the first and second columns */
+    background-color: #cacbcc;
+    padding: 20px;
+    padding-left: 30px;
+
+    height: 60vh;
+}
+
+.column {
+    float: left;
+    width: calc(50% - 20px); /* Adjust the width to evenly divide the space between columns */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    background-color: #cacbcc;
+    padding: 20px;
+    padding-left: 30px;
+
+    height: 60vh;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+

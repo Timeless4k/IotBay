@@ -39,32 +39,66 @@ Implement:
 
         <form action="ShipmentServlet" method="post">
 
-            <div class="shipment_input_field">
-                <label for="shipmentAddress" class="shipment_input_header">Shipment Address:</label>
-                <br>
-                <input type="text" id="shipmentAddress" name="shipmentAddress" required>
-            </div>
-         
-            <div class="shipment_input_field">
-                <label for="shipmentMethod" class="shipment_input_header">Shipment Method:</label>
-                <br>
-                <input type="text" id="shipmentMethod" name="shipmentMethod" required>
-            </div>
+            <div class="row">
 
-            <div class="shipment_input_field">
-                <label for="shipmenttDate" class="shipment_input_header">Shipment Date:</label>
-                <br>
-                <input type="date" id="shipmenttDate" name="shipmenttDate" required>
-            </div>
+                <div class="column">
 
-            <input type="submit" class="button" value="Place Order">
+                    <div class="vertical_spacing"></div>
+
+                    <div class="shipment_input">
+                        <label class="shipment_input_header">Shipment Address:</label>
+                        <br>
+                        <input type="text" id="shipmentAddress" name="shipmentAddress" required class="shipment_input_field">
+                    </div>
+
+                    <div class="shipment_input">
+                        <label class="shipment_input_header">Contact Information:</label>
+                        <br>
+                        <div class="contact_info">
+                            <p>Email</p>
+                            <input type="text" id="shipmentContactInfo_Email" name="shipmentContactInfo_Email" required class="shipment_input_field">
+                            <div class="vertical_spacing"></div>
+                            <p>Phone Number</p>
+                            <input type="text" id="shipmentContactInfo_PhoneNumber" name="shipmentContactInfo_PhoneNumber" required class="shipment_input_field">
+                        </div>
+                    </div>     
+
+                    <div class="shipment_input">
+                        <label class="shipment_input_header">Preferred Arrival Date:</label>
+                        <br>
+                        <input type="date" id="shipmenttDate" name="shipmenttDate" required class="shipment_input_field">
+                    </div>
+                
+                </div>
+
+
+
+
+                <!-- Contiue here... -->
+                <div class="column">
+
+                    <div class="vertical_spacing"></div>
+                    
+                    <div class="shipment_input">
+                        <label for="shipmentMethod" class="shipment_input_header">Shipment Method:</label>
+                        <br>
+                        <input type="text" id="shipmentMethod" name="shipmentMethod" required class="shipment_input_field">
+                    </div>
+
+                </div>
+
+
+
+                <input type="submit" class="button" value="Place Order">
+
+            </div>
 
         </form>
 
     </div>
 
-    <footer>
+    <!-- <footer>
         <p>&copy; 2024 IoTBay. All rights reserved.</p>
-    </footer>
+    </footer> -->
 </body>
 </html>
