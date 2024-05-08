@@ -22,7 +22,7 @@ public class user implements Serializable{
     //Setters
     public user() {}
 
-    public user(String emai, String pass, String fName, String mname, String lName, String bday, String mPhone, String g, String cd, String Type) {
+    public user(Long uid, String emai, String pass, String fName, String mname, String lName, String bday, String mPhone, String g, String cd, String Type) {
         this.email = emai;
         this.password = pass;
         this.firstName = fName;
@@ -33,6 +33,7 @@ public class user implements Serializable{
         this.gender = g;
         this.creationDate = cd;
         this.uType = Type;
+        this.uID = uid;
     }
 
     
