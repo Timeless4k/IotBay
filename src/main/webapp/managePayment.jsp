@@ -23,8 +23,8 @@
             <label>Payment Method:</label>
             <select name="method">
                 <option value="Credit Card">Credit Card</option>
-                <option value="PayPal">PayPal</option>
-                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Debit Card">Debit Card</option>
+                <option value="Payment on Delivery">Payment on Delivery</option>
             </select>
         </div>
         <div>
@@ -34,8 +34,9 @@
         <div>
             <label>Status:</label>
             <select name="status">
+                <option value="Approved">Approved</option>
+                <option value="Failed">Failed</option>
                 <option value="Pending">Pending</option>
-                <option value="Completed">Completed</option>
             </select>
         </div>
         <button type="submit">Submit</button>

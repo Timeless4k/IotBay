@@ -13,7 +13,13 @@ public class PaymentServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        Connection conn = (Connection) getServletContext().getAttribute("DBConnection");
+        Connection conn = (Connection) getServletContext().getAttribute("acticonn"); // Ensure this attribute is set correctly in the context.
+
+        if (conn == null) {
+            response.getWriter().write("Database connection not available. Please check the connection settings.");
+            return; // Early exit if no connection is available
+        }
+
         paymentDAO paymentDao = new paymentDAO(conn);
 
         try {
