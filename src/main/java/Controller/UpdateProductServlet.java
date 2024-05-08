@@ -33,12 +33,12 @@ public class UpdateProductServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
         conn = (Connection) session.getAttribute("acticonn");
-
-
         try{
             PDAO = new productDAO(conn);
         } catch (SQLException ex) {
             System.out.println(ex);
         }   
+
+        
     }
 }
