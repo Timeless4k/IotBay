@@ -17,22 +17,42 @@ public class PaymentServlet extends HttpServlet {
         paymentDAO paymentDao = new paymentDAO(conn);
 
         try {
+            payment payment;
+            long paymentID;
             switch (action) {
                 case "create":
-                    // Gather info from request and create a payment
+                    payment = new payment(Long.parseLong(request.getParameter("paymentID")),
+                                          Double.parseDouble(request.getParameter("amount")),
+                                          request.getParameter("method"),
+                                          request.getParameter("date"),
+                                          request.getParameter("status"));
+                    paymentDao.createPayment(payment);
+                    response.sendRedirect("paymentSuccess.jsp");
                     break;
                 case "read":
-                    // Display specific payment details
+                    paymentID = Long.parseLong(request.getParameter("paymentID"));
+                    payment = paymentDao.readPayment(paymentID);
+                    request.setAttribute("payment", payment);
+                    request.getRequestDispatcher("paymentDetails.jsp").forward(request, response);
                     break;
                 case "update":
-                    // Update payment details
+                    payment = new payment(Long.parseLong(request.getParameter("paymentID")),
+                                          Double.parseDouble(request.getParameter("amount")),
+                                          request.getParameter("method"),
+                                          request.getParameter("date"),
+                                          request.getParameter("status"));
+                    paymentDao.updatePayment(payment);
+                    response.sendRedirect("updateSuccess.jsp");
                     break;
                 case "delete":
-                    // Delete a payment record
+                    paymentID = Long.parseLong(request.getParameter("paymentID"));
+                    paymentDao.deletePayment(paymentID);
+                    response.sendRedirect("deleteSuccess.jsp");
                     break;
             }
         } catch (Exception e) {
             e.printStackTrace();
+            response.sendRedirect("error.jsp");
         }
     }
 }
