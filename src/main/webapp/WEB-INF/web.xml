@@ -58,7 +58,7 @@
 
   <servlet-mapping>
     <servlet-name>ConnServlet</servlet-name>
-    <url-pattern>/ConnServlet/</url-pattern>
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>

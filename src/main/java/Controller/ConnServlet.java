@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.DAO.DBConnector;
-
+import model.DAO.userDAO;
 public class ConnServlet extends HttpServlet {
     public DBConnector connector;
     public Connection conn;
 
+
+    
     @Override
     public void init() {
         try {

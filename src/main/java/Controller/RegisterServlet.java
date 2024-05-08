@@ -17,7 +17,9 @@ public class RegisterServlet extends HttpServlet {
     private userDAO UDAO;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("running register servlet");
         HttpSession session = request.getSession();
+        conn = (Connection) session.getAttribute("acticonn");
         
         try {
             conn = (Connection) session.getAttribute("acticonn");
@@ -57,6 +59,7 @@ public class RegisterServlet extends HttpServlet {
         // Attempt to create user
         try {
             boolean createUserSuccess = UDAO.createUser(newUser);
+            conn.commit();
             if (createUserSuccess) {
                 session.setAttribute("user", newUser);
                 response.sendRedirect("welcome.jsp");
@@ -67,5 +70,7 @@ public class RegisterServlet extends HttpServlet {
             System.err.println("User creation failed: " + e.getMessage());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error creating user");
         }
+
+        }
+
     }
-}
