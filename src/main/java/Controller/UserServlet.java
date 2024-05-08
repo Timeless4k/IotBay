@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import model.user;
 import model.DAO.userDAO;
 
-@WebServlet("/UserServlet")
 public class UserServlet extends HttpServlet {
 
     private Connection conn;
