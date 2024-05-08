@@ -24,8 +24,8 @@ public class ProductNameSearchServlet extends HttpServlet {
 		HttpSession session = request.getSession();
         conn = (Connection) session.getAttribute("acticonn");
 
-        type = (String) request.getParameter("SearchType");
-        query = (String) request.getParameter("SearchQuery");
+        type = (String) request.getParameter("sType");
+        query = (String) request.getParameter("sQuery");
 
         try{
             PDAO = new productDAO(conn);
