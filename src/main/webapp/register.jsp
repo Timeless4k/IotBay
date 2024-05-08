@@ -24,7 +24,7 @@
             <h1>Register Your Account</h1>
         </div>
         
-        <form action="register" method="post">
+        <form action="RegisterServlet" method="post">
             <div>
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
