@@ -24,7 +24,8 @@
             <h1>Login to Your Account</h1>
         </div>
         
-        <form action="login" method="post">
+        <!-- Modified form action to point to the LoginServlet -->
+        <form action="LoginServlet" method="post">
             <div>
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
