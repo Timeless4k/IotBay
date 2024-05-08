@@ -15,6 +15,7 @@ import model.DAO.userDAO;
 public class UserServlet extends HttpServlet {
 
     private Connection conn;
+    private userDAO userDAO;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,8 +30,11 @@ public class UserServlet extends HttpServlet {
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-        HttpSession session = request.getSession(false); // Change here to check if session already exists
-        Connection conn = (session != null) ? (Connection) session.getAttribute("acticonn") : null;
+        if (action == null){
+            action = "displayAll";
+        }
+        HttpSession session = request.getSession(); // Change here to check if session already exists
+        conn = (Connection) session.getAttribute("acticonn");
 
         if (conn == null) {
             response.getWriter().write("Database connection not available. Please check the connection settings.");
@@ -38,19 +42,19 @@ public class UserServlet extends HttpServlet {
         }
 
         try {
-            userDAO userDao = new userDAO(conn);
+            userDAO = new userDAO(conn);
             switch (action) {
                 case "displayAll":
-                    displayAllUsers(request, response, userDao);
+                    displayAllUsers(request, response, userDAO);
                     break;
                 case "create":
-                    createUser(request, response, userDao);
+                    createUser(request, response, userDAO);
                     break;
                 case "update":
-                    updateUser(request, response, userDao);
+                    updateUser(request, response, userDAO);
                     break;
                 case "delete":
-                    deleteUser(request, response, userDao);
+                    deleteUser(request, response, userDAO);
                     break;
                 default:
                     response.getWriter().print("No valid action provided.");
