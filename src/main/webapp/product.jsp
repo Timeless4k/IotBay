@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="model.product" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -9,6 +11,7 @@
     </head>
 
     <body>
+        <% ArrayList<product> productlist = (ArrayList<product>) session.getAttribute("productList"); %>
         <div class="top-banner">
             Free Shipping Over $49 (AUD)
         </div>
@@ -52,7 +55,30 @@
             </form>
 
         </div>
-       
+
+
+        <div class="product-container">
+            <% 
+            if(productlist != null) {
+                for(product i: productlist) {
+                    %> 
+                        <div>
+                            <img src="images/nodeMCU.png" alt="nodeMCU">
+                            <h1> <% i.getName(); %> </h1>
+                            <p> <span>from</span> <% i.getPrice(); %> </p>
+                            <p> <% i.getStockLevel(); %> in stock </p>
+                        </div>
+                    <%
+                }
+            } else {
+                %> 
+                <h2> No Products Found </h2>
+                <%
+            }
+            %>
+
+        </div>
+<!--        
         <div class="product-container">
             <div>
                 <img src="images/nodeMCU.png" alt="nodeMCU">
