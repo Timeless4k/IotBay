@@ -2,8 +2,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 
-import javax.validation.constraints.AssertFalse;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -87,7 +85,12 @@ public class producttest {
     }
 
     @Test
-    public void updateTest() throws SQLException, ClassNotFoundException{
-
+    public void searchTest() throws SQLException, ClassNotFoundException{
+        intPDAO();
+        ArrayList<product> test = PDDAO.searchProdBy("ProductName", "Smart");
+        for(product i: test) {
+            System.out.println(i.getName());
+        }
+        assertTrue(test.size()>0);
     }
 }

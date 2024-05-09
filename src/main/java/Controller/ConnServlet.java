@@ -36,7 +36,6 @@ public class ConnServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
 		session.setAttribute("acticonn", conn);
-		request.getRequestDispatcher("index.jsp").include(request, response);
         System.out.println("Pass connection to session");
     }
 

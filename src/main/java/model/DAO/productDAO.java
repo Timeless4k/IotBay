@@ -10,12 +10,14 @@ public class productDAO {
 	private PreparedStatement addProductSt;
 	private PreparedStatement removeProductSt;
 	private PreparedStatement updateProductSt;
-	private PreparedStatement searchProductSt;
+	private PreparedStatement searchProductNameSt;
+	private PreparedStatement searchProductTypeSt;
 	private String readQuery = "SELECT * FROM productdata";
 	private String CreateQuery = "INSERT INTO productdata VALUES (?,?,?,?,?,?,?,?)";
 	private String DeleteQuery = "DELETE FROM productdata WHERE ProductID=?";
 	private String UpdateQuery = "UPDATE productdata SET ProductName = '?', ProductStatus = '?', ProductReleaseDate = '?', ProductStockLevel = ?, ProductDescription = '?', ProductType = '?', ProductCost = ? WHERE ProductID=?";
-	private String SearchQuery = "SELECT * FROM productdata WHERE ? LIKE '%?%'";
+	private String SearchQueryName = "SELECT * FROM productdata WHERE ProductName LIKE ? ";
+	private String SearchQueryType = "SELECT * FROM productdata WHERE ProductType LIKE ? ";
 
     public productDAO(Connection connection) throws SQLException {
 		this.conn = connection;
@@ -24,7 +26,8 @@ public class productDAO {
 		addProductSt = conn.prepareStatement(CreateQuery);
 		removeProductSt = conn.prepareStatement(DeleteQuery);
 		updateProductSt = conn.prepareStatement(UpdateQuery);
-		searchProductSt = conn.prepareStatement(SearchQuery);
+		searchProductNameSt = conn.prepareStatement(SearchQueryName);
+		searchProductTypeSt = conn.prepareStatement(SearchQueryType);
 	}
 
 	
@@ -127,9 +130,16 @@ public class productDAO {
 	 * @throws SQLException
 	 */
 	public ArrayList<product> searchProdBy(String type, String query) throws SQLException{
-		searchProductSt.setString(1, type);
-		searchProductSt.setString(2, query);
-		ResultSet rs = searchProductSt.executeQuery();
+		ResultSet rs;
+		if(type.equals("ProductName")) {
+			searchProductNameSt.setString(1, "%" + query + "%");
+			rs = searchProductNameSt.executeQuery();
+		} else {
+			searchProductTypeSt.setString(1, "%" + query + "%");
+			rs = searchProductTypeSt.executeQuery();
+		}
+		
+		
 
 		ArrayList<product> products = new ArrayList<product>(); // ArrayList to hold products
 		while (rs.next()) { // go to next item in rs table then run

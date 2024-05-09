@@ -45,12 +45,12 @@
         </header>
 
         <div class="prodsearchbar">
-            <form method="get" action="SearchAllProductServlet">
+            <form method="get" action="ProductNameSearchServlet">
                 <select name="SearchType" id="SearchType">
                     <option value="ProductName">Name</option>
                     <option value="ProductType">Type</option>
                 </select>
-                <input id="SearchQuery" type="search">
+                <input name="SearchQuery" id="SearchQuery" type="search">
                 <button type="submit"> <img src="images/search.svg"> </button>
             </form>
         </div>
@@ -58,13 +58,13 @@
         <div class="product-container">
             <% 
             if(productlist != null) {
-                for(product i: productlist) {
+                for(product i : productlist) {
                     %> 
                         <div>
-                            <img src="images/nodeMCU.png" alt="nodeMCU">
-                            <h1> <% i.getName(); %> </h1>
-                            <p> <span>from</span> <% i.getPrice(); %> </p>
-                            <p> <% i.getStockLevel(); %> in stock </p>
+                            <img src="images/<%=i.getpID() %>.png" alt="<%=i.getName() %>">
+                            <h1> <%= i.getName() %> </h1>
+                            <p> <span>from</span> <%= i.getPrice() %> </p>
+                            <p> <%= i.getStockLevel() %> in stock </p>
                         </div>
                     <%
                 }

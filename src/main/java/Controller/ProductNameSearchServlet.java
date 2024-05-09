@@ -3,6 +3,7 @@ package Controller;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.DAO.productDAO;
+import model.product;
 
 public class ProductNameSearchServlet extends HttpServlet {
     private Connection conn;
@@ -29,7 +31,12 @@ public class ProductNameSearchServlet extends HttpServlet {
 
         try{
             PDAO = new productDAO(conn);
-            session.setAttribute("productList", PDAO.searchProdBy(type, query));
+            ArrayList<product> test = PDAO.searchProdBy(type, query);
+            session.setAttribute("productList", test);
+            System.out.println("SEARCHES ARE HAPPENING");
+            System.out.println(test.size());
+            System.out.println(type);
+            System.out.println(query);
         } catch (SQLException ex) {
             System.out.println(ex);
         }   
