@@ -1,11 +1,15 @@
 package model.DAO;
 
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Random;
 import model.user;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 
 
 public class userDAO {
@@ -17,6 +21,8 @@ public class userDAO {
     private PreparedStatement loginLogSt;
     private PreparedStatement logoutLogSt;
     private PreparedStatement checkUserIDExistsSt;
+
+
 
 
     public userDAO(Connection connection) throws SQLException {
@@ -35,10 +41,14 @@ public class userDAO {
     }
 
 
+
+
     // Method to generate a unique UserID
     public long generateUniqueUserID() throws SQLException {
         Random rand = new Random();
         long userID = Math.abs(rand.nextLong());
+
+
 
 
         while (userIDExists(userID)) {
@@ -46,6 +56,8 @@ public class userDAO {
         }
         return userID;
     }
+
+
 
 
     // Check if a UserID already exists in the database
@@ -59,9 +71,14 @@ public class userDAO {
     }
 
 
+
+
     public boolean createUser(user newUser) {
         try {
             long uniqueUserID = generateUniqueUserID(); // Generate a unique UserID
+            ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Australia/Sydney"));
+            String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+   
             createUserSt.setLong(1, uniqueUserID);
             createUserSt.setString(2, newUser.getFirstName());
             createUserSt.setString(3, newUser.getMiddleName());
@@ -71,7 +88,9 @@ public class userDAO {
             createUserSt.setString(7, newUser.getMobilePhone());
             createUserSt.setString(8, newUser.getGender());
             createUserSt.setString(9, newUser.getPassword());
-            createUserSt.setString(10, newUser.getCreationDate());
+            createUserSt.setString(9, newUser.getPassword());  // Assume you have a method to hash passwords
+            createUserSt.setString(10, newUser.getBirthDate());  // Store the DOB
+            createUserSt.setString(10, formattedDate); // Setting the formatted Sydney date and time
             createUserSt.setString(11, "0"); // Assuming activation flag
             createUserSt.setString(12, "");  // Assuming verification code
             int rowsAffected = createUserSt.executeUpdate();
@@ -90,6 +109,8 @@ public class userDAO {
     }
 
 
+
+
     public user getUserByEmail(String email) {
         try {
             getUserByEmailSt.setString(1, email);
@@ -102,6 +123,8 @@ public class userDAO {
         }
         return null;
     }
+
+
 
 
     public boolean updateUser(user user) {
@@ -133,6 +156,8 @@ public class userDAO {
     }
 
 
+
+
     public boolean deleteUser(String email) {
         try {
             deleteUserSt.setString(1, email);
@@ -150,6 +175,8 @@ public class userDAO {
         }
         return false;
     }
+
+
 
 
     public List<user> getAllUsers() throws SQLException {
@@ -175,6 +202,10 @@ public class userDAO {
 
 
 
+
+
+
+
     private user extractUserFromResultSet(ResultSet rs) throws SQLException {
         user usr = new user();
         usr.setuID(rs.getLong("UserID"));
@@ -190,6 +221,14 @@ public class userDAO {
         return usr;
     }
 }
+
+
+
+
+
+
+
+
 
 
 

@@ -1,5 +1,7 @@
 
+
 /* CSS for account.jsp */
+
 
 body {
     font-family: FreeMono, monospace;
@@ -9,6 +11,7 @@ body {
     padding-right: 40px;
     padding-bottom: 50px;
 }
+
 
 .back-button {
     top: 10px;
@@ -22,15 +25,18 @@ body {
     margin-bottom: 30px;
 }
 
+
 .row {
     display: flex;
 }
+
 
 .column-left {
     float: left;
     width: 25%;
     padding: 10px;
 }
+
 
 .column-right {
     float: left;
@@ -41,9 +47,11 @@ body {
     padding-left: 60px;
     /* height: 300px; */
 
+
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
 }
+
 
 .sidebar a {
     text-decoration: none; /* Remove underline */
@@ -51,28 +59,33 @@ body {
     display: block; /* Make each link a block element */
     padding: 20px; /* Adjust padding to include top and bottom */
     padding-left: 10px;
-    
+   
     height: 30px;
 }
 
+
 .sidebar hr {
-    margin: 0; 
-    border: none; 
-    border-top: 1px solid #ccc; 
+    margin: 0;
+    border: none;
+    border-top: 1px solid #ccc;
     color: black;
     /* padding: 10px 0;  */
+
 
     width: 85%;
 }
 
+
 .sidebar a:hover {
     background-color: rgb(255, 237, 215);
     /* width: 75.5%; */
-} 
+}
+
 
 .profile-icon {
     margin-left: 7px;
 }
+
 
 .profile-option {
     padding-right: 57%;
@@ -80,16 +93,19 @@ body {
     margin-top: 5px;
 }
 
+
 .order-option {
     padding-right: 60%;
     float: right;
     margin-top: 9px;
 }
 
+
 .payment-icon {
     margin-left: -10px;
     margin-top: -10px;
 }
+
 
 .payment-option {
     padding-right: 53%;
@@ -97,9 +113,11 @@ body {
     margin-top: 10px;
 }
 
+
 .settings-icon {
     margin-left: 4px;
 }
+
 
 .settings-option {
     padding-right: 53%;
@@ -107,15 +125,126 @@ body {
     margin-top: 7px;
 }
 
+
 .logout-icon {
     margin-left: -6px;
 }
+
 
 .logout-option {
     padding-right: 60%;
     float: right;
     margin-top: 10px;
 }
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+
+.container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 20px auto;
+    width: 95%;
+    max-width: 1200px;
+}
+
+
+h1 {
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+
+input[type="text"], input[type="email"], input[type="password"], select {
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+button:hover {
+    background-color: #45a049;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+
+th {
+    background-color: #f2f2f2;
+}
+
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    padding: 5px;
+}
+
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

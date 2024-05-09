@@ -17,13 +17,24 @@
         <h2>Add New User</h2>
         <form action="UserServlet" method="post">
             <input type="hidden" name="action" value="create">
-            First Name: <input type="text" name="firstName"><br>
+            First Name: <input type="text" name="firstName" required><br>
             Middle Name: <input type="text" name="middleName"><br>
-            Last Name: <input type="text" name="lastName"><br>
-            Email: <input type="email" name="email"><br>
-            Phone: <input type="text" name="phone"><br>
-            Gender: <input type="text" name="gender"><br>
-            User Type: <input type="text" name="userType"><br>
+            Last Name: <input type="text" name="lastName" required><br>
+            Email: <input type="email" name="email" required><br>
+            Password: <input type="password" name="password" required><br>
+            Phone: <input type="text" name="phone" required><br>
+            Gender:
+            <select name="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select><br>
+            User Type:
+            <select name="userType" required>
+                <option value="Employee">Employee</option>
+                <option value="Customer">Customer</option>
+                <option value="Admin">Admin</option>
+            </select><br>
             <button type="submit">Add User</button>
         </form>
 
@@ -58,8 +69,9 @@
                         <td><c:out value="${user.creationDate}"/></td>
                         <td>
                             <a href="UserServlet?action=delete&email=${user.email}">Delete</a>
+                            <a href="UserServlet?action=update&email=${user.email}">update</a> <!-- Add link for edit -->
                         </td>
-                    </tr>
+                    </tr>      
                 </c:forEach>
             </tbody>
         </table>
