@@ -57,8 +57,10 @@
                             <p><b>Birth Date:</b><br><input type="date" name="birthDate" value="${user.birthDate}"></p>
                             <p><b>Mobile Phone:</b><br><input type="text" name="mobilePhone" value="${user.mobilePhone}"></p>
                             <button type="submit">Save Changes</button>
-                            
                         </div>
+                    </form>
+                    <form action="DeleteProfileServlet" method="POST" style="display: inline;">
+                        <button type="submit">Delete Account</button>
                     </form>
                 </div>
             </div>

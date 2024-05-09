@@ -12,6 +12,8 @@ public class userDAO {
     private PreparedStatement getUserByEmailSt;
     private PreparedStatement updateUserSt;
     private PreparedStatement deleteUserSt;
+    private PreparedStatement loginLogSt;
+    private PreparedStatement logoutLogSt;
 
     public userDAO(Connection connection) throws SQLException {
         this.conn = connection;
@@ -23,6 +25,7 @@ public class userDAO {
         updateUserSt = conn.prepareStatement(
             "UPDATE User SET UserFirstName = ?, UserMiddleName = ?, UserLastName = ?, UserType = ?, UserPhone = ?, UserGender = ?, PasswordHash = ?, UserCreationDate = ?, ActivationFlag = ?, VerificationCode = ? WHERE UserEmail = ?");
         deleteUserSt = conn.prepareStatement("DELETE FROM User WHERE UserEmail = ?");
+       
     }
 
     public boolean createUser(user newUser) {
