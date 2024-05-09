@@ -46,10 +46,6 @@
                 <input type="text" id="lastName" name="lastName" optional>
             </div>
             <div>
-                <label for="birthDate">Birth date:</label>
-                <input type="date" id="birthDate" name="birthDate" required>
-            </div>
-            <div>
                 <label for="mobilePhone">Mobile phone:</label>
                 <input type="tel" id="mobilePhone" name="mobilePhone" optional>
             </div>
