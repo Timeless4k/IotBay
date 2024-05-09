@@ -54,7 +54,6 @@
                             <p><b>Last Name:</b><br><input type="text" name="lastName" value="${user.lastName}"></p>
                             <p><b>Email:</b><br><input type="email" name="email" value="${user.email}" readonly></p>
                             <p><b>Password:</b><br><input type="password" name="password" value="${user.password}"></p>
-                            <p><b>Birth Date:</b><br><input type="date" name="birthDate" value="${user.birthDate}"></p>
                             <p><b>Mobile Phone:</b><br><input type="text" name="mobilePhone" value="${user.mobilePhone}"></p>
                             <button type="submit">Save Changes</button>
                         </div>
