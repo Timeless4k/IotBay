@@ -9,7 +9,7 @@ CREATE TABLE User(
     UserLastName varchar(50),
     UserType ENUM('Admin', 'Customer', 'Employee', 'Guest'), -- could use a enum value
     UserEmail varchar(255),
-    UserPhone BIGINT,
+    UserPhone varchar(255),
     UserGender varchar(11), -- could use a enum type to restrict inputs
     PasswordHash varchar(64),
     UserCreationDate datetime,
@@ -272,3 +272,11 @@ insert into CardInformation values (
     887,
     2222222222
 );
+
+ALTER TABLE `iotbay`.`cardinformation` 
+DROP FOREIGN KEY `cardinformation_ibfk_1`;
+ALTER TABLE `iotbay`.`cardinformation` 
+ADD CONSTRAINT `cardinformation_ibfk_1`
+  FOREIGN KEY (`UserID`)
+  REFERENCES `iotbay`.`user` (`UserID`)
+  ON DELETE CASCADE;
