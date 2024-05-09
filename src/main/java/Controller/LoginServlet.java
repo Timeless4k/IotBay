@@ -47,11 +47,11 @@ public class LoginServlet extends HttpServlet {
             }
         } finally {
             // Add any necessary cleanup or error handling code here
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println("Error closing database connection: " + e.getMessage());
-            }
+            // try {
+            //     conn.close();
+            // } catch (SQLException e) {
+            //     System.err.println("Error closing database connection: " + e.getMessage());
+            // }
         }
     }
 }
