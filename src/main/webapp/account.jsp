@@ -46,54 +46,19 @@
 
             <div class="column-right">
                 <div class="main-content">
-                    <!-- <div class="profile-details-container"> -->
+                    <form action="UpdateProfileServlet" method="POST">
                         <div id="profile">
                             <u><h1>Profile</h1></u>
-                            <br>
-                            <p><b>First Name:</b><br>${user.firstName}</p>
-                            <p><b>Middle Name:</b><br>${user.middleName}</p>
-                            <p><b>Last Name:</b><br>${user.lastName}</p>
-                            <p><b>Email:</b><br>${user.email}</p>
-                            <p><b>Password:</b><br>
-                                <span id="passwordField">${user.password.replaceAll(".", "*")}</span>
-                                <button onclick="togglePassword()">Show Password</button>
-                            </p>                                                                 
-                            <p><b>Birth Date:</b><br>${user.birthDate}</p>
-                            <p><b>Mobile Phone:</b><br>${user.mobilePhone}</p>
-
-                            <!-- Profile content goes here -->
+                            <p><b>First Name:</b><br><input type="text" name="firstName" value="${user.firstName}"></p>
+                            <p><b>Middle Name:</b><br><input type="text" name="middleName" value="${user.middleName}"></p>
+                            <p><b>Last Name:</b><br><input type="text" name="lastName" value="${user.lastName}"></p>
+                            <p><b>Email:</b><br><input type="email" name="email" value="${user.email}" readonly></p>
+                            <p><b>Password:</b><br><input type="password" name="password" value="${user.password}"></p>
+                            <p><b>Birth Date:</b><br><input type="date" name="birthDate" value="${user.birthDate}"></p>
+                            <p><b>Mobile Phone:</b><br><input type="text" name="mobilePhone" value="${user.mobilePhone}"></p>
+                            <button type="submit">Save Changes</button>
                         </div>
-                        
-                        <div>
-                            <img src="images/profile-image.png" alt="Profile Icon" width="230" height="230" style="float: right; margin-top: -400px; margin-right: 150px;">
-                            <button type="button" style="float: right; margin-top: -160px; margin-right: 195px;">Select Profile Photo</button>
-                        </div>
-                    <!-- </div> -->
-
-                    <div id="orders" style="display: none;">
-                        <u><h1>Orders</h1></u>
-                        <br><p>Orders content goes here...</p>
-
-                        <!-- Orders content goes here -->
-                    </div>
-                    <div id="payments" style="display: none;">
-                        <u><h1>Payments</h1></u>
-                        <br><p>Payments content goes here...</p>
-
-                        <!-- Payments content goes here -->
-                    </div>
-                    <div id="settings" style="display: none;">
-                        <u><h1>Settings</h1></u>
-                        <br><p>Settings content goes here...</p>
-
-                        <!-- Settings content goes here -->
-                    </div>
-                    <div id="logout" style="display: none;">
-                        <u><h1>Logout</h1></u>
-                        <br><p>Logout content goes here...</p>
-                        
-                        <!-- Logout content goes here -->
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -115,13 +80,12 @@
         function togglePassword() {
             var passwordField = document.getElementById("passwordField");
             var button = event.target;
-
-            if (passwordField.textContent === "${user.password}") {
-                passwordField.textContent = "*".repeat("${user.password}".length); // Replace text with dots
-                button.textContent = "Show Password";
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                button.textContent = 'Hide Password';
             } else {
-                passwordField.textContent = "${user.password}"; // Show the actual password
-                button.textContent = "Hide Password";
+                passwordField.type = 'password';
+                button.textContent = 'Show Password';
             }
         }
     </script>
