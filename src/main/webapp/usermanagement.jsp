@@ -7,16 +7,10 @@
     <title>User Management</title>
     <link rel="stylesheet" href="css/account.css">
 </head>
-<body>
-    <c:if test="${usersEmpty}">
-        <jsp:include page="/UserServlet" />
-    </c:if>
-   
+<body>  
     <div class="container">
         <h1>User Management</h1>
         <a href="UserServlet?action=displayAll">Refresh User List</a>
-
-
 
 
         <!-- User Creation Form -->
@@ -43,9 +37,6 @@
             </select><br>
             <button type="submit">Add User</button>
         </form>
-
-
-
 
         <h2>User List</h2>
         <table border="1">
@@ -85,19 +76,10 @@
         </table>
     </div>
 </body>
+<script>
+    // Check if the users are loaded, if not redirect to load them
+    if (!${not empty users}) {
+        window.location.href = "UserServlet?action=displayAll";
+    }
+</script>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

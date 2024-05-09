@@ -1,5 +1,6 @@
 package Controller;
 
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
@@ -12,20 +13,25 @@ import javax.servlet.http.HttpSession;
 import model.user;
 import model.DAO.userDAO;
 
+
 public class UserServlet extends HttpServlet {
+
 
     private Connection conn;
     private userDAO userDAO;
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         handleRequest(request, response);
     }
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         handleRequest(request, response);
     }
+
 
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -36,10 +42,12 @@ public class UserServlet extends HttpServlet {
         HttpSession session = request.getSession(); // Change here to check if session already exists
         conn = (Connection) session.getAttribute("acticonn");
 
+
         if (conn == null) {
             response.getWriter().write("Database connection not available. Please check the connection settings.");
             return; // Early exit if no connection is available
         }
+
 
         try {
             userDAO = new userDAO(conn);
@@ -66,6 +74,7 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+
     private void displayAllUsers(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws ServletException, IOException {
         try {
             List<user> users = userDao.getAllUsers();
@@ -76,6 +85,7 @@ public class UserServlet extends HttpServlet {
             response.getWriter().print("Error fetching users: " + e.getMessage());
         }
     }
+
 
     private void createUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         try {
@@ -102,13 +112,15 @@ public class UserServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-    
+   
+
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException {
         try {
             String email = request.getParameter("email");
             user existingUser = userDao.getUserByEmail(email);
             if (existingUser != null) {
+                // Update user object with new values from the request
                 existingUser.setFirstName(request.getParameter("firstName"));
                 existingUser.setMiddleName(request.getParameter("middleName"));
                 existingUser.setLastName(request.getParameter("lastName"));
@@ -117,20 +129,29 @@ public class UserServlet extends HttpServlet {
                 existingUser.setGender(request.getParameter("gender"));
                 existingUser.setCreationDate(request.getParameter("creationDate"));
                 existingUser.setuType(request.getParameter("userType"));
+               
+                // Call updateUser method in userDAO
                 if (userDao.updateUser(existingUser)) {
+                    // Update successful, redirect to usermanagement.jsp
                     response.sendRedirect("usermanagement.jsp");
                 } else {
+                    // Update failed
                     response.getWriter().print("Failed to update user.");
                 }
             } else {
+                // User not found
                 response.getWriter().print("User not found.");
             }
         } catch (Exception e) {
+            // Exception occurred during update
             response.getWriter().print("Error updating user: " + e.getMessage());
             e.printStackTrace();
         }
     }
-    
+   
+   
+   
+
 
     private void deleteUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException {
         try {
@@ -144,4 +165,14 @@ public class UserServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+
+
+   
 }
+
+
+
+
+
+
+

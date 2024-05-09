@@ -1,6 +1,8 @@
 package model.DAO;
 
 
+
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
 
 
+
+
 public class userDAO {
     private Connection conn;
     private PreparedStatement createUserSt;
@@ -21,6 +25,10 @@ public class userDAO {
     private PreparedStatement loginLogSt;
     private PreparedStatement logoutLogSt;
     private PreparedStatement checkUserIDExistsSt;
+
+
+
+
 
 
 
@@ -43,10 +51,18 @@ public class userDAO {
 
 
 
+
+
+
+
     // Method to generate a unique UserID
     public long generateUniqueUserID() throws SQLException {
         Random rand = new Random();
         long userID = Math.abs(rand.nextLong());
+
+
+
+
 
 
 
@@ -60,6 +76,10 @@ public class userDAO {
 
 
 
+
+
+
+
     // Check if a UserID already exists in the database
     private boolean userIDExists(long userID) throws SQLException {
         checkUserIDExistsSt.setLong(1, userID);
@@ -69,6 +89,10 @@ public class userDAO {
         }
         return false;
     }
+
+
+
+
 
 
 
@@ -111,6 +135,10 @@ public class userDAO {
 
 
 
+
+
+
+
     public user getUserByEmail(String email) {
         try {
             getUserByEmailSt.setString(1, email);
@@ -123,6 +151,10 @@ public class userDAO {
         }
         return null;
     }
+
+
+
+
 
 
 
@@ -158,11 +190,16 @@ public class userDAO {
 
 
 
+
+
+
+
     public boolean deleteUser(String email) {
         try {
             deleteUserSt.setString(1, email);
             int rowsAffected = deleteUserSt.executeUpdate();
             if (rowsAffected > 0) {
+                conn.commit(); // Commit the transaction after successful deletion
                 return true;
             }
         } catch (SQLException e) {
@@ -175,6 +212,9 @@ public class userDAO {
         }
         return false;
     }
+   
+
+
 
 
 
@@ -206,6 +246,14 @@ public class userDAO {
 
 
 
+
+
+
+
+
+
+
+
     private user extractUserFromResultSet(ResultSet rs) throws SQLException {
         user usr = new user();
         usr.setuID(rs.getLong("UserID"));
@@ -221,6 +269,22 @@ public class userDAO {
         return usr;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
