@@ -1,6 +1,8 @@
 package Controller;
 
 
+
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
@@ -14,11 +16,17 @@ import model.user;
 import model.DAO.userDAO;
 
 
+
+
 public class UserServlet extends HttpServlet {
+
+
 
 
     private Connection conn;
     private userDAO userDAO;
+
+
 
 
     @Override
@@ -27,28 +35,46 @@ public class UserServlet extends HttpServlet {
     }
 
 
+
+
+    private void searchUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws ServletException, IOException {
+        try {
+            String searchEmail = request.getParameter("searchUser");
+            user foundUser = userDao.getUserByEmail(searchEmail);
+            if (foundUser != null) {
+                // Set found user to be updated
+                request.setAttribute("updateUser", foundUser);
+                // Forward to the usermanagement.jsp to display update form
+                request.getRequestDispatcher("/usermanagement.jsp").forward(request, response);
+            } else {
+                // User not found
+                response.getWriter().print("User not found.");
+            }
+        } catch (Exception e) {
+            response.getWriter().print("Error searching user: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         handleRequest(request, response);
     }
-
-
+   
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-        if (action == null){
+        if (action == null) {
             action = "displayAll";
         }
-        HttpSession session = request.getSession(); // Change here to check if session already exists
+        HttpSession session = request.getSession();
         conn = (Connection) session.getAttribute("acticonn");
-
-
+   
         if (conn == null) {
             response.getWriter().write("Database connection not available. Please check the connection settings.");
-            return; // Early exit if no connection is available
+            return;
         }
-
-
+   
         try {
             userDAO = new userDAO(conn);
             switch (action) {
@@ -64,6 +90,9 @@ public class UserServlet extends HttpServlet {
                 case "delete":
                     deleteUser(request, response, userDAO);
                     break;
+                case "search":
+                    searchUser(request, response, userDAO); // Handle search action
+                    break;
                 default:
                     response.getWriter().print("No valid action provided.");
                     break;
@@ -73,6 +102,8 @@ public class UserServlet extends HttpServlet {
             response.getWriter().print("Error processing request: " + e.getMessage());
         }
     }
+
+
 
 
     private void displayAllUsers(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws ServletException, IOException {
@@ -85,6 +116,8 @@ public class UserServlet extends HttpServlet {
             response.getWriter().print("Error fetching users: " + e.getMessage());
         }
     }
+
+
 
 
     private void createUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
@@ -113,6 +146,8 @@ public class UserServlet extends HttpServlet {
         }
     }
    
+
+
 
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException {
@@ -153,6 +188,8 @@ public class UserServlet extends HttpServlet {
    
 
 
+
+
     private void deleteUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException {
         try {
             if (userDao.deleteUser(request.getParameter("email"))) {
@@ -167,8 +204,22 @@ public class UserServlet extends HttpServlet {
     }
 
 
+
+
    
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

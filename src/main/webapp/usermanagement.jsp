@@ -13,6 +13,8 @@
         <a href="UserServlet?action=displayAll">Refresh User List</a>
 
 
+
+
         <!-- User Creation Form -->
         <h2>Add New User</h2>
         <form action="UserServlet" method="post">
@@ -37,6 +39,7 @@
             </select><br>
             <button type="submit">Add User</button>
         </form>
+
 
         <h2>User List</h2>
         <table border="1">
@@ -83,3 +86,8 @@
     }
 </script>
 </html>
+
+
+
+
+
