@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.DAO.DBConnector;
-import model.DAO.userDAO;
 public class ConnServlet extends HttpServlet {
     public DBConnector connector;
     public Connection conn;
@@ -20,12 +19,16 @@ public class ConnServlet extends HttpServlet {
     
     @Override
     public void init() {
-        try {
-            connector = new DBConnector();
-            conn = connector.openConnection();
-        } catch (ClassNotFoundException | SQLException ex) {
-            System.out.println(ex);
+        while(conn == null) {
+            try {
+                connector = new DBConnector();
+                conn = connector.openConnection();
+                System.out.println("establish connection");
+            } catch (ClassNotFoundException | SQLException ex) {
+                System.out.println(ex);
+            }
         }
+        
     }
 
     @Override
@@ -34,6 +37,7 @@ public class ConnServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("acticonn", conn);
 		request.getRequestDispatcher("index.jsp").include(request, response);
+        System.out.println("Pass connection to session");
     }
 
     @Override
