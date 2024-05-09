@@ -3,8 +3,10 @@ package model.DAO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Random;
+import java.util.Random;
 import model.user;
+
 
 public class userDAO {
     private Connection conn;
@@ -14,10 +16,14 @@ public class userDAO {
     private PreparedStatement deleteUserSt;
     private PreparedStatement loginLogSt;
     private PreparedStatement logoutLogSt;
+    private PreparedStatement checkUserIDExistsSt;
+
 
     public userDAO(Connection connection) throws SQLException {
         this.conn = connection;
         conn.setAutoCommit(false);  // Start with transaction block
+       
+        // Prepare statements
         createUserSt = conn.prepareStatement(
             "INSERT INTO User (UserID, UserFirstName, UserMiddleName, UserLastName, UserType, UserEmail, UserPhone, UserGender, PasswordHash, UserCreationDate, ActivationFlag, VerificationCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             Statement.RETURN_GENERATED_KEYS);
@@ -25,12 +31,38 @@ public class userDAO {
         updateUserSt = conn.prepareStatement(
             "UPDATE User SET UserFirstName = ?, UserMiddleName = ?, UserLastName = ?, UserType = ?, UserPhone = ?, UserGender = ?, PasswordHash = ?, UserCreationDate = ?, ActivationFlag = ?, VerificationCode = ? WHERE UserEmail = ?");
         deleteUserSt = conn.prepareStatement("DELETE FROM User WHERE UserEmail = ?");
-       
+        checkUserIDExistsSt = conn.prepareStatement("SELECT COUNT(*) FROM User WHERE UserID = ?");
     }
+
+
+    // Method to generate a unique UserID
+    public long generateUniqueUserID() throws SQLException {
+        Random rand = new Random();
+        long userID = Math.abs(rand.nextLong());
+
+
+        while (userIDExists(userID)) {
+            userID = Math.abs(rand.nextLong());
+        }
+        return userID;
+    }
+
+
+    // Check if a UserID already exists in the database
+    private boolean userIDExists(long userID) throws SQLException {
+        checkUserIDExistsSt.setLong(1, userID);
+        ResultSet rs = checkUserIDExistsSt.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+        return false;
+    }
+
 
     public boolean createUser(user newUser) {
         try {
-            createUserSt.setLong(1, newUser.getuID());
+            long uniqueUserID = generateUniqueUserID(); // Generate a unique UserID
+            createUserSt.setLong(1, uniqueUserID);
             createUserSt.setString(2, newUser.getFirstName());
             createUserSt.setString(3, newUser.getMiddleName());
             createUserSt.setString(4, newUser.getLastName());
@@ -40,8 +72,8 @@ public class userDAO {
             createUserSt.setString(8, newUser.getGender());
             createUserSt.setString(9, newUser.getPassword());
             createUserSt.setString(10, newUser.getCreationDate());
-            createUserSt.setString(11, "0");
-            createUserSt.setString(12, "");
+            createUserSt.setString(11, "0"); // Assuming activation flag
+            createUserSt.setString(12, "");  // Assuming verification code
             int rowsAffected = createUserSt.executeUpdate();
             if (rowsAffected > 0) {
                 return true;
@@ -57,6 +89,7 @@ public class userDAO {
         return false;
     }
 
+
     public user getUserByEmail(String email) {
         try {
             getUserByEmailSt.setString(1, email);
@@ -69,6 +102,7 @@ public class userDAO {
         }
         return null;
     }
+
 
     public boolean updateUser(user user) {
         try {
@@ -98,6 +132,7 @@ public class userDAO {
         return false;
     }
 
+
     public boolean deleteUser(String email) {
         try {
             deleteUserSt.setString(1, email);
@@ -115,6 +150,7 @@ public class userDAO {
         }
         return false;
     }
+
 
     public List<user> getAllUsers() throws SQLException {
         List<user> userList = new ArrayList<>();
@@ -134,7 +170,9 @@ public class userDAO {
         }
         return userList;
     }
-    
+   
+
+
 
 
     private user extractUserFromResultSet(ResultSet rs) throws SQLException {
@@ -152,3 +190,6 @@ public class userDAO {
         return usr;
     }
 }
+
+
+

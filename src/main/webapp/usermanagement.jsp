@@ -12,6 +12,7 @@
         <h1>User Management</h1>
         <a href="UserServlet?action=displayAll">Refresh User List</a>
 
+
         <!-- User Creation Form -->
         <h2>Add New User</h2>
         <form action="UserServlet" method="post">
@@ -25,6 +26,7 @@
             User Type: <input type="text" name="userType"><br>
             <button type="submit">Add User</button>
         </form>
+
 
         <h2>User List</h2>
         <table border="1">
@@ -62,5 +64,16 @@
             </tbody>
         </table>
     </div>
+    <script>
+        // Check if the users are loaded, if not redirect to load them
+        if (!${not empty users}) {
+            window.location.href = "UserServlet?action=displayAll";
+        }
+    </script>
 </body>
 </html>
+
+
+
+
+
