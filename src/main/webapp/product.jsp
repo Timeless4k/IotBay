@@ -70,7 +70,7 @@
                 }
             } else {
                 %> 
-                <h2> No Products Found </h2>
+                <h2> No Products Found For Search </h2>
                 <%
             }
             %>
