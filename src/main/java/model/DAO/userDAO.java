@@ -16,8 +16,6 @@ public class userDAO {
     private PreparedStatement getUserByEmailSt;
     private PreparedStatement updateUserSt;
     private PreparedStatement deleteUserSt;
-    private PreparedStatement loginLogSt;
-    private PreparedStatement logoutLogSt;
     private PreparedStatement checkUserIDExistsSt;
 
     public userDAO(Connection connection) throws SQLException {

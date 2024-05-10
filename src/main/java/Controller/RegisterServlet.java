@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import model.DAO.accesslogDAO;
 import model.DAO.userDAO;
 import model.user;
 
@@ -61,6 +63,9 @@ public class RegisterServlet extends HttpServlet {
             boolean createUserSuccess = UDAO.createUser(newUser);
             conn.commit();
             if (createUserSuccess) {
+                accesslogDAO logDAO = new accesslogDAO(conn); // Create the log DAO instance
+                logDAO.logLogin(newUser);
+                
                 session.setAttribute("user", newUser);
                 response.sendRedirect("welcome.jsp");
             } else {

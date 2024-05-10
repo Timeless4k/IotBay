@@ -74,9 +74,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="log" items="${logs}"> <!-- Assume logs are passed under the 'logs' attribute -->
+                        <c:forEach var="log" items="${accessLog}"> <!-- Assume logs are passed under the 'logs' attribute -->
                             <tr>
-                                <td><c:out value="${user.uID}"/></td>  <!-- Corrected to match accesslog model properties -->
+                                <td><c:out value="${log.serID}"/></td>  <!-- Corrected to match accesslog model properties -->
                                 <td><c:out value="${log.logID}"/></td>
                                 <td><c:out value="${log.loginTime}"/></td>
                                 <td><c:out value="${log.logoutTime}"/></td>
