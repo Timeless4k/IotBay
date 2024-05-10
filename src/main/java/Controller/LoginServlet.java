@@ -64,21 +64,25 @@ public class LoginServlet extends HttpServlet {
                         accesslog accesslog = new accesslog();
                         accesslog.setlogID(accessLogsRs.getLong("logID"));
                         accesslog.setuserID(accessLogsRs.getLong("userID"));
-                        accesslog.setloginTime(accessLogsRs.getTimestamp("loginTime").toString());
-                        accesslog.setlogoutTime(accessLogsRs.getTimestamp("logoutTime").toString());
+                        if (accessLogsRs.getTimestamp("loginTime") == null) {
+                            accesslog.setloginTime("Currently logged in");
+                        } else {
+                            accesslog.setloginTime(accessLogsRs.getTimestamp("loginTime").toString());
+                        }
+                        if (accessLogsRs.getTimestamp("logoutTime") == null) {
+                            accesslog.setlogoutTime("Currently logged in");
+                        } else {
+                            accesslog.setlogoutTime(accessLogsRs.getTimestamp("logoutTime").toString());
+                        }
                         accessLogList.add(accesslog);
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                accesslog[] accessLogs = accessLogList.toArray(new accesslog[0]);
-
-                System.out.println(accessLogs.length);
-                System.out.println(accessLogs[0].getloginTime());
 
 
                 session.setAttribute("user", user);
-                session.setAttribute("log", accessLogs[0]);
+                session.setAttribute("logs", accessLogList);
                 response.sendRedirect("account.jsp");
             } else {
                 response.sendRedirect("login.jsp?error=invalid");

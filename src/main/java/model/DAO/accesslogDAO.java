@@ -28,11 +28,12 @@ public class accesslogDAO {
         try {
             // ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Australia/Sydney"));
             // String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            Date date = new Date(System.currentTimeMillis());
+            ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Australia/Sydney"));
+            String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
             loginLogoutSt.setLong(1, user.getuID());
-            loginLogoutSt.setDate(2, date);
-            loginLogoutSt.setDate(3, date);
+            loginLogoutSt.setString(2, formattedDate);
+            loginLogoutSt.setNull(3, Types.TIME);
             int rowsAffected = loginLogoutSt.executeUpdate();
             conn.commit();
             System.out.println("logLogin " + user.getuID() + " rowsAffected=" + rowsAffected);
