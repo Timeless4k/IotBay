@@ -34,14 +34,14 @@ public class UpdateProfileServlet extends HttpServlet {
         String firstName = request.getParameter("firstName");
         String middleName = request.getParameter("middleName");
         String lastName = request.getParameter("lastName");
-        String password = request.getParameter("password");  // Hashing should be done before setting it here
+        String password = request.getParameter("password");  
         String birthDate = request.getParameter("birthDate");
         String mobilePhone = request.getParameter("mobilePhone");
 
         currentUser.setFirstName(firstName);
         currentUser.setMiddleName(middleName);
         currentUser.setLastName(lastName);
-        currentUser.setPassword(password); // Hashing should be handled before storing
+        currentUser.setPassword(password); 
         currentUser.setBirthDate(birthDate);
         currentUser.setMobilePhone(mobilePhone);
 
@@ -49,9 +49,12 @@ public class UpdateProfileServlet extends HttpServlet {
             userDAO userDao = new userDAO(conn);
             boolean updateSuccess = userDao.updateUser(currentUser);
             if (updateSuccess) {
-                conn.commit();  // Commit the transaction to save changes
-                session.setAttribute("user", currentUser);  // Update session with new user data
-                response.sendRedirect("account.jsp");  // Refresh the page with updated data
+                // Commit the transaction to save changes
+                conn.commit();  
+                // Update session with new user data
+                session.setAttribute("user", currentUser); 
+                // Refresh the page with updated data
+                response.sendRedirect("account.jsp"); 
             } else {
                 conn.rollback();  // Rollback in case of failure
                 System.err.println("UpdateProfileServlet: Failed to update user data, transaction rolled back.");

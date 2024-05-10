@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-
 import model.DAO.accesslogDAO;
 import model.user;
 
@@ -16,8 +15,8 @@ import model.user;
 public class LogoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        
-        HttpSession session = request.getSession(false); // Get the existing session
+        // Get the existing session
+        HttpSession session = request.getSession(false); 
         if (session != null) {
             user currentUser = (user) session.getAttribute("user");
             if (currentUser != null) {
@@ -27,14 +26,14 @@ public class LogoutServlet extends HttpServlet {
                     logDao = new accesslogDAO((java.sql.Connection) session.getAttribute("acticonn"));
                     logDao.logLogout(currentUser);
                 } catch (SQLException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 
                 // Invalidate the session
                 session.invalidate();
             }
-            response.sendRedirect("logout.jsp"); // Redirect to login page or your choice of landing page
+            // Redirect to the logout page
+            response.sendRedirect("logout.jsp"); 
         }
     }
 }

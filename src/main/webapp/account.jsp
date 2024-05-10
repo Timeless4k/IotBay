@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,10 +38,13 @@
                         <p class="settings-option">Settings</p>
                     </a>  
                     <hr>
-                    <a href="#logout">
+                    <form action="logout" method="post">
+                        <button type="submit">Logout</button>
+                    </form>                    
+                    <!-- <a href="#logout">
                         <img src="images/logout.png" alt="Logout Icon" width="45" height="45" class="logout-icon">
                         <p class="logout-option">Logout</p>
-                    </a>  
+                    </a>   -->
                 </div>
             </div>
 
@@ -52,6 +56,14 @@
                             <p><b>First Name:</b><br><input type="text" name="firstName" value="${user.firstName}"></p>
                             <p><b>Middle Name:</b><br><input type="text" name="middleName" value="${user.middleName}"></p>
                             <p><b>Last Name:</b><br><input type="text" name="lastName" value="${user.lastName}"></p>
+                            <p><b>Gender:</b><br>
+                                <select name="gender" required>
+                                    <option value="">Please select</option>
+                                    <option value="Male" ${user.gender == 'Male' ? 'selected' : ''}>Male</option>
+                                    <option value="Female" ${user.gender == 'Female' ? 'selected' : ''}>Female</option>
+                                    <option value="Other" ${user.gender == 'Other' ? 'selected' : ''}>Other</option>
+                                </select>
+                            </p>
                             <p><b>Email:</b><br><input type="email" name="email" value="${user.email}" readonly></p>
                             <p><b>Password:</b><br><input type="password" name="password" value="${user.password}"></p>
                             <p><b>Mobile Phone:</b><br><input type="text" name="mobilePhone" value="${user.mobilePhone}"></p>
@@ -61,33 +73,38 @@
                     <form action="DeleteProfileServlet" method="POST" style="display: inline;">
                         <button type="submit">Delete Account</button>
                     </form>
+                    
                 </div>
-
-                <h2>Access Logs</h2>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>UserID</th>
-                            <th>LogID</th>
-                            <th>LoginTime</th>
-                            <th>LogoutTime</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="log" items="${accessLog}"> <!-- Assume logs are passed under the 'logs' attribute -->
-                            <tr>
-                                <td><c:out value="${log.userID}"/></td>  <!-- Corrected to match accesslog model properties -->
-                                <td><c:out value="${log.logID}"/></td>
-                                <td><c:out value="${log.loginTime}"/></td>
-                                <td><c:out value="${log.logoutTime}"/></td>
-                            </tr>      
-                        </c:forEach>
-                    </tbody>
-                </table>
 
 
             </div>
         </div>
+
+        <h2>Access Logs</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>UserID</th>
+                    <th>LogID</th>
+                    <th>LoginTime</th>
+                    <th>LogoutTime</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="log" items="${logs}"> <!-- Assume logs are passed under the 'logs' attribute -->
+                    <tr>
+                        <td><c:out value="${log.userID}"/></td>  <!-- Corrected to match accesslog model properties -->
+                        <td><c:out value="${log.logID}"/></td>
+                        <td><c:out value="${log.loginTime}"/></td>
+                        <td><c:out value="${log.logoutTime}"/></td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">Total Logs: ${logs.size()}</td>
+                </tr>
+        </table>
 
         <br> <br> <br> <br> <br> <br>
 
@@ -102,19 +119,6 @@
         }
     </script>
 
-    <script>
-        function togglePassword() {
-            var passwordField = document.getElementById("passwordField");
-            var button = event.target;
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                button.textContent = 'Hide Password';
-            } else {
-                passwordField.type = 'password';
-                button.textContent = 'Show Password';
-            }
-        }
-    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -141,6 +145,8 @@
             });
         });
     </script>
+
+    
     
 </body>
 </html>

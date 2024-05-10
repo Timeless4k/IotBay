@@ -11,9 +11,6 @@
         <div class="logo-container-logout">
             <img src="images/Logo.png" alt="IoTBay Logo" onclick="window.location='index.jsp'">
         </div>
-        <div class="login-container-logout">
-            <a href="login.jsp" class="login-button">Log In</a>
-        </div>
     </header>
 
     <main class="logout-main">

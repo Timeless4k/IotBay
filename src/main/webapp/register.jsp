@@ -46,6 +46,15 @@
                 <input type="text" id="lastName" name="lastName" optional>
             </div>
             <div>
+                <label>Gender:</label>
+                <input type="radio" id="male" name="gender" value="Male">
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="gender" value="Female">
+                <label for="female">Female</label>
+                <input type="radio" id="other" name="gender" value="Other">
+                <label for="other">Other</label>
+            </div>
+            <div>
                 <label for="mobilePhone">Mobile phone:</label>
                 <input type="tel" id="mobilePhone" name="mobilePhone" optional>
             </div>
