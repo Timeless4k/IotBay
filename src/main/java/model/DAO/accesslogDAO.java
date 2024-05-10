@@ -51,6 +51,33 @@ public class accesslogDAO {
         return false;
     }
 
+    public boolean logLogout(user user) {
+        // This example assumes you have a method to update the logout time
+        try {
+            ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Australia/Sydney"));
+            String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            loginLogoutSt.setLong(1, user.getuID());
+            loginLogoutSt.setNull(2, Types.TIME);
+            loginLogoutSt.setString(3, formattedDate);
+    
+            int affectedRows = loginLogoutSt.executeUpdate();
+            if (affectedRows > 0) {
+                conn.commit();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println("Log logout failed: " + e.getMessage());
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Transaction rollback failed: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+    
+
     public ResultSet getLogsForUser(user user) {
         try {
             getLogsForUserSt.setLong(1, user.getuID());

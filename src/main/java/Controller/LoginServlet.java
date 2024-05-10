@@ -65,14 +65,9 @@ public class LoginServlet extends HttpServlet {
                         accesslog.setlogID(accessLogsRs.getLong("logID"));
                         accesslog.setuserID(accessLogsRs.getLong("userID"));
                         if (accessLogsRs.getTimestamp("loginTime") == null) {
-                            accesslog.setloginTime("Currently logged in");
+                            accesslog.setlogoutTime(accessLogsRs.getTimestamp("logoutTime").toString());
                         } else {
                             accesslog.setloginTime(accessLogsRs.getTimestamp("loginTime").toString());
-                        }
-                        if (accessLogsRs.getTimestamp("logoutTime") == null) {
-                            accesslog.setlogoutTime("Currently logged in");
-                        } else {
-                            accesslog.setlogoutTime(accessLogsRs.getTimestamp("logoutTime").toString());
                         }
                         accessLogList.add(accesslog);
                     }
