@@ -62,6 +62,30 @@
                         <button type="submit">Delete Account</button>
                     </form>
                 </div>
+
+                <h2>Access Logs</h2>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>UserID</th>
+                            <th>LogID</th>
+                            <th>LoginTime</th>
+                            <th>LogoutTime</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="log" items="${logs}"> <!-- Assume logs are passed under the 'logs' attribute -->
+                            <tr>
+                                <td><c:out value="${user.uID}"/></td>  <!-- Corrected to match accesslog model properties -->
+                                <td><c:out value="${log.logID}"/></td>
+                                <td><c:out value="${log.loginTime}"/></td>
+                                <td><c:out value="${log.logoutTime}"/></td>
+                            </tr>      
+                        </c:forEach>
+                    </tbody>
+                </table>
+
+
             </div>
         </div>
 
@@ -117,5 +141,6 @@
             });
         });
     </script>
+    
 </body>
 </html>
