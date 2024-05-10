@@ -29,7 +29,7 @@ CREATE TABLE ProductData(
 );
 
 CREATE TABLE AccessData(
-    LogID BIGINT NOT NULL AUTO_INCREMENT,
+    LogID BIGINT,
     UserID BIGINT,
     LoginTime datetime,
     LogoutTime datetime,
