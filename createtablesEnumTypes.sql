@@ -91,7 +91,26 @@ CREATE TABLE OrderLineItem(
     foreign key(ProductID) references ProductData(ProductID)
 );
 
+ALTER TABLE `iotbay`.`cardinformation` 
+DROP FOREIGN KEY `cardinformation_ibfk_1`;
+ALTER TABLE `iotbay`.`cardinformation` 
+ADD CONSTRAINT `cardinformation_ibfk_1`
+  FOREIGN KEY (`UserID`)
+  REFERENCES `iotbay`.`user` (`UserID`)
+  ON DELETE CASCADE;
 
+ALTER TABLE `iotbay`.`orders` 
+DROP FOREIGN KEY `orders_ibfk_2`,
+DROP FOREIGN KEY `orders_ibfk_3`;
+ALTER TABLE `iotbay`.`orders` 
+ADD CONSTRAINT `orders_ibfk_2`
+  FOREIGN KEY (`PaymentID`)
+  REFERENCES `iotbay`.`payments` (`PaymentID`)
+  ON DELETE CASCADE,
+ADD CONSTRAINT `orders_ibfk_3`
+  FOREIGN KEY (`ShippingID`)
+  REFERENCES `iotbay`.`shipmentdata` (`ShipmentID`)
+  ON DELETE CASCADE;
 
 
 
@@ -169,6 +188,23 @@ insert into User values(
     False,  -- requested his data be removed due to gdpr regulations
     '2FA444' -- 2fa code
 );
+
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('6666666666', 'Spirax', 'Comms', 'Allergy', 'Customer', 'sca@gmail.com', '5556666666', 'Female', 'A4DD5658EC0219465B705EA7C7435D9786A3C66D4F448CABD7488DABCEAFB699', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('7777777777', 'Blistex', 'Kleenex', 'Virpil', 'Customer', 'bkv@gmail.com', '5557777777', 'Female', 'A4DD5658EC0219465B705EA7C7435D9786A3C66D4F448CABD7488DABCEAFB699', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('8888888888', 'Anderson', 'A', 'Alice', 'Customer', 'alice@gmail.com', '5558888888', 'Male', 'A4DD5658EC0219465B705EA7C7435D9786A3C66D4F448CABD7488DABCEAFB699', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('9999999999', 'Tommy', 'R', 'Richman', 'Customer', 'trr@gmail.com', '5559999999', 'Female', 'A4DD5658EC0219465B705EA7C7435D9786A3C66D4F448CABD7488DABCEAFB699', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('9999999998', 'Niall', 'W', 'Horan', 'Customer', 'NWH@gmail.com', '5559999998', 'Male', 'A4DD5658EC0219465B705EA7C7435D9786A3C66D4F448CABD7488DABCEAFB699', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('1111111112', 'Beau', 'C', 'Saillard', 'Customer', 'BCS@gmail.com', '5551111112', 'Male', 'A4DD5658EC0219465B705EA7C7435D9786A3C66D4F448CABD7488DABCEAFB699', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('1111111113', 'Travis', '', 'Lenton', 'Customer', 'TL@gmail.com', '5551111113', 'Male', 'A4DD5658EC0219465B705EA7C7435D9786A3C66D4F448CABD7488DABCEAFB699', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('1111111114', 'James', 'C', 'Eye', 'Customer', 'JE@gmail.com', '5551111114', 'Female', 'A4DD5658EC0219465B705EA7C7435D9786A3C66D4F448CABD7488DABCEAFB699', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('1111111115', 'Jackie', 'Jonhson', 'Employee', 'JJ@gmail.com', '5551213132', 'Male', 'A4DD5658EC0219465B705EA7C7435D9786A3C66D4F448CABD7488DABCEAFB699', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('1111111116', 'Wallet', 'Drywall', 'Insanity', 'Customer', 'WDI@gmail.com', '5554321414', 'Male', 'A4DD5658EC0219465B705EA7C7435D9786A3C66D4F448CABD7488DABCEAFB699', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('1111111117', 'Not', 'Actual', 'Data', 'Admin', 'admin@gmail.com', '5555555555', 'Male', 'admin', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('1111111118', 'Canon', 'Nikon', 'Sony', 'Customer', 'Cameras@commerical.com', '1111111111', 'Male', 'realpass', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('1111111119', 'Pedro', 'P', 'Pascal', 'Customer', 'celeb@gmail.com', '2331112322', 'Female', 'Fall', '2024-05-05 12:53:24', '0');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('1111111120', 'Lounge', 'Sofa', 'Chair', 'Customer', 'Furniture@gmail.com', '3434343434', 'Female', 'goods', '2024-05-05 12:53:24', '1');
+INSERT INTO `iotbay`.`user` (`UserID`, `UserFirstName`, `UserMiddleName`, `UserLastName`, `UserType`, `UserEmail`, `UserPhone`, `UserGender`, `PasswordHash`, `UserCreationDate`, `ActivationFlag`) VALUES ('1111111121', 'Sofa', 'Chair', 'Lounge', 'Customer', 'TotallyDifferent@gmail.com', '2222222222', 'Male', 'password', '2024-05-05 12:53:24', '1');
+
 
 insert into ProductData values(
     2111111111,
@@ -273,10 +309,83 @@ insert into CardInformation values (
     2222222222
 );
 
-ALTER TABLE `iotbay`.`cardinformation` 
-DROP FOREIGN KEY `cardinformation_ibfk_1`;
-ALTER TABLE `iotbay`.`cardinformation` 
-ADD CONSTRAINT `cardinformation_ibfk_1`
-  FOREIGN KEY (`UserID`)
-  REFERENCES `iotbay`.`user` (`UserID`)
-  ON DELETE CASCADE;
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8555555555', '378282246310005', 'Marvin M Murdoc', '2026-04-01', '111', '1111111114');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8666666666', '371449635398431', 'Marvin M Murdoc', '2026-04-01', '111', '1111111116');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8777777777', '378734493671000', 'Marvin M Murdoc', '2026-04-01', '111', '1111111119');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8888888888', '5610591081018250', 'Jim J Jamerson', '2026-04-01', '111', '7777777777');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8999999999', '30569309025904', 'Jim J Jamerson', '2026-04-01', '223', '8888888888');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('9999999999', '38520000023237', 'Nuclear Nadal', '2026-04-01', '332', '9999999998');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000001', '6011111111111117', 'Jim J Jamerson', '2026-04-01', '221', '9999999999');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000022', '6011000990139424', 'Jim J Jamerson', '2026-04-01', '223', '9999999999');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000201', '3530111333300000', 'Jim J Jamerson', '2026-04-01', '223', '1111111117');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('1111111211', '3566002020360505', 'Jim J Jamerson', '2026-04-01', '443', '1111111112');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('2323151215', '5555555555554444', 'Jim J Jamerson', '2026-04-01', '554', '1111111112');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000016', '5105105105105100', 'Alex Abagale', '2026-04-01', '334', '1111111115');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('1111111117', '4111111111111111', 'Alex Abagale', '2026-04-01', '812', '1111111116');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000018', '4012888888881881', 'Alex Abagale', '2026-04-01', '123', '1111111118');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000019', '4222222222222', 'Alex Abagale', '2026-04-01', '321', '1111111120');
+INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000020', '4242424242424242', 'Alex Abagale', '2026-04-01', '555', '1111111120');
+
+
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111111', '400', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '1');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111112', '123', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '16');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111113', '654', 'Payment On Delivery', '2024-05-05 00:00:00', 'Approved', '18');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111114', '6543', 'Credit Card', '2024-05-05 00:00:00', 'Approved', '19');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111115', '34235', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '20');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111116', '999999', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '22');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111117', '0.15', 'Debit Card', '2024-05-05 00:00:00', 'Pending', '201');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111118', '1', 'Debit Card', '2024-05-05 00:00:00', 'Pending', '1111111117');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111119', '2', 'Credit Card', '2024-05-05 00:00:00', 'Pending', '1111111211');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111120', '3', 'Credit Card', '2024-05-05 00:00:00', 'Pending', '2323151215');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111121', '365', 'Credit Card', '2024-05-05 00:00:00', 'Failed', '8111111111');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111122', '578', 'Credit Card', '2024-05-05 00:00:00', 'Failed', '8222222222');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111123', '635', 'Credit Card', '2024-05-05 00:00:00', 'Failed', '1');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111124', '324.23', 'Credit Card', '2024-05-05 00:00:00', 'Pending', '1');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111125', '11.23', 'Debit Card', '2024-05-05 00:00:00', 'Pending', '1');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111126', '123.53', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '1');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111127', '3234.12', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '16');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111128', '1231.62', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '16');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111129', '134.67', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '16');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111130', '13123.13', 'Payment On Delivery', '2024-05-05 00:00:00', 'Approved', '16');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111131', '123.12', 'Payment On Delivery', '2024-05-05 00:00:00', 'Approved', '16');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111132', '1.12', 'Payment On Delivery', '2024-05-05 00:00:00', 'Approved', '1');
+
+
+
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111111', '1111111111', '2024-05-09 18:46:52', '2024-05-09 18:46:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111112', '1111111111', '2024-05-09 13:46:52', '2024-05-09 15:46:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111113', '1111111112', '2024-05-09 18:46:52', '2024-05-09 18:46:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111114', '1111111112', '2024-05-09 13:46:52', '2024-05-09 15:46:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111115', '1111111113', '2024-05-06 18:46:52', '2024-05-09 15:46:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111116', '1111111112', '2024-05-06 18:46:52', '2024-05-09 15:46:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111117', '1111111114', '2024-05-06 18:46:52', '2024-05-09 15:46:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111118', '1111111115', '2024-05-06 18:46:52', '2024-05-09 15:46:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111119', '1111111112', '2024-05-08 18:46:52', '2024-05-09 15:46:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111120', '1111111114', '2024-05-06 18:46:52', '2024-05-09 15:46:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111121', '1111111115', '2024-05-06 18:46:52', '2024-05-09 15:46:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111122', '1111111112', '2024-05-10 09:46:52', '2024-05-10 09:59:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111123', '1111111111', '2024-05-10 09:46:52', '2024-05-10 09:59:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111124', '1111111115', '2024-05-10 09:46:52', '2024-05-10 09:59:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111125', '1111111111', '2024-05-02 09:46:52', '2024-05-03 09:59:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111126', '1111111111', '2024-05-02 09:46:52', '2024-05-03 09:59:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111127', '1111111111', '2024-05-02 09:46:52', '2024-05-03 09:59:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111128', '1111111111', '2024-05-02 09:46:52', '2024-05-03 09:59:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111129', '1111111112', '2024-05-02 09:46:52', '2024-05-03 09:59:52');
+INSERT INTO `iotbay`.`accessdata` (`LogID`, `UserID`, `LoginTime`, `LogoutTime`) VALUES ('11111111130', '5555555555', '2024-05-02 09:46:52', '2024-05-03 09:59:52');
+
+
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111117', 'PiicoDev Starter Kit', 'InStock', '2024-01-01', '20', 'Get started coding high-tech sensors and modules with the PiicoDev', 'Kit', '89.00');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111118', 'SSD1306 OLED Display', 'InStock', '2024-01-15', '2', 'Display text, draw shapes, animations, and even create plots', 'Display', '8.00');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111119', 'Jumper Wire', 'OutOfStock', '2024-01-15', '0', 'Jumpstart your electronics project', 'Cable', '3.95');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111120', 'Outlaw Chassis Kit', 'InStock', '2024-01-15', '5', 'A literal Tank Chassis', 'Kit', '2000.00');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111121', 'RC System', 'InStock', '2024-01-15', '500', 'Perfect for your Remote Control Projects', 'RC', '300.00');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111122', 'Particle Argon', 'InStock', '2024-01-15', '500', 'The Argon is a powerful Wi-Fi enabled development kit', 'Home Iot', '53.25');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111123', 'Soldering Iron', 'InStock', '1954-01-15', '1000', 'A Hot Stick', 'Tools', '20.00');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111124', 'Lithium Ion Battery', 'InStock', '1999-05-05', '255', 'Spicy Pillow', 'Power', '29.99');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111125', '12.5W Micro usb power supply', 'OutOfStock', '2005-12-01', '0', 'A power supply for your projects or phone', 'Power', '20.00');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111126', 'PiKVM', 'InStock', '2021-02-15', '10', 'For all your server management needs', 'Network', '600.00');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111127', '12Gauge Wire', 'InStock', '1802-02-25', '90000', 'For your Medium Power Needs', 'Cable', '5.00');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111128', '8Gauge Wire', 'InStock', '1802-02-25', '50000', 'For your Heavy Power Needs', 'Cable', '10.00');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111129', '2Gauge Wire', 'InStock', '1802-02-25', '2000', 'UNLIMITED POWER', 'Cable', '20.00');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111130', 'The Holy Grail', 'InStock', '1975-05-05', '1', 'The perfect cup for that special someone', 'Relics', '10.00');
+INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111131', 'The Holy Hand Grenade Of Antioch', 'InStock', '1975-05-05', '3', 'good for removing rabbits', 'Relics', '10.00');
