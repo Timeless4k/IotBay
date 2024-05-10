@@ -1,8 +1,5 @@
 package model.DAO;
 
-
-
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +10,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
 
-
-
-
 public class userDAO {
     private Connection conn;
     private PreparedStatement createUserSt;
@@ -25,13 +19,6 @@ public class userDAO {
     private PreparedStatement loginLogSt;
     private PreparedStatement logoutLogSt;
     private PreparedStatement checkUserIDExistsSt;
-
-
-
-
-
-
-
 
     public userDAO(Connection connection) throws SQLException {
         this.conn = connection;
@@ -48,37 +35,15 @@ public class userDAO {
         checkUserIDExistsSt = conn.prepareStatement("SELECT COUNT(*) FROM User WHERE UserID = ?");
     }
 
-
-
-
-
-
-
-
     // Method to generate a unique UserID
     public long generateUniqueUserID() throws SQLException {
         Random rand = new Random();
         long userID = Math.abs(rand.nextLong());
-
-
-
-
-
-
-
-
         while (userIDExists(userID)) {
             userID = Math.abs(rand.nextLong());
         }
         return userID;
     }
-
-
-
-
-
-
-
 
     // Check if a UserID already exists in the database
     private boolean userIDExists(long userID) throws SQLException {
@@ -89,13 +54,6 @@ public class userDAO {
         }
         return false;
     }
-
-
-
-
-
-
-
 
     public boolean createUser(user newUser) {
         try {
@@ -132,13 +90,6 @@ public class userDAO {
         return false;
     }
 
-
-
-
-
-
-
-
     public user getUserByEmail(String email) {
         try {
             getUserByEmailSt.setString(1, email);
@@ -151,13 +102,6 @@ public class userDAO {
         }
         return null;
     }
-
-
-
-
-
-
-
 
     public boolean updateUser(user user) {
         try {
@@ -187,13 +131,6 @@ public class userDAO {
         return false;
     }
 
-
-
-
-
-
-
-
     public boolean deleteUser(String email) {
         try {
             deleteUserSt.setString(1, email);
@@ -212,12 +149,6 @@ public class userDAO {
         }
         return false;
     }
-   
-
-
-
-
-
 
     public List<user> getAllUsers() throws SQLException {
         List<user> userList = new ArrayList<>();
@@ -237,22 +168,6 @@ public class userDAO {
         }
         return userList;
     }
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private user extractUserFromResultSet(ResultSet rs) throws SQLException {
         user usr = new user();
@@ -269,30 +184,3 @@ public class userDAO {
         return usr;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
