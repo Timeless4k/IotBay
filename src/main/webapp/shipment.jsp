@@ -1,25 +1,4 @@
 
-<!-- 
-A customer user can create shipment details (e.g. shipment method, date and address) 
-for their order (shipment id linked to order id).
--->
-
-
-
-<!-- 
-Implement:
-- Shipping address (including street address, city, state/province, postal/ZIP code, and country)
-
-- Contact phone number
-- Email address (for confirmation and updates, if applicable)
-
-- Shipping method (along with showing what each method costs)
-
-- Preferred arrival date (hopefully when the date to receive the order by)
--->
-
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -37,7 +16,7 @@ Implement:
 
     <div class="shipment-info">
 
-        <form action="/ShipmentServlet" method="post">
+        <form action="/ShipmentServlet" method="post" onsubmit="setActionValue('create')">
 
             <div class="row">
 
@@ -109,10 +88,10 @@ Implement:
                     </div>                    
                 </div>
 
+                <button type="submit" onclick="document.getElementById('action').value = 'create'" class="shipment_submit_button">Next &#10132;</button> 
 
-
-                <input type="submit" value="Next  &#10132;" class="shipment_submit_button">
-
+                <input type="hidden" id="action" name="action" value="">
+                
             </div>
 
         </form>
