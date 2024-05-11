@@ -68,7 +68,8 @@ public class userDAO {
             createUserSt.setString(7, newUser.getMobilePhone());
             createUserSt.setString(8, newUser.getGender());
             createUserSt.setString(9, newUser.getPassword());
-            createUserSt.setString(9, newUser.getPassword());  // Assume you have a method to hash passwords
+            createUserSt.setString(9, newUser.getPassword());
+            createUserSt.setString(8, newUser.getCreationDate());  // Assume you have a method to hash passwords
             createUserSt.setString(10, newUser.getBirthDate());  // Store the DOB
             createUserSt.setString(10, formattedDate); // Setting the formatted Sydney date and time
             createUserSt.setString(11, "0"); // Assuming activation flag

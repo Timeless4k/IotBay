@@ -34,15 +34,15 @@ public class UpdateProfileServlet extends HttpServlet {
         String firstName = request.getParameter("firstName");
         String middleName = request.getParameter("middleName");
         String lastName = request.getParameter("lastName");
-        String password = request.getParameter("password");  
-        String birthDate = request.getParameter("birthDate");
+        String password = request.getParameter("password"); 
+        String gender = request.getParameter("gender"); 
         String mobilePhone = request.getParameter("mobilePhone");
 
         currentUser.setFirstName(firstName);
         currentUser.setMiddleName(middleName);
         currentUser.setLastName(lastName);
         currentUser.setPassword(password); 
-        currentUser.setBirthDate(birthDate);
+        currentUser.setGender(gender);
         currentUser.setMobilePhone(mobilePhone);
 
         try {
