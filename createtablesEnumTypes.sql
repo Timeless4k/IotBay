@@ -389,3 +389,14 @@ INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`,
 INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111129', '2Gauge Wire', 'InStock', '1802-02-25', '2000', 'UNLIMITED POWER', 'Cable', '20.00');
 INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111130', 'The Holy Grail', 'InStock', '1975-05-05', '1', 'The perfect cup for that special someone', 'Relics', '10.00');
 INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111131', 'The Holy Hand Grenade Of Antioch', 'InStock', '1975-05-05', '3', 'good for removing rabbits', 'Relics', '10.00');
+
+
+ALTER TABLE `iotbay`.`accessdata` 
+CHANGE COLUMN `LogID` `LogID` BIGINT NOT NULL AUTO_INCREMENT ;
+
+ALTER TABLE `iotbay`.`accessdata` 
+DROP FOREIGN KEY `accessdata_ibfk_1`;
+ALTER TABLE `iotbay`.`accessdata` 
+DROP INDEX `UserID` ;
+;
+    
