@@ -63,7 +63,6 @@ CREATE TABLE ShipmentData(
     ShipmentID BIGINT,
     ShipmentAddress varchar(110),
     ShipmentType ENUM('Express', 'Standard'),
-    ShipmentTrackingNumber varchar(11),
     ShipmentExpectedDate date,
     primary key(ShipmentID)
 );
