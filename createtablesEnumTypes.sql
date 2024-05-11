@@ -112,6 +112,15 @@ ADD CONSTRAINT `orders_ibfk_3`
   REFERENCES `iotbay`.`shipmentdata` (`ShipmentID`)
   ON DELETE CASCADE;
 
+ALTER TABLE `iotbay`.`accessdata` 
+CHANGE COLUMN `LogID` `LogID` BIGINT NOT NULL AUTO_INCREMENT ;
+
+ALTER TABLE `iotbay`.`accessdata` 
+DROP FOREIGN KEY `accessdata_ibfk_1`;
+ALTER TABLE `iotbay`.`accessdata` 
+DROP INDEX `UserID` ;
+;
+    
 
 
 insert into User values(
@@ -391,12 +400,3 @@ INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`,
 INSERT INTO `iotbay`.`productdata` (`ProductID`, `ProductName`, `ProductStatus`, `ProductReleaseDate`, `ProductStockLevel`, `ProductDescription`, `ProductType`, `ProductCost`) VALUES ('1111111131', 'The Holy Hand Grenade Of Antioch', 'InStock', '1975-05-05', '3', 'good for removing rabbits', 'Relics', '10.00');
 
 
-ALTER TABLE `iotbay`.`accessdata` 
-CHANGE COLUMN `LogID` `LogID` BIGINT NOT NULL AUTO_INCREMENT ;
-
-ALTER TABLE `iotbay`.`accessdata` 
-DROP FOREIGN KEY `accessdata_ibfk_1`;
-ALTER TABLE `iotbay`.`accessdata` 
-DROP INDEX `UserID` ;
-;
-    
