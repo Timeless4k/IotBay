@@ -1,95 +1,81 @@
 package model.DAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import model.card;
-import java.sql.*;
-import java.util.Random;
 
 public class cardDAO {
     private Connection conn;
-    private Random random = new Random();
+    private PreparedStatement getCardsForUserSt;
 
-    public cardDAO(Connection conn) {
-        this.conn = conn;
+    public cardDAO(Connection connection) throws SQLException {
+        this.conn = connection;
+
+        // Prepare statement
+        getCardsForUserSt = conn.prepareStatement(
+            "SELECT * FROM Card WHERE UserID = ?");
     }
 
-    public long generateUniqueCardID() throws SQLException {
-        long cardID;
-        while (true) {
-            cardID = Math.abs(random.nextLong());
-            if (!cardIDExists(cardID)) {
-                break;
+    public List<card> getCardsForUser(long userID) {
+        List<card> cardList = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            getCardsForUserSt.setLong(1, userID);
+            rs = getCardsForUserSt.executeQuery();
+            while (rs.next()) {
+                card card = extractCardFromResultSet(rs);
+                cardList.add(card);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching cards for user: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing result set: " + e.getMessage());
             }
         }
-        return cardID;
+        return cardList;
     }
 
-    private boolean cardIDExists(long cardID) throws SQLException {
-        String sql = "SELECT count(*) FROM CardInformation WHERE CardID = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setLong(1, cardID);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getInt(1) > 0;
-                }
+    public boolean createCard(card newCard) {
+        PreparedStatement createCardSt = null;
+        try {
+            createCardSt = conn.prepareStatement(
+                "INSERT INTO Card (CardNumber, CardHolderName, CardExpiry, CardCVV, UserID) VALUES (?, ?, ?, ?, ?)");
+            createCardSt.setLong(1, newCard.getCardNumber());
+            createCardSt.setString(2, newCard.getCardHolderName());
+            createCardSt.setString(3, newCard.getCardExpiry());
+            createCardSt.setInt(4, newCard.getCardCVV());
+            createCardSt.setLong(5, newCard.getUserID());
+    
+            int rowsAffected = createCardSt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Error creating card: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (createCardSt != null) createCardSt.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing prepared statement: " + e.getMessage());
             }
         }
-        return false;
     }
+    
 
-    public void createCard(card card) throws SQLException {
-        long newCardID = generateUniqueCardID();
-        card.setCardID(newCardID);  // Set the generated CardID to the card object
-
-        String sql = "INSERT INTO CardInformation (CardID, CardNumber, CardHolderName, CardExpiry, CardCVV, UserID) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setLong(1, card.getCardID());
-            statement.setLong(2, card.getCardNumber());
-            statement.setString(3, card.getCardHolderName());
-            statement.setString(4, card.getCardExpiry());
-            statement.setInt(5, card.getCardCVV());
-            statement.setLong(6, card.getUserID());
-            statement.executeUpdate();
-        }
-    }
-
-    public card getCardById(long cardID) throws SQLException {
-        String sql = "SELECT * FROM CardInformation WHERE CardID = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setLong(1, cardID);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return new card(
-                        resultSet.getLong("CardID"),
-                        resultSet.getLong("CardNumber"),
-                        resultSet.getString("CardHolderName"),
-                        resultSet.getString("CardExpiry"),
-                        resultSet.getInt("CardCVV"),
-                        resultSet.getLong("UserID")
-                    );
-                }
-            }
-        }
-        return null;
-    }
-
-    public void updateCard(card card) throws SQLException {
-        String sql = "UPDATE CardInformation SET CardNumber = ?, CardHolderName = ?, CardExpiry = ?, CardCVV = ?, UserID = ? WHERE CardID = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setLong(1, card.getCardNumber());
-            statement.setString(2, card.getCardHolderName());
-            statement.setString(3, card.getCardExpiry());
-            statement.setInt(4, card.getCardCVV());
-            statement.setLong(5, card.getUserID());
-            statement.setLong(6, card.getCardID());
-            statement.executeUpdate();
-        }
-    }
-
-    public void deleteCard(long cardID) throws SQLException {
-        String sql = "DELETE FROM CardInformation WHERE CardID = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setLong(1, cardID);
-            statement.executeUpdate();
-        }
+    private card extractCardFromResultSet(ResultSet rs) throws SQLException {
+        card card = new card();
+        card.setCardID(rs.getLong("CardID"));
+        card.setCardNumber(rs.getLong("CardNumber"));
+        card.setCardHolderName(rs.getString("CardHolderName"));
+        card.setCardExpiry(rs.getString("CardExpiry"));
+        card.setCardCVV(rs.getInt("CardCVV"));
+        card.setUserID(rs.getLong("UserID"));
+        return card;
     }
 }

@@ -1,91 +1,50 @@
 package model.DAO;
 
-import model.payment;
-import model.user;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import model.payment;
 
 public class paymentDAO {
     private Connection conn;
 
-    public paymentDAO(Connection conn) {
-        this.conn = conn;
+    public paymentDAO(Connection connection) throws SQLException {
+        this.conn = connection;
+        conn.setAutoCommit(false);
     }
 
-    public boolean createPayment(payment payment) throws SQLException {
+    public boolean createPayment(payment pay) {
         String sql = "INSERT INTO payments (PaymentID, PaymentAmount, PaymentMethod, PaymentDate, PaymentStatus, CardID) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setLong(1, payment.getPaymentID());
-            statement.setDouble(2, payment.getAmount());
-            statement.setString(3, payment.getMethod());
-            statement.setString(4, payment.getDate());
-            statement.setString(5, payment.getStatus());
-            statement.setString(6, payment.getCardID());
-            int result = statement.executeUpdate();
-            return result > 0;  // Return true if the row was inserted
-        }
-    }
-
-    public payment readPayment(long paymentID) throws SQLException {
-        String sql = "SELECT PaymentID, PaymentAmount, PaymentMethod, PaymentDate, PaymentStatus, CardID FROM payments WHERE PaymentID = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setLong(1, paymentID);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return new payment(
-                        resultSet.getLong("PaymentID"),
-                        resultSet.getDouble("PaymentAmount"),
-                        resultSet.getString("PaymentMethod"),
-                        resultSet.getString("PaymentDate"),
-                        resultSet.getString("PaymentStatus"),
-                        resultSet.getString("CardID")
-                    );
-                }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, pay.getPaymentID());
+            pstmt.setDouble(2, pay.getAmount());
+            pstmt.setString(3, pay.getMethod());
+            pstmt.setString(4, LocalDate.now().toString());  // Assuming the date is set to current date
+            pstmt.setString(5, pay.getStatus());
+            pstmt.setString(6, pay.getCardID());
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                conn.commit();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println("Create payment failed: " + e.getMessage());
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Transaction rollback failed: " + ex.getMessage());
             }
         }
-        return null;
+        return false;
     }
 
-    public boolean updatePayment(payment payment) throws SQLException {
-        String sql = "UPDATE payments SET PaymentAmount = ?, PaymentMethod = ?, PaymentDate = ?, PaymentStatus = ?, CardID = ? WHERE PaymentID = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setDouble(1, payment.getAmount());
-            statement.setString(2, payment.getMethod());
-            statement.setString(3, payment.getDate());
-            statement.setString(4, payment.getStatus());
-            statement.setString(5, payment.getCardID());
-            statement.setLong(6, payment.getPaymentID());
-            int result = statement.executeUpdate();
-            return result > 0;  // Return true if the row was updated
+    public ResultSet getPaymentsForUser(long userID) {
+        String sql = "SELECT * FROM payments WHERE CardID IN (SELECT CardID FROM cardinformation WHERE UserID = ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, userID);
+            return pstmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("Get payments failed: " + e.getMessage());
+            return null;
         }
-    }
-
-    public boolean deletePayment(long paymentID) throws SQLException {
-        String sql = "DELETE FROM payments WHERE PaymentID = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setLong(1, paymentID);
-            int result = statement.executeUpdate();
-            return result > 0;  // Return true if the row was deleted
-        }
-    }
-
-    public List<payment> getAllPayments() throws SQLException {
-        List<payment> payments = new ArrayList<>();
-        String sql = "SELECT PaymentID, PaymentAmount, PaymentMethod, PaymentDate, PaymentStatus, CardID FROM payments";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                payments.add(new payment(
-                    resultSet.getLong("PaymentID"),
-                    resultSet.getDouble("PaymentAmount"),
-                    resultSet.getString("PaymentMethod"),
-                    resultSet.getString("PaymentDate"),
-                    resultSet.getString("PaymentStatus"),
-                    resultSet.getString("CardID")
-                ));
-            }
-        }
-        return payments;
     }
 }

@@ -1,87 +1,103 @@
 package Controller;
 
-import model.card;
-import model.DAO.cardDAO;
-import javax.servlet.*;
-import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+import model.card;
+import model.DAO.cardDAO;
+import model.user;
 
 public class CardServlet extends HttpServlet {
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Connection conn = (Connection) session.getAttribute("acticonn");
-        
+
         if (conn == null) {
-            response.getWriter().write("Database connection not available. Please check the connection settings.");
+            System.err.println("Database connection error: Database connection not established");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error");
             return;
         }
 
-        cardDAO cardDao = new cardDAO(conn);
-
-        try {
-            switch (action) {
-                case "create":
-                    createCard(request, response, cardDao);
-                    break;
-                case "update":
-                    updateCard(request, response, cardDao);
-                    break;
-                case "delete":
-                    deleteCard(request, response, cardDao);
-                    break;
-                default:
-                    response.getWriter().print("Invalid action.");
-                    break;
-            }
-        } catch (Exception e) {
-            response.getWriter().print("Error handling card: " + e.getMessage());
-            e.printStackTrace();
+        user loggedInUser = (user) session.getAttribute("user");
+        if (loggedInUser == null) {
+            // Redirect to login page if user is not logged in
+            response.sendRedirect("login.jsp");
+            return;
         }
+
+        cardDAO cardDao = null;
+        try {
+            cardDao = new cardDAO(conn);
+        } catch (SQLException e) {
+            System.err.println("Error creating cardDAO: " + e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error creating cardDAO");
+            return;
+        }
+
+        // Get card list for the logged-in user
+        List<card> cardList = cardDao.getCardsForUser(loggedInUser.getuID());
+
+        // Set cardList attribute in request scope
+        request.setAttribute("cardList", cardList);
+
+        // Forward the request to the JSP
+        request.getRequestDispatcher("managePayment.jsp").forward(request, response);
     }
 
-    private void createCard(HttpServletRequest request, HttpServletResponse response, cardDAO cardDao) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Connection conn = (Connection) session.getAttribute("acticonn");
+
+        if (conn == null) {
+            System.err.println("Database connection error: Database connection not established");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error");
+            return;
+        }
+
+        user loggedInUser = (user) session.getAttribute("user");
+        if (loggedInUser == null) {
+            // Redirect to login page if user is not logged in
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        cardDAO cardDao = null;
+        try {
+            cardDao = new cardDAO(conn);
+        } catch (SQLException e) {
+            System.err.println("Error creating cardDAO: " + e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error creating cardDAO");
+            return;
+        }
+
+        // Extract form data
         long cardNumber = Long.parseLong(request.getParameter("cardNumber"));
         String cardHolderName = request.getParameter("cardHolderName");
         String cardExpiry = request.getParameter("cardExpiry");
         int cardCVV = Integer.parseInt(request.getParameter("cardCVV"));
-        long userID = Long.parseLong(request.getParameter("userID"));
 
+        // Create card object
         card newCard = new card();
         newCard.setCardNumber(cardNumber);
         newCard.setCardHolderName(cardHolderName);
         newCard.setCardExpiry(cardExpiry);
         newCard.setCardCVV(cardCVV);
-        newCard.setUserID(userID);
+        newCard.setUserID(loggedInUser.getuID());
 
-        try {
-            cardDao.createCard(newCard);
-            response.sendRedirect("managePayment.jsp");
-        } catch (SQLException e) {
-            throw new ServletException("SQL error while creating card", e);
+        // Call DAO method to create card
+        boolean success = cardDao.createCard(newCard);
+
+        if (success) {
+            // Redirect to cards page after successful creation
+            response.sendRedirect("CardServlet");
+        } else {
+            // Handle error if card creation fails
+            response.sendRedirect("error.jsp");
         }
-    }
-
-    private void updateCard(HttpServletRequest request, HttpServletResponse response, cardDAO cardDao) throws IOException, ServletException, SQLException {
-        long cardID = Long.parseLong(request.getParameter("cardID"));
-        card existingCard = cardDao.getCardById(cardID);
-        if (existingCard != null) {
-            existingCard.setCardNumber(Long.parseLong(request.getParameter("cardNumber")));
-            existingCard.setCardHolderName(request.getParameter("cardHolderName"));
-            existingCard.setCardExpiry(request.getParameter("cardExpiry"));
-            existingCard.setCardCVV(Integer.parseInt(request.getParameter("cardCVV")));
-            cardDao.updateCard(existingCard);
-        }
-        response.sendRedirect("managePayment.jsp");
-    }
-
-    private void deleteCard(HttpServletRequest request, HttpServletResponse response, cardDAO cardDao) throws IOException, ServletException, SQLException {
-        long cardID = Long.parseLong(request.getParameter("cardID"));
-        cardDao.deleteCard(cardID);
-        response.sendRedirect("managePayment.jsp");
     }
 }

@@ -1,110 +1,59 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ page import="model.user" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Manage Payments and Cards</title>
+    <title>Manage Payment</title>
 </head>
 <body>
-    <h1>Payment and Card Management</h1>
 
-    <!-- Section to create a new payment -->
-    <h2>Create Payment</h2>
-    <form action="PaymentServlet" method="post">
-        <input type="hidden" name="action" value="create">
-        <label>Amount:</label>
-        <input type="text" name="amount" required><br>
-        <label>Payment Method:</label>
-        <select name="method">
-            <option value="Credit Card">Credit Card</option>
-            <option value="Debit Card">Debit Card</option>
-            <option value="Payment on Delivery">Payment on Delivery</option>
-        </select><br>
-        <label>Date (DD/MM/YYYY):</label>
-        <input type="date" name="date" required><br>
-        <label>Status:</label>
-        <select name="status">
-            <option value="Approved">Approved</option>
-            <option value="Pending">Pending</option>
-            <option value="Failed">Failed</option>
-        </select><br>
-        <label>Card ID:</label>
-        <input type="text" name="cardID" required><br>
-        <button type="submit">Submit Payment</button>
-    </form>
-
-    <!-- Section to create a new card -->
-    <h2>Create Card</h2>
+    <%-- Check if a user is logged in --%>
+    <%
+        user loggedInUser = (user) session.getAttribute("user");
+        if (loggedInUser != null) {
+    %>
+    <div>User ID: <%= loggedInUser.getuID() %></div>
+    <div>Email Address: <%= loggedInUser.getEmail() %></div>
+    <%-- Additional debugging information can be added here --%>
+    <%
+        }
+    %>
+    <h1>Manage Payment</h1>
+    <h2>Add New Payment Method</h2>
     <form action="CardServlet" method="post">
-        <input type="hidden" name="action" value="create">
-        <label>Card Number:</label>
-        <input type="text" name="cardNumber" required><br>
-        <label>Card Holder Name:</label>
-        <input type="text" name="cardHolderName" required><br>
-        <label>Card Expiry (DD/MM/YYYY):</label>
-        <input type="date" name="cardExpiry" required><br>
-        <label>Card CVV:</label>
-        <input type="text" name="cardCVV" required><br>
-        <label>User ID:</label>
-        <input type="text" name="userID" required><br>
-        <button type="submit">Submit Card</button>
+        Card Number: <input type="text" name="cardNumber" required><br>
+        Card Holder Name: <input type="text" name="cardHolderName" required><br>
+        Expiry Date: <input type="text" name="cardExpiry" required><br>
+        CVV: <input type="text" name="cardCVV" required><br>
+        <input type="submit" value="Add Payment Method">
     </form>
 
-    <!-- Section to display all payments -->
-    <h2>List of Payments</h2>
+    <h2>Existing Payment Methods</h2>
     <table border="1">
         <thead>
             <tr>
-                <th>Payment ID</th>
-                <th>Amount</th>
-                <th>Method</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Card ID</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="payment" items="${payments}">
-                <tr>
-                    <td>${payment.paymentID}</td>
-                    <td>${payment.amount}</td>
-                    <td>${payment.method}</td>
-                    <td>${payment.date}</td>
-                    <td>${payment.status}</td>
-                    <td>${payment.cardID}</td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
-
-    <!-- Section to display all cards -->
-    <h2>List of Cards</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Card ID</th>
                 <th>Card Number</th>
                 <th>Card Holder Name</th>
-                <th>Expiry</th>
-                <th>CVV</th>
-                <th>User ID</th>
+                <th>Expiry Date</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="card" items="${cards}">
-                <tr>
-                    <td>${card.cardID}</td>
-                    <td>${card.cardNumber}</td>
-                    <td>${card.cardHolderName}</td>
-                    <td>${card.cardExpiry}</td>
-                    <td>${card.cardCVV}</td>
-                    <td>${card.userID}</td>
-                </tr>
-            </c:forEach>
+            <!-- Display existing payment methods here -->
+            <%
+                List<model.card> cardList = (List<model.card>) request.getAttribute("cardList");
+                if (cardList != null) {
+                    for (model.card card : cardList) { %>
+                        <tr>
+                            <td><%= card.getCardNumber() %></td>
+                            <td><%= card.getCardHolderName() %></td>
+                            <td><%= card.getCardExpiry() %></td>
+                            <td>Edit | Delete</td>
+                        </tr>
+                    <% }
+                }
+            %>
         </tbody>
     </table>
-
 </body>
 </html>
