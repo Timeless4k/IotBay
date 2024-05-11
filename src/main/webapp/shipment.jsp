@@ -88,7 +88,7 @@
                     </div>                    
                 </div>
 
-                <button type="submit" onclick="document.getElementById('action').value = 'create'" class="shipment_submit_button">Next &#10132;</button> 
+                <button type="submit" onclick="document.getElementById('action').value = 'create'" class="shipment_submit_button">Proceed to Payment  &#10132;</button> 
 
                 <input type="hidden" id="action" name="action" value="">
                 
