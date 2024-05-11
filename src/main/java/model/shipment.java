@@ -46,24 +46,38 @@
 package model;
 
 public class Shipment {
+    private String shipmentID; // Assuming you also need a shipmentID for the shipment
     private String shipmentAddress;
-    private String shipmentContactInfoEmail;
-    private String shipmentContactInfoPhoneNumber;
+    // private String shipmentContactInfoEmail;
+    // private String shipmentContactInfoPhoneNumber;
     private String shipmentDate;
     private String shipmentMethod;
-    // private String userID; // Assuming you also need a userID for the shipment
 
 
-    public Shipment(String shipmentAddress, String shipmentContactInfoEmail, String shipmentContactInfoPhoneNumber, String shipmentDate, String shipmentMethod) {
+    // public Shipment(String shipmentAddress, String shipmentContactInfoEmail, String shipmentContactInfoPhoneNumber, String shipmentDate, String shipmentMethod) {
+    //     this.shipmentAddress = shipmentAddress;
+    //     this.shipmentContactInfoEmail = shipmentContactInfoEmail;
+    //     this.shipmentContactInfoPhoneNumber = shipmentContactInfoPhoneNumber;
+    //     this.shipmentDate = shipmentDate;
+    //     this.shipmentMethod = shipmentMethod;
+    // }
+
+    public Shipment(String shipmentAddress, String shipmentDate, String shipmentMethod) {
         this.shipmentAddress = shipmentAddress;
-        this.shipmentContactInfoEmail = shipmentContactInfoEmail;
-        this.shipmentContactInfoPhoneNumber = shipmentContactInfoPhoneNumber;
         this.shipmentDate = shipmentDate;
         this.shipmentMethod = shipmentMethod;
     }
 
 
     // Getters and setters for all fields
+
+    public String getShipmentID() {
+        return shipmentID;
+    }
+
+    public void setShipmentID(String shipmentID) {
+        this.shipmentID = shipmentID;
+    }
 
     public String getShipmentAddress() {
         return shipmentAddress;
@@ -73,21 +87,21 @@ public class Shipment {
         this.shipmentAddress = shipmentAddress;
     }
 
-    public String getShipmentContactInfoEmail() {
-        return shipmentContactInfoEmail;
-    }
+    // public String getShipmentContactInfoEmail() {
+    //     return shipmentContactInfoEmail;
+    // }
 
-    public void setShipmentContactInfoEmail(String shipmentContactInfoEmail) {
-        this.shipmentContactInfoEmail = shipmentContactInfoEmail;
-    }
+    // public void setShipmentContactInfoEmail(String shipmentContactInfoEmail) {
+    //     this.shipmentContactInfoEmail = shipmentContactInfoEmail;
+    // }
 
-    public String getShipmentContactInfoPhoneNumber() {
-        return shipmentContactInfoPhoneNumber;
-    }
+    // public String getShipmentContactInfoPhoneNumber() {
+    //     return shipmentContactInfoPhoneNumber;
+    // }
 
-    public void setShipmentContactInfoPhoneNumber(String shipmentContactInfoPhoneNumber) {
-        this.shipmentContactInfoPhoneNumber = shipmentContactInfoPhoneNumber;
-    }
+    // public void setShipmentContactInfoPhoneNumber(String shipmentContactInfoPhoneNumber) {
+    //     this.shipmentContactInfoPhoneNumber = shipmentContactInfoPhoneNumber;
+    // }
 
     public String getShipmentDate() {
         return shipmentDate;
@@ -104,12 +118,4 @@ public class Shipment {
     public void setShipmentMethod(String shipmentMethod) {
         this.shipmentMethod = shipmentMethod;
     }
-
-    // public String getUserID() {
-    //     return userID;
-    // }
-
-    // public void setUserID(String userID) {
-    //     this.userID = userID;
-    // }
 }

@@ -30,7 +30,7 @@
                         <input type="text" id="shipmentAddress" name="shipmentAddress" required class="shipment_input_field">
                     </div>
 
-                    <div class="shipment_input">
+                    <!-- <div class="shipment_input">
                         <label class="shipment_input_header">Contact Information:</label>
                         <br>
                         <div class="contact_info">
@@ -40,7 +40,7 @@
                             <p>Phone Number</p>
                             <input type="text" id="shipmentContactInfo_PhoneNumber" name="shipmentContactInfo_PhoneNumber" required class="shipment_input_field">
                         </div>
-                    </div>     
+                    </div>      -->
 
                     <div class="shipment_input">
                         <label class="shipment_input_header">Preferred Arrival Date:</label>
@@ -61,6 +61,7 @@
                         <br>
                         <div class="shipment_options">
                             <div class="shipment_option">
+                                <!-- <input type="checkbox" id="FedEx" name="shipmentMethod" value="FedEx"> -->
                                 <input type="checkbox" id="FedEx" name="shipmentMethod" value="FedEx">
                                 <label for="FedEx">FedEx Express</label>
                                 <div class="vertical_spacing"></div>
@@ -69,6 +70,7 @@
                                 <img src="images/fedex.png" alt="FedEx Logo" class="fedex_logo">
                             </div>
                             <div class="shipment_option">
+                                <!-- <input type="checkbox" id="Aramex" name="shipmentMethod" value="Aramex"> -->
                                 <input type="checkbox" id="Aramex" name="shipmentMethod" value="Aramex">
                                 <label for="Aramex">Aramex Standard</label>
                                 <div class="vertical_spacing"></div>
@@ -77,6 +79,7 @@
                                 <img src="images/aramex.png" alt="Aramex Logo" class="aramex_logo">
                             </div>
                             <div class="shipment_option">
+                                <!-- <input type="checkbox" id="DHL" name="shipmentMethod" value="DHL"> -->
                                 <input type="checkbox" id="DHL" name="shipmentMethod" value="DHL">
                                 <label for="DHL">DHL Standard</label>
                                 <div class="vertical_spacing"></div>

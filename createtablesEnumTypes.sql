@@ -62,7 +62,7 @@ CREATE TABLE Payments(
 CREATE TABLE ShipmentData(
     ShipmentID BIGINT,
     ShipmentAddress varchar(110),
-    ShipmentType ENUM('Express', 'Standard'),
+    ShipmentType ENUM('FedEx', 'Aramex', 'DHL'),
     ShipmentExpectedDate date,
     primary key(ShipmentID)
 );
