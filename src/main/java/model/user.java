@@ -1,6 +1,7 @@
 // 'User.java' for User object class
 package model;
 import java.io.Serializable;
+import java.util.List;
 
 // import java.math.*;
 
@@ -122,5 +123,10 @@ public class user implements Serializable{
 
     public void setuID(long id) {
         this.uID = id;
+    }
+
+    public List<payment> getPayments() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPayments'");
     }
 }

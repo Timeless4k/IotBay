@@ -1,58 +1,71 @@
 package model;
 
 public class card {
-    private long cID;
-    private long cNumber;
-    private String CardHolderName;
-    private String CardExpiry;
-    private int CCV;
-    private long UserID;
+    private long cardID;
+    private long cardNumber;
+    private String cardHolderName;
+    private String cardExpiry;
+    private int cardCVV;
+    private long userID;
 
-    public long getcID() {
-        return this.cID;
+    // Constructors
+    public card() {}
+
+    public card(long cardID, long cardNumber, String cardHolderName, String cardExpiry, int cardCVV, long userID) {
+        this.cardID = cardID;
+        this.cardNumber = cardNumber;
+        this.cardHolderName = cardHolderName;
+        this.cardExpiry = cardExpiry;
+        this.cardCVV = cardCVV;
+        this.userID = userID;
     }
 
-    public long getcNumber() {
-        return this.cNumber;
+    // Getters and setters
+    public long getCardID() {
+        return cardID;
+    }
+
+    public void setCardID(long cardID) {
+        this.cardID = cardID;
+    }
+
+    public long getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(long cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
     public String getCardHolderName() {
-        return this.CardHolderName;
+        return cardHolderName;
+    }
+
+    public void setCardHolderName(String cardHolderName) {
+        this.cardHolderName = cardHolderName;
     }
 
     public String getCardExpiry() {
-        return this.CardExpiry;
+        return cardExpiry;
     }
 
-    public int getCCV() {
-        return this.CCV;
+    public void setCardExpiry(String cardExpiry) {
+        this.cardExpiry = cardExpiry;
+    }
+
+    public int getCardCVV() {
+        return cardCVV;
+    }
+
+    public void setCardCVV(int cardCVV) {
+        this.cardCVV = cardCVV;
     }
 
     public long getUserID() {
-        return this.UserID;
+        return userID;
     }
 
-    public void setcID(long id) {
-        this.cID = id;
-    }
-
-    public void setcNumber(long cNumber) {
-        this.cNumber = cNumber;
-    }
-
-    public void setCardHolderName(String name) {
-        this.CardHolderName = name;
-    }
-
-    public void setCardExpiry(String exp) {
-        this.CardExpiry = exp;
-    }
-
-    public void setUserID(long uID) {
-        this.UserID = uID;
-    }
-
-    public void setCCV(int ccv) {
-        this.CCV = ccv;
+    public void setUserID(long userID) {
+        this.userID = userID;
     }
 }
