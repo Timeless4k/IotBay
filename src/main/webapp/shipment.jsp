@@ -37,7 +37,7 @@ Implement:
 
     <div class="shipment-info">
 
-        <form action="ShipmentServlet" method="post">
+        <form action="/ShipmentServlet" method="post">
 
             <div class="row">
 
@@ -73,30 +73,9 @@ Implement:
 
 
 
-
-                <!-- Contiue here... -->
                 <div class="column">
 
                     <div class="vertical_spacing"></div>
-                    
-                    <!-- <div class="shipment_input">
-                        <label for="shipmentMethod" class="shipment_input_header">Shipment Method:</label>
-                        <br>
-                        <input type="text" id="shipmentMethod" name="shipmentMethod" required class="shipment_input_field">
-                    </div> -->
-
-
-                    <!-- <div class="shipment_input">
-                        <label class="shipment_input_header">Shipment Method:</label>
-                        <br>
-                        <div class="shipment_options">
-                            <div class="shipment_option" data-value="FedEx">FedEx Express<br><i>2-3 days shipping</i></div>
-                            <div class="shipment_option" data-value="Aramex">Aramex Standard<br><i>1 week shipping</i></div>
-                            <div class="shipment_option" data-value="DHL">DHL Standard<br><i>2 weeks shipping</i></div>
-                        </div>
-                        <input type="hidden" id="shipmentMethod" name="shipmentMethod" required>
-                    </div>    -->
-
 
                     <div class="shipment_input">
                         <label class="shipment_input_header">Shipment Method:</label>
