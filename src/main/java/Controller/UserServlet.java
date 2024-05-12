@@ -150,7 +150,7 @@ public class UserServlet extends HttpServlet {
 
 
 
-    private void updateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException {
+    private void updateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         try {
             String email = request.getParameter("email");
             user existingUser = userDao.getUserByEmail(email);
@@ -164,11 +164,14 @@ public class UserServlet extends HttpServlet {
                 existingUser.setGender(request.getParameter("gender"));
                 existingUser.setCreationDate(request.getParameter("creationDate"));
                 existingUser.setuType(request.getParameter("userType"));
-               
+    
                 // Call updateUser method in userDAO
                 if (userDao.updateUser(existingUser)) {
                     // Update successful, redirect to usermanagement.jsp
-                    response.sendRedirect("usermanagement.jsp");
+                    // Instead of redirecting, set the updated user in session and then forward to usermanagement.jsp
+                    HttpSession session = request.getSession();
+                    session.setAttribute("user", existingUser);
+                    request.getRequestDispatcher("/usermanagement.jsp").forward(request, response);
                 } else {
                     // Update failed
                     response.getWriter().print("Failed to update user.");
@@ -183,6 +186,7 @@ public class UserServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+    
    
    
    

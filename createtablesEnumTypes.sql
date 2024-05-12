@@ -37,7 +37,7 @@ CREATE TABLE AccessData(
     foreign key(UserID) references User(UserID)
 );
 
-CREATE TABLE CardInformation(
+CREATE TABLE Card(
     CardID BIGINT,
     CardNumber BIGINT,
     CardHolderName varchar(128),
@@ -56,7 +56,7 @@ CREATE TABLE Payments(
     PaymentStatus ENUM('Approved', 'Failed', 'Pending'), -- ahhhh there are errors in the report in regards to type
     CardID BIGINT,
     primary key(PaymentID),
-    foreign key(CardID) references CardInformation(CardID)
+    foreign key(CardID) references Card(CardID)
 );
 
 CREATE TABLE ShipmentData(
@@ -90,10 +90,10 @@ CREATE TABLE OrderLineItem(
     foreign key(ProductID) references ProductData(ProductID)
 );
 
-ALTER TABLE `iotbay`.`cardinformation` 
-DROP FOREIGN KEY `cardinformation_ibfk_1`;
-ALTER TABLE `iotbay`.`cardinformation` 
-ADD CONSTRAINT `cardinformation_ibfk_1`
+ALTER TABLE `iotbay`.`Card` 
+DROP FOREIGN KEY `Card_ibfk_1`;
+ALTER TABLE `iotbay`.`Card` 
+ADD CONSTRAINT `Card_ibfk_1`
   FOREIGN KEY (`UserID`)
   REFERENCES `iotbay`.`user` (`UserID`)
   ON DELETE CASCADE;
@@ -280,7 +280,7 @@ insert into ProductData values(
     200
 );
 
-insert into CardInformation values (
+insert into Card values (
     8111111111,
     3566000020000410,
     "Jim J Jamerson",
@@ -289,7 +289,7 @@ insert into CardInformation values (
     1111111111
 );
 
-insert into CardInformation values (
+insert into Card values (
     8222222222,
     4263982640269299,
     "Jim J Jamerson",
@@ -299,7 +299,7 @@ insert into CardInformation values (
 );
 
 
-insert into CardInformation values (
+insert into Card values (
     8333333333,
     4263982640269299,
     "Marvin M Murdoc",
@@ -308,7 +308,7 @@ insert into CardInformation values (
     2222222222
 );
 
-insert into CardInformation values (
+insert into Card values (
     8444444444,
     4263982640269299,
     "Marvin M Murdoc",
@@ -317,22 +317,22 @@ insert into CardInformation values (
     2222222222
 );
 
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8555555555', '378282246310005', 'Marvin M Murdoc', '2026-04-01', '111', '1111111114');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8666666666', '371449635398431', 'Marvin M Murdoc', '2026-04-01', '111', '1111111116');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8777777777', '378734493671000', 'Marvin M Murdoc', '2026-04-01', '111', '1111111119');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8888888888', '5610591081018250', 'Jim J Jamerson', '2026-04-01', '111', '7777777777');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8999999999', '30569309025904', 'Jim J Jamerson', '2026-04-01', '223', '8888888888');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('9999999999', '38520000023237', 'Nuclear Nadal', '2026-04-01', '332', '9999999998');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000001', '6011111111111117', 'Jim J Jamerson', '2026-04-01', '221', '9999999999');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000022', '6011000990139424', 'Jim J Jamerson', '2026-04-01', '223', '9999999999');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000201', '3530111333300000', 'Jim J Jamerson', '2026-04-01', '223', '1111111117');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('1111111211', '3566002020360505', 'Jim J Jamerson', '2026-04-01', '443', '1111111112');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('2323151215', '5555555555554444', 'Jim J Jamerson', '2026-04-01', '554', '1111111112');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000016', '5105105105105100', 'Alex Abagale', '2026-04-01', '334', '1111111115');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('1111111117', '4111111111111111', 'Alex Abagale', '2026-04-01', '812', '1111111116');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000018', '4012888888881881', 'Alex Abagale', '2026-04-01', '123', '1111111118');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000019', '4222222222222', 'Alex Abagale', '2026-04-01', '321', '1111111120');
-INSERT INTO `iotbay`.`cardinformation` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000020', '4242424242424242', 'Alex Abagale', '2026-04-01', '555', '1111111120');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8555555555', '378282246310005', 'Marvin M Murdoc', '2026-04-01', '111', '1111111114');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8666666666', '371449635398431', 'Marvin M Murdoc', '2026-04-01', '111', '1111111116');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8777777777', '378734493671000', 'Marvin M Murdoc', '2026-04-01', '111', '1111111119');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8888888888', '5610591081018250', 'Jim J Jamerson', '2026-04-01', '111', '7777777777');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('8999999999', '30569309025904', 'Jim J Jamerson', '2026-04-01', '223', '8888888888');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('9999999999', '38520000023237', 'Nuclear Nadal', '2026-04-01', '332', '9999999998');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000001', '6011111111111117', 'Jim J Jamerson', '2026-04-01', '221', '9999999999');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000022', '6011000990139424', 'Jim J Jamerson', '2026-04-01', '223', '9999999999');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000201', '3530111333300000', 'Jim J Jamerson', '2026-04-01', '223', '1111111117');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('1111111211', '3566002020360505', 'Jim J Jamerson', '2026-04-01', '443', '1111111112');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('2323151215', '5555555555554444', 'Jim J Jamerson', '2026-04-01', '554', '1111111112');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000016', '5105105105105100', 'Alex Abagale', '2026-04-01', '334', '1111111115');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('1111111117', '4111111111111111', 'Alex Abagale', '2026-04-01', '812', '1111111116');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000018', '4012888888881881', 'Alex Abagale', '2026-04-01', '123', '1111111118');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000019', '4222222222222', 'Alex Abagale', '2026-04-01', '321', '1111111120');
+INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000020', '4242424242424242', 'Alex Abagale', '2026-04-01', '555', '1111111120');
 
 
 INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111111', '400', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '1');

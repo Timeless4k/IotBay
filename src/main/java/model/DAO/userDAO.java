@@ -52,6 +52,25 @@ public class userDAO {
         return false;
     }
 
+    /**
+     * Retrieves a user by their email address from the database.
+     * This method retrieves and returns user information including the user ID.
+     * @param email The email address of the user to retrieve.
+     * @return The user object if found, or null if not found.
+     */
+    public user getUserByEmail(String email) {
+        try {
+            getUserByEmailSt.setString(1, email);
+            ResultSet rs = getUserByEmailSt.executeQuery();
+            if (rs.next()) {
+                return extractUserFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("Fetch user failed: " + e.getMessage());
+        }
+        return null;
+    }
+
     public boolean createUser(user newUser) {
         try {
             long uniqueUserID = generateUniqueUserID(); // Generate a unique UserID
@@ -86,19 +105,6 @@ public class userDAO {
             }
         }
         return false;
-    }
-
-    public user getUserByEmail(String email) {
-        try {
-            getUserByEmailSt.setString(1, email);
-            ResultSet rs = getUserByEmailSt.executeQuery();
-            if (rs.next()) {
-                return extractUserFromResultSet(rs);
-            }
-        } catch (SQLException e) {
-            System.err.println("Fetch user failed: " + e.getMessage());
-        }
-        return null;
     }
 
     public boolean updateUser(user user) {
