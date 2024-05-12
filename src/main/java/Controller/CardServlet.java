@@ -116,14 +116,26 @@ public class CardServlet extends HttpServlet {
     }
     
 
-    private void editCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        long cardId = Long.parseLong(request.getParameter("cardId"));
-        card editCard = cardDao.getCardById(cardId);
-        if (editCard != null && editCard.getUserID() == loggedInUser.getuID()) {
-            request.setAttribute("editCard", editCard);
-            request.getRequestDispatcher("editCard.jsp").forward(request, response);
-        } else {
-            response.sendRedirect("error.jsp");
+    private void editCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            long cardID = Long.parseLong(request.getParameter("cardID"));
+            long cardNumber = Long.parseLong(request.getParameter("cardNumber"));
+            String cardHolderName = request.getParameter("cardHolderName");
+            String cardExpiry = request.getParameter("cardExpiry");
+            int cardCVV = Integer.parseInt(request.getParameter("cardCVV"));
+            long userID = ((user) request.getSession().getAttribute("user")).getuID();
+    
+            card cardToUpdate = new card(cardID, cardNumber, cardHolderName, cardExpiry, cardCVV, userID);
+    
+            boolean success = cardDao.updateCard(cardToUpdate);
+    
+            if (success) {
+                response.sendRedirect("payment.jsp"); // Redirect or dispatch to reflect the update
+            } else {
+                response.sendRedirect("error.jsp"); // Handle update failure
+            }
+        } catch (NumberFormatException e) {
+            response.sendRedirect("error.jsp"); // Handle parsing errors
         }
     }
 

@@ -15,6 +15,7 @@ public class cardDAO {
     private PreparedStatement getCardByIdSt;
     private PreparedStatement deleteCardSt;
     private PreparedStatement createCardSt;
+    private PreparedStatement updateCardSt;
 
     public cardDAO(Connection connection) throws SQLException {
         this.conn = connection;
@@ -28,7 +29,9 @@ public class cardDAO {
             "DELETE FROM Card WHERE CardID = ?");
         createCardSt = conn.prepareStatement(
             "INSERT INTO Card (CardID, CardNumber, CardHolderName, CardExpiry, CardCVV, UserID) VALUES (?, ?, ?, ?, ?, ?)");
-    }
+        updateCardSt = conn.prepareStatement("UPDATE Card SET CardNumber = ?, CardHolderName = ?, CardExpiry = ?, CardCVV = ? WHERE CardID = ? AND UserID = ?");
+        }
+
 
     public List<card> getCardsForUser(long userID) {
         List<card> cardList = new ArrayList<>();
@@ -98,8 +101,7 @@ public class cardDAO {
             }
         }
     }
-   
-    
+       
     public boolean createCard(card newCard) {
         PreparedStatement createCardSt = null;
         try {
@@ -166,7 +168,22 @@ public class cardDAO {
         return false;
     }
 
-    
+    public boolean updateCard(card cardToUpdate) {
+        try {
+            updateCardSt.setLong(1, cardToUpdate.getCardNumber());
+            updateCardSt.setString(2, cardToUpdate.getCardHolderName());
+            updateCardSt.setString(3, cardToUpdate.getCardExpiry());
+            updateCardSt.setInt(4, cardToUpdate.getCardCVV());
+            updateCardSt.setLong(5, cardToUpdate.getCardID());
+            updateCardSt.setLong(6, cardToUpdate.getUserID());
+
+            int rowsAffected = updateCardSt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Error updating card: " + e.getMessage());
+            return false;
+        }
+    }
 
     private card extractCardFromResultSet(ResultSet rs) throws SQLException {
         card card = new card();
