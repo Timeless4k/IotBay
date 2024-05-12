@@ -1,139 +1,89 @@
-/* Include your reset and basic styles here */
-
-/* Payment Form Styles */
-.container {
-    max-width: 600px;
-    margin: 50px auto;
+/* General page styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
     padding: 20px;
+    color: #333;
+}
+
+.container {
     background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    margin: 40px auto;
+    width: 90%;
+    max-width: 600px; /* Smaller width for more focus */
 }
 
-h2 {
+h1, h2 {
+    color: #0056b3; /* Blue shade for headers */
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
-.form-group {
-    margin-bottom: 20px;
+form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.form-group input[type="text"],
-.form-group input[type="number"],
-.form-group input[type="email"] {
+input[type="text"], input[type="email"], input[type="password"], select {
     width: 100%;
     padding: 10px;
+    margin: 10px 0 15px 0;
+    display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    box-sizing: border-box;
 }
 
-.form-group input[type="submit"] {
+button {
     width: 100%;
-    padding: 15px;
+    background-color: #28a745; /* Bootstrap green */
+    color: white;
+    padding: 12px 20px;
+    margin: 8px 0;
     border: none;
     border-radius: 4px;
-    color: #fff;
-    background-color: #007bff;
     cursor: pointer;
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    display: block;
 }
 
-.form-group input[type="submit"]:hover {
-    background-color: #0056b3;
+button:hover {
+    background-color: #218838; /* Darker green on hover */
 }
 
-/* Footer styles */
-footer {
-    text-align: center;
-    padding: 20px 0;
-    background-color: #f8f9fa;
-    color: #6c757d;
-    font-size: 0.75em;
-    position: absolute;
-    bottom: 0;
+table {
     width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .container {
-        width: 90%;
-        margin: 20px auto;
-    }
-
-    footer {
-        position: relative;
-    }
+table, th, td {
+    border: 1px solid #dee2e6; /* Lighter gray border */
 }
 
-
-/* Previous styles */
-
-/* Checkout Page Layout */
-.checkout-container {
-    display: flex;
-    justify-content: space-between;
-    margin: 50px auto;
-    max-width: 1200px; /* Adjust based on your content width */
-    padding: 20px;
+th, td {
+    text-align: left;
+    padding: 12px;
 }
 
-.payment-info,
-.cart-summary {
-    background: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 48%; /* Adjust based on your preference */
+th {
+    background-color: #f9f9f9;
 }
 
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
+a {
+    color: #007bff;
+    text-decoration: none;
+    padding: 5px;
+    margin-right: 10px;
 }
 
-/* Other form styling */
-
-/* Cart Summary Styling */
-.cart-summary h2 {
-    text-align: left; /* Aligns the cart summary title to the left */
+a:hover {
+    text-decoration: underline;
 }
-
-.cart-summary p {
-    margin-bottom: 10px;
-    line-height: 1.5;
-}
-
-.cart-summary p strong {
-    font-weight: bold;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .checkout-container {
-        flex-direction: column;
-    }
-
-    .payment-info,
-    .cart-summary {
-        width: 100%; /* Full width for mobile */
-        margin-bottom: 20px; /* Add space between the sections */
-    }
-
-    /* Adjust footer when positioned absolutely */
-    footer {
-        position: relative;
-    }
-}
-
-

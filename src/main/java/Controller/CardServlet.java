@@ -3,6 +3,8 @@ package Controller;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -143,12 +145,27 @@ public class CardServlet extends HttpServlet {
         }
     }
 
+    private String convertToLastDayOfMonth(String expiry) {
+        try {
+            SimpleDateFormat originalFormat = new SimpleDateFormat("MM/yyyy");
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(originalFormat.parse(expiry)); // Parse the date
+
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH)); // Last day
+            SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+            return targetFormat.format(cal.getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private void createCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         long cardNumber = Long.parseLong(request.getParameter("cardNumber"));
         String cardHolderName = request.getParameter("cardHolderName");
-        String cardExpiry = request.getParameter("cardExpiry");
+        String cardExpiry = request.getParameter("cardExpiry"); // The expiry date from the form
         int cardCVV = Integer.parseInt(request.getParameter("cardCVV"));
-
+    
         HttpSession session = request.getSession();
         user loggedInUser = (user) session.getAttribute("user");
         if (loggedInUser == null) {
@@ -156,22 +173,28 @@ public class CardServlet extends HttpServlet {
             return;
         }
         long userID = loggedInUser.getuID();
-
+    
         try {
             conn.setAutoCommit(false);
-
-            card newCard = new card(0, cardNumber, cardHolderName, cardExpiry, cardCVV, userID);
-
+    
+            // Convert the expiry date to the last day of the specified month/year
+            String formattedExpiryDate = convertToLastDayOfMonth(cardExpiry);
+            if (formattedExpiryDate == null) {
+                throw new Exception("Invalid date format");
+            }
+    
+            card newCard = new card(0, cardNumber, cardHolderName, formattedExpiryDate, cardCVV, userID);
+    
             boolean success = cardDao.createCard(newCard);
-
-            conn.commit();
-
+    
             if (success) {
+                conn.commit();
                 response.sendRedirect("CardServlet?action=displayAll");
             } else {
+                conn.rollback();
                 response.sendRedirect("error.jsp");
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             conn.rollback();
             System.err.println("Error creating card: " + e.getMessage());
             response.sendRedirect("error.jsp");
@@ -179,4 +202,6 @@ public class CardServlet extends HttpServlet {
             conn.setAutoCommit(true);
         }
     }
+
+
 }

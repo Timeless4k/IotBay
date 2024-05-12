@@ -137,7 +137,8 @@ public class cardDAO {
             uniqueId = isCardIdUnique(cardId);
         } while (!uniqueId);
         return cardId;
-    } 
+    }
+ 
 
     private boolean isCardIdUnique(long cardId) {
         ResultSet rs = null;

@@ -223,7 +223,7 @@ public class ShipmentServlet extends HttpServlet {
                 connection.commit();
 
                 // Redirect or forward to a success page
-                response.sendRedirect("payment.jsp");
+                response.sendRedirect("CardServlet?action=displayAll");
             } catch (SQLException e) {
                 // Handle database operation failure
                 e.printStackTrace(); // Log the exception or handle it according to your application's error handling strategy
