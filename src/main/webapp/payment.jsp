@@ -6,12 +6,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Checkout Payment</title>
+    <title>Manage Payment</title>
     <link rel="stylesheet" href="css/payment.css">
 </head>
 <body>
     <div class="container">
-        <h1>Checkout Payment</h1>
+        <h1>Manage Payment</h1>
         
         <!-- Display Existing Payment Methods for Selection -->
         <h2>Select a Payment Method</h2>
@@ -19,7 +19,9 @@
             <input type="hidden" name="action" value="processPayment">
             <select name="cardID" required>
                 <c:forEach var="card" items="${cardList}">
-                    <option value="${card.cardID}">${card.cardHolderName} - ${card.cardNumber} (Exp: ${card.cardExpiry})</option>
+                    <option value="${card.cardID}">
+                        ${card.cardHolderName} - ${card.cardNumber} (Exp: ${card.cardExpiry})
+                    </option>
                 </c:forEach>
             </select>
             <button type="submit">Pay Now</button>
@@ -37,7 +39,7 @@
         </form>
 
         <!-- List of Existing Payment Methods with Edit/Delete Options -->
-        <h2>Manage Your Payment Methods</h2>
+        <h2>Existing Payment Methods</h2>
         <table border="1">
             <thead>
                 <tr>
@@ -53,13 +55,16 @@
                         <td>${card.cardNumber}</td>
                         <td>${card.cardHolderName}</td>
                         <td>${card.cardExpiry}</td>
-                        <td>
+                        <td class="action-buttons">
                             <a href="CardServlet?action=edit&cardId=${card.cardID}">Edit</a>
-                            <a href="CardServlet?action=delete&cardId=${card.cardID}" onclick="return confirm('Are you sure?')">Delete</a>
-                        </td>
-                    </tr>      
+                            <form method="post" action="CardServlet" style="display: inline;">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="cardId" value="${card.cardID}">
+                                <input type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+                            </form>
+                        </td>         
                 </c:forEach>
-            </tbody>
+            </tbody>    
         </table>
     </div>
 
@@ -68,15 +73,15 @@
         user loggedInUser = (user) session.getAttribute("user");
         if (loggedInUser != null) {
     %>
-    <div>User ID: <%= loggedInUser.getuID() %></div>
-    <div>Email Address: <%= loggedInUser.getEmail() %></div>
-    <div>Debugging Info: User is logged in</div>
+        <div>User ID: <%= loggedInUser.getuID() %></div>
+        <div>Email Address: <%= loggedInUser.getEmail() %></div>
+        <div>Debugging Info: User is logged in</div>
     <%
         } else {
     %>
-    <div>User is not logged in</div>
+        <div>User is not logged in</div>
     <%
         }
     %>
 </body>
-</html> 
+</html>

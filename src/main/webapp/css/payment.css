@@ -14,11 +14,11 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     margin: 40px auto;
     width: 90%;
-    max-width: 600px; /* Smaller width for more focus */
+    max-width: 600px;
 }
 
 h1, h2 {
-    color: #0056b3; /* Blue shade for headers */
+    color: #0056b3;
     text-align: center;
     margin-bottom: 25px;
 }
@@ -31,11 +31,10 @@ form {
     box-shadow: 0 2px 4px rgba(0,0,0,0.06);
 }
 
-input[type="text"], input[type="email"], input[type="password"], select {
+select, input[type="text"], input[type="email"], input[type="password"] {
     width: 100%;
     padding: 10px;
-    margin: 10px 0 15px 0;
-    display: inline-block;
+    margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
@@ -43,18 +42,17 @@ input[type="text"], input[type="email"], input[type="password"], select {
 
 button {
     width: 100%;
-    background-color: #28a745; /* Bootstrap green */
+    background-color: #28a745;
     color: white;
     padding: 12px 20px;
     margin: 8px 0;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    display: block;
 }
 
 button:hover {
-    background-color: #218838; /* Darker green on hover */
+    background-color: #218838;
 }
 
 table {
@@ -65,7 +63,7 @@ table {
 }
 
 table, th, td {
-    border: 1px solid #dee2e6; /* Lighter gray border */
+    border: 1px solid #dee2e6;
 }
 
 th, td {
@@ -86,4 +84,49 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+/* Adjustments for buttons in table cells for better alignment */
+.action-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.action-buttons form,
+.action-buttons a {
+    margin: 0 5px;
+}
+
+.action-buttons a, .action-buttons form {
+    display: inline-block;
+    background-color: #dc3545; /* Red for delete */
+    color: white;
+    text-align: center;
+    padding: 6px 12px;
+    margin: 0 5px;
+    border-radius: 4px;
+    text-decoration: none; /* Remove underline from anchor tags */
+    cursor: pointer;
+}
+
+.action-buttons a {
+    background-color: #007bff; /* Blue for edit */
+}
+
+.action-buttons form {
+    margin: 0; /* Remove default form margins */
+}
+
+.action-buttons form input[type="submit"] {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+}
+
+.action-buttons form input[type="submit"]:hover {
+    opacity: 0.8;
 }

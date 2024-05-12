@@ -83,6 +83,7 @@ public class cardDAO {
             deleteCardSt = conn.prepareStatement("DELETE FROM Card WHERE CardID = ?");
             deleteCardSt.setLong(1, cardId);
             int rowsAffected = deleteCardSt.executeUpdate();
+            System.out.println("Attempt to delete card ID " + cardId + " affected " + rowsAffected + " rows.");
             return rowsAffected > 0;
         } catch (SQLException e) {
             System.err.println("Error deleting card: " + e.getMessage());
@@ -97,6 +98,7 @@ public class cardDAO {
             }
         }
     }
+   
     
     public boolean createCard(card newCard) {
         PreparedStatement createCardSt = null;
