@@ -98,6 +98,10 @@ public class CardServlet extends HttpServlet {
                 case "delete":
                     deleteCard(request, response);
                     break;
+                case "create":
+                    createCard(request, response);
+                    break;
+                
                 default:
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
                     break;
@@ -136,6 +140,43 @@ public class CardServlet extends HttpServlet {
             }
         } else {
             response.sendRedirect("error.jsp");
+        }
+    }
+
+    private void createCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        long cardNumber = Long.parseLong(request.getParameter("cardNumber"));
+        String cardHolderName = request.getParameter("cardHolderName");
+        String cardExpiry = request.getParameter("cardExpiry");
+        int cardCVV = Integer.parseInt(request.getParameter("cardCVV"));
+
+        HttpSession session = request.getSession();
+        user loggedInUser = (user) session.getAttribute("user");
+        if (loggedInUser == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        long userID = loggedInUser.getuID();
+
+        try {
+            conn.setAutoCommit(false);
+
+            card newCard = new card(0, cardNumber, cardHolderName, cardExpiry, cardCVV, userID);
+
+            boolean success = cardDao.createCard(newCard);
+
+            conn.commit();
+
+            if (success) {
+                response.sendRedirect("CardServlet?action=displayAll");
+            } else {
+                response.sendRedirect("error.jsp");
+            }
+        } catch (SQLException e) {
+            conn.rollback();
+            System.err.println("Error creating card: " + e.getMessage());
+            response.sendRedirect("error.jsp");
+        } finally {
+            conn.setAutoCommit(true);
         }
     }
 }

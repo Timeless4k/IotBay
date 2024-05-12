@@ -133,11 +133,11 @@ public class cardDAO {
         long cardId;
         boolean uniqueId = false;
         do {
-            cardId = 1000000000000000L + random.nextLong();
+            cardId = Math.abs(1000000000000000L + random.nextLong());
             uniqueId = isCardIdUnique(cardId);
         } while (!uniqueId);
         return cardId;
-    }
+    } 
 
     private boolean isCardIdUnique(long cardId) {
         ResultSet rs = null;
