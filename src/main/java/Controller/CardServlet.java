@@ -45,7 +45,7 @@ public class CardServlet extends HttpServlet {
             if (cardList != null) {
                 // Forward the retrieved payment methods to the JSP for display
                 request.setAttribute("cardList", cardList);
-                request.getRequestDispatcher("managePayment.jsp").forward(request, response);
+                request.getRequestDispatcher("payment.jsp").forward(request, response);
             } else {
                 // Handle the case where cardList is null (e.g., database error)
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error retrieving payment methods");
@@ -57,10 +57,6 @@ public class CardServlet extends HttpServlet {
     }
     
     
-    
-
-
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         handleRequest(request, response);
@@ -113,11 +109,12 @@ public class CardServlet extends HttpServlet {
         }
     }
 
-    private void displayAllCards(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+    private void displayAllCards(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<card> cardList = cardDao.getCardsForUser(loggedInUser.getuID());
         request.setAttribute("cardList", cardList);
-        request.getRequestDispatcher("managePayment.jsp").forward(request, response);
+        request.getRequestDispatcher("payment.jsp").forward(request, response);
     }
+    
 
     private void editCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         long cardId = Long.parseLong(request.getParameter("cardId"));
@@ -189,7 +186,10 @@ public class CardServlet extends HttpServlet {
     
             if (success) {
                 conn.commit();
-                response.sendRedirect("CardServlet?action=displayAll");
+                // Fetch updated list of cards to reflect the new addition
+                List<card> cardList = cardDao.getCardsForUser(loggedInUser.getuID());
+                request.setAttribute("cardList", cardList);
+                request.getRequestDispatcher("payment.jsp").forward(request, response); // Forward to JSP with updated list
             } else {
                 conn.rollback();
                 response.sendRedirect("error.jsp");
@@ -202,6 +202,7 @@ public class CardServlet extends HttpServlet {
             conn.setAutoCommit(true);
         }
     }
+    
 
 
 }
