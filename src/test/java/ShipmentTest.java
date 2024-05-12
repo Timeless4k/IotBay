@@ -10,7 +10,7 @@ import model.DAO.DBConnector;
 
 import model.DAO.shipmentDAO;
 
-import model.Shipment;
+import model.shipment;
 
 public class ShipmentTest {
 
@@ -47,7 +47,7 @@ public class ShipmentTest {
     public void createTest() throws SQLException, ClassNotFoundException {
         intSDAO();
 
-        Shipment test = new Shipment("University of Technology Sydney", "2024-05-25", "FedEx");
+        shipment test = new shipment("University of Technology Sydney", "2024-05-25", "FedEx");
 
         System.out.println("Creating shipment: " + test.toString());
 

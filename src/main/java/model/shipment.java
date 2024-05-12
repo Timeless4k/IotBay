@@ -45,7 +45,7 @@
 
 package model;
 
-public class Shipment {
+public class shipment {
     private String shipmentID; // Assuming you also need a shipmentID for the shipment
     private String shipmentAddress;
     // private String shipmentContactInfoEmail;
@@ -62,7 +62,7 @@ public class Shipment {
     //     this.shipmentMethod = shipmentMethod;
     // }
 
-    public Shipment(String shipmentAddress, String shipmentDate, String shipmentMethod) {
+    public shipment(String shipmentAddress, String shipmentDate, String shipmentMethod) {
         this.shipmentAddress = shipmentAddress;
         this.shipmentDate = shipmentDate;
         this.shipmentMethod = shipmentMethod;

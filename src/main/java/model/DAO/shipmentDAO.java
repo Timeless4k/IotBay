@@ -36,7 +36,7 @@
 
 
 package model.DAO;
-import model.Shipment;
+import model.shipment;
 import java.sql.*;
 import java.util.Random;
 
@@ -86,7 +86,7 @@ public class shipmentDAO {
     //     }
     // }
 
-    public boolean createShipment(Shipment shipmentDetails) throws SQLException {
+    public boolean createShipment(shipment shipmentDetails) throws SQLException {
         int status = 0;
 
         String query = "INSERT INTO ShipmentData (ShipmentID, ShipmentAddress, ShipmentExpectedDate, ShipmentType) VALUES (?, ?, ?, ?)";

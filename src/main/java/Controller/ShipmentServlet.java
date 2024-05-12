@@ -145,7 +145,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.Shipment; 
+import model.shipment; 
 import model.DAO.shipmentDAO;
 
 import java.sql.Connection;
@@ -215,7 +215,7 @@ public class ShipmentServlet extends HttpServlet {
                 SDAO = new shipmentDAO(connection);
 
                 // Create a Shipment object
-                Shipment shipment = new Shipment(shipmentAddress, shipmentDate, shipmentMethod);
+                shipment shipment = new shipment(shipmentAddress, shipmentDate, shipmentMethod);
 
                 // Call the DAO method to insert the shipment into the database
                 SDAO.createShipment(shipment);
