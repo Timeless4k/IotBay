@@ -45,6 +45,13 @@ public class RegisterServlet extends HttpServlet {
         String mobilePhone = request.getParameter("mobilePhone");
         String gender = request.getParameter("gender");
 
+        // Check if email already exists
+        user existingUser = UDAO.getUserByEmail(email);
+        if (existingUser != null) {
+            response.sendRedirect("register.jsp?error=duplicate");
+            return;
+        }
+
         // Create a User instance and set its properties
         user newUser = new user();
         newUser.setEmail(email);
