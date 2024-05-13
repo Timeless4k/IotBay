@@ -77,7 +77,8 @@ public class paymentDAO {
     }
 
     public ResultSet getPaymentsForUser(long userID) {
-        String sql = "SELECT * FROM payments WHERE CardID IN (SELECT CardID FROM cardinformation WHERE UserID = ?)";
+        // Corrected the SQL query to reference the correct table name `card`
+        String sql = "SELECT * FROM payments WHERE CardID IN (SELECT CardID FROM card WHERE UserID = ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, userID);
             return pstmt.executeQuery();
@@ -85,5 +86,5 @@ public class paymentDAO {
             System.err.println("Get payments failed: " + e.getMessage());
             return null;
         }
-    }    
+    }
 }

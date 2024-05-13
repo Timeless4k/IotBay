@@ -1,114 +1,107 @@
-// import model.payment;
-// import model.DAO.DBConnector;
-// import model.DAO.paymentDAO;
-// import model.DAO.userDAO;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
-// import java.sql.Connection;
-// import java.sql.DriverManager;
-// import java.sql.SQLException;
-// import org.junit.jupiter.api.TestInstance;
-// import org.junit.jupiter.api.MethodOrderer;
-// import org.junit.jupiter.api.Order;
-// import org.junit.jupiter.api.TestMethodOrder;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.AfterAll;
-// import org.junit.jupiter.api.AfterEach;
-// import org.junit.jupiter.api.BeforeAll;
-// import org.junit.jupiter.api.Test;
-// import static org.junit.jupiter.api.Assertions.*;
+import com.google.protobuf.Method;
 
-// @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-// @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-// public class PaymentDAOTest {
-//     private Connection conn;
-//     private paymentDAO paymentDAO;
+import model.DAO.DBConnector;
+import model.DAO.paymentDAO;
+import model.payment;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-//     @BeforeAll
-//     public void setUp() throws SQLException, ClassNotFoundException {
-//         DBConnector connector = new DBConnector();
-//         conn = connector.openConnection();
-//         conn.setAutoCommit(false);  // Transaction control starts
-//         paymentDAO = new paymentDAO(conn);
-//         System.out.println("Setup complete: Database connected and DAO initialized.");
-//     }
+import static org.junit.jupiter.api.Assertions.*;
 
-//     @AfterAll
-//     public void tearDown() throws SQLException {
-//         conn.rollback(); // Rollback transaction to avoid saving test data
-//         conn.close();
-//     }
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+public class PaymentDAOTest {
+    private paymentDAO paymentDao;
+    private Connection conn;
+    
+    @BeforeEach
+    public void setUp() throws SQLException, ClassNotFoundException {
+        // Setup DB connection
+        DBConnector connector = new DBConnector();
+        conn = connector.openConnection();
+        conn.setAutoCommit(false);  // Start each test with a clean slate
+        paymentDao = new paymentDAO(conn);
+        System.out.println("Setup complete: Database connected and DAO initialized.");
+    }
 
-//     @Test
-//     @Order(1)
-//     public void testConnectionNotNull() {
-//         assertNotNull(conn, "Database connection should not be null");
-//         System.out.println("Connection test passed: Connection is not null.");
-//     }
+    @AfterEach
+        public void tearDown() throws SQLException {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    conn.close();
+                    System.out.println("Cleanup complete: Changes rolled back and connection closed.");
+                } catch (SQLException e) {
+                    System.err.println("Error during cleanup: " + e.getMessage());
+                }
+            }
+        }
+    
 
-//     @Test
-//     @Order(2)
-//     public void testCreatePayment() throws SQLException {
-//         System.out.println("Starting testCreatePayment...");
-//         payment payment = new payment(1, 100.0, "Credit Card", "2024-01-01", "Pending");
-//         boolean isCreated = paymentDAO.createPayment(payment);
-//         assertTrue(isCreated, "payment should be created successfully");
+    @Test
+    public void testCreatePayment_Success() throws SQLException {
+        // Example payment data
+        payment pay = new payment(0, 150.0, "Card", "2024-05-10", "Approved", "8111111111");
+        
+        boolean result = paymentDao.createPayment(pay);
+        assertTrue(result, "Payment creation should be successful.");
+        System.out.println("Payment creation test passed.");
+    }
 
-//         payment fetchedPayment = paymentDAO.readPayment(payment.getPaymentID());
-//         assertNotNull(fetchedPayment, "payment should be readable after creation");
-//         assertEquals(100.0, fetchedPayment.getAmount(), "Amount should match");
+    @Test
+    public void testGetPaymentsForUser() throws SQLException {
+        System.out.println("Setup complete: Database connected and DAO initialized.");
 
-//         System.out.println("testCreatePayment completed successfully.");
-//     }
+        // Example user ID
+        long userID = 1111111111;
 
-//     @Test
-//     @Order(3)
-//     public void testReadPayment() throws SQLException {
-//         System.out.println("Starting testReadPayment...");
-//         try {
-//             // Assuming an existing payment with ID 1
-//             payment payment = paymentDAO.readPayment(1);
-//             if (payment != null) {
-//                 System.out.println("Payment details retrieved successfully:");
-//                 System.out.println("Payment ID: " + payment.getPaymentID());
-//                 System.out.println("Amount: " + payment.getAmount());
-//                 System.out.println("Method: " + payment.getMethod());
-//                 System.out.println("Date: " + payment.getDate());
-//                 System.out.println("Status: " + payment.getStatus());
-//                 System.out.println("testReadPayment completed successfully.");
-//             } else {
-//                 System.out.println("Error: No payment found with ID 1");
-//                 fail("Payment should exist");
-//             }
-//         } catch (SQLException ex) {
-//             System.out.println("Error occurred during testReadPayment: " + ex.getMessage());
-//             fail("SQLException occurred: " + ex.getMessage());
-//         }
-//     }
+        // Create example payments
+        payment pay1 = new payment(65465465, 100.0, "Card", "2024-05-10", "Approved", "8111111111");
+        payment pay2 = new payment(65464646, 200.0, "Card", "2024-05-11", "Approved", "8111111111");
 
-//     @Test
-//     @Order(4)
-//     public void testUpdatePayment() throws SQLException {
-//         System.out.println("Starting testUpdatePayment...");
-//         // Assuming an existing payment with ID 1
-//         payment payment = new payment(1, 150.0, "Debit Card", "2024-01-02", "Approved");
-//         boolean isUpdated = paymentDAO.updatePayment(payment);
-//         assertTrue(isUpdated, "Payment update should be successful");
+        // Ensure payments are created
+        assertTrue(paymentDao.createPayment(pay1), "First payment creation failed.");
+        assertTrue(paymentDao.createPayment(pay2), "Second payment creation failed.");
 
-//         payment updatedPayment = paymentDAO.readPayment(1);
-//         assertEquals("Approved", updatedPayment.getStatus(), "Status should be updated");
-//         System.out.println("testUpdatePayment completed successfully.");
-//     }
+        // Fetch payments for the user and process the ResultSet within the try block
+        try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM payments WHERE CardID IN (SELECT CardID FROM card WHERE UserID = ?)")) {
+            pstmt.setLong(1, userID);
+            ResultSet results = pstmt.executeQuery();
 
-//     @Test
-//     @Order(5)
-//     public void testDeletePayment() throws SQLException {
-//         System.out.println("Starting testDeletePayment...");
-//         // Assuming an existing payment with ID 1
-//         boolean isDeleted = paymentDAO.deletePayment(1);
-//         assertTrue(isDeleted, "Payment should be deletable");
+            assertNotNull(results, "ResultSet should not be null when payments exist.");
 
-//         payment deletedPayment = paymentDAO.readPayment(1);
-//         assertNull(deletedPayment, "Payment should be null after deletion");
-//         System.out.println("testDeletePayment completed successfully.");
-//     }
-// }
+            // Count the number of payments retrieved
+            int count = 0;
+            while (results.next()) {
+                count++;
+            }
+
+            // Assert that the expected number of payments were fetched
+            assertTrue(count >= 2, "Should fetch at least 2 payments for the user.");
+            System.out.println("Get payments for user test passed: Found " + count + " payments.");
+        } catch (SQLException e) {
+            System.err.println("SQLException occurred: " + e.getMessage());
+            fail("An exception should not have been thrown");
+        }
+    }
+
+    @Test
+    public void testGenerateUniquePaymentID() throws Exception {
+        java.lang.reflect.Method method = paymentDAO.class.getDeclaredMethod("generateUniquePaymentID");
+        method.setAccessible(true);
+        
+        long paymentID1 = (long) method.invoke(paymentDao);
+        long paymentID2 = (long) method.invoke(paymentDao);
+        
+        assertNotEquals(paymentID1, paymentID2, "Each generated payment ID should be unique.");
+    }
+
+    
+}
