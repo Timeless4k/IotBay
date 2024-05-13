@@ -32,6 +32,11 @@
   </servlet>
 
 <servlet>
+    <servlet-name>PaymentHistoryServlet</servlet-name>
+    <servlet-class>Controller.PaymentHistoryServlet</servlet-class>
+  </servlet>
+
+<servlet>
     <servlet-name>ProductNameSearchServlet</servlet-name>
     <servlet-class>Controller.ProductNameSearchServlet</servlet-class>
   </servlet>
@@ -74,6 +79,11 @@
   <servlet-mapping>
     <servlet-name>SearchAllProductServlet</servlet-name>
     <url-pattern>/SearchAllProductServlet</url-pattern>
+  </servlet-mapping>
+
+    <servlet-mapping>
+    <servlet-name>PaymentHistoryServlet</servlet-name>
+    <url-pattern>/PaymentHistoryServlet</url-pattern>
   </servlet-mapping>
 
 <servlet-mapping>
