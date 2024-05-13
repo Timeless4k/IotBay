@@ -125,12 +125,16 @@ public class CardServlet extends HttpServlet {
             int cardCVV = Integer.parseInt(request.getParameter("cardCVV"));
             long userID = ((user) request.getSession().getAttribute("user")).getuID();
     
+            // Logging to check received parameters
+            System.out.println("Received parameters - cardID: " + cardID + ", cardNumber: " + cardNumber + ", cardHolderName: " + cardHolderName + ", cardExpiry: " + cardExpiry + ", cardCVV: " + cardCVV);
+    
             card cardToUpdate = new card(cardID, cardNumber, cardHolderName, cardExpiry, cardCVV, userID);
     
             boolean success = cardDao.updateCard(cardToUpdate);
     
             if (success) {
-                response.sendRedirect("payment.jsp"); // Redirect or dispatch to reflect the update
+                // Redirect to the displayAll action to show the updated card list
+                response.sendRedirect("CardServlet?action=displayAll");
             } else {
                 response.sendRedirect("error.jsp"); // Handle update failure
             }
@@ -138,6 +142,8 @@ public class CardServlet extends HttpServlet {
             response.sendRedirect("error.jsp"); // Handle parsing errors
         }
     }
+    
+    
 
     private void deleteCard(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         long cardId = Long.parseLong(request.getParameter("cardId"));
@@ -152,7 +158,7 @@ public class CardServlet extends HttpServlet {
         } else {
             response.sendRedirect("error.jsp");
         }
-    }
+    }  
 
     private String convertToLastDayOfMonth(String expiry) {
         try {

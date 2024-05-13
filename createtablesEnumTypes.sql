@@ -51,7 +51,7 @@ CREATE TABLE Card(
 CREATE TABLE Payments(
     PaymentID BIGINT,
     PaymentAmount decimal(13,2),
-    PaymentMethod ENUM('Credit Card', 'Debit Card', 'Payment on Delivery'),
+    PaymentMethod ENUM('Card'),
     PaymentDate datetime,
     PaymentStatus ENUM('Approved', 'Failed', 'Pending'), -- ahhhh there are errors in the report in regards to type
     CardID BIGINT,
@@ -335,28 +335,28 @@ INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpi
 INSERT INTO `iotbay`.`Card` (`CardID`, `CardNumber`, `CardHolderName`, `CardExpiry`, `CardCVV`, `UserID`) VALUES ('0000000020', '4242424242424242', 'Alex Abagale', '2026-04-01', '555', '1111111120');
 
 
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111111', '400', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '1');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111112', '123', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '16');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111113', '654', 'Payment On Delivery', '2024-05-05 00:00:00', 'Approved', '18');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111114', '6543', 'Credit Card', '2024-05-05 00:00:00', 'Approved', '19');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111115', '34235', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '20');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111116', '999999', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '22');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111117', '0.15', 'Debit Card', '2024-05-05 00:00:00', 'Pending', '201');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111118', '1', 'Debit Card', '2024-05-05 00:00:00', 'Pending', '1111111117');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111119', '2', 'Credit Card', '2024-05-05 00:00:00', 'Pending', '1111111211');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111120', '3', 'Credit Card', '2024-05-05 00:00:00', 'Pending', '2323151215');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111121', '365', 'Credit Card', '2024-05-05 00:00:00', 'Failed', '8111111111');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111122', '578', 'Credit Card', '2024-05-05 00:00:00', 'Failed', '8222222222');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111123', '635', 'Credit Card', '2024-05-05 00:00:00', 'Failed', '1');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111124', '324.23', 'Credit Card', '2024-05-05 00:00:00', 'Pending', '1');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111125', '11.23', 'Debit Card', '2024-05-05 00:00:00', 'Pending', '1');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111126', '123.53', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '1');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111127', '3234.12', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '16');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111128', '1231.62', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '16');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111129', '134.67', 'Debit Card', '2024-05-05 00:00:00', 'Approved', '16');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111130', '13123.13', 'Payment On Delivery', '2024-05-05 00:00:00', 'Approved', '16');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111131', '123.12', 'Payment On Delivery', '2024-05-05 00:00:00', 'Approved', '16');
-INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111132', '1.12', 'Payment On Delivery', '2024-05-05 00:00:00', 'Approved', '1');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111111', '400', 'Card', '2024-05-05 00:00:00', 'Approved', '1');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111112', '123', 'Card', '2024-05-05 00:00:00', 'Approved', '16');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111113', '654', 'Card', '2024-05-05 00:00:00', 'Approved', '18');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111114', '6543', 'Card', '2024-05-05 00:00:00', 'Approved', '19');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111115', '34235', 'Card', '2024-05-05 00:00:00', 'Approved', '20');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111116', '999999', 'Card', '2024-05-05 00:00:00', 'Approved', '22');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111117', '0.15', 'Card', '2024-05-05 00:00:00', 'Pending', '201');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111118', '1', 'Card', '2024-05-05 00:00:00', 'Pending', '1111111117');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111119', '2', 'Card', '2024-05-05 00:00:00', 'Pending', '1111111211');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111120', '3', 'Card', '2024-05-05 00:00:00', 'Pending', '2323151215');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111121', '365', 'Card', '2024-05-05 00:00:00', 'Failed', '8111111111');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111122', '578', 'Card', '2024-05-05 00:00:00', 'Failed', '8222222222');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111123', '635', 'Card', '2024-05-05 00:00:00', 'Failed', '1');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111124', '324.23', 'Card', '2024-05-05 00:00:00', 'Pending', '1');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111125', '11.23', 'Card', '2024-05-05 00:00:00', 'Pending', '1');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111126', '123.53', 'Card', '2024-05-05 00:00:00', 'Approved', '1');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111127', '3234.12', 'Card', '2024-05-05 00:00:00', 'Approved', '16');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111128', '1231.62', 'Card', '2024-05-05 00:00:00', 'Approved', '16');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111129', '134.67', 'Card', '2024-05-05 00:00:00', 'Approved', '16');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111130', '13123.13', 'Card', '2024-05-05 00:00:00', 'Approved', '16');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111131', '123.12', 'Card', '2024-05-05 00:00:00', 'Approved', '16');
+INSERT INTO `iotbay`.`payments` (`PaymentID`, `PaymentAmount`, `PaymentMethod`, `PaymentDate`, `PaymentStatus`, `CardID`) VALUES ('111111132', '1.12', 'Card', '2024-05-05 00:00:00', 'Approved', '1');
 
 
 

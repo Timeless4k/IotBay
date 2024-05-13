@@ -103,6 +103,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <form id="updateCardForm" action="CardServlet" method="post">
+                <input type="hidden" name="action" value="edit">
                 Card Number: <input type="text" id="modalCardNumber" name="cardNumber" required><br>
                 Card Holder Name: <input type="text" id="modalCardHolderName" name="cardHolderName" required><br>
                 Expiry Date: <input type="text" id="modalCardExpiry" name="cardExpiry" required><br>
