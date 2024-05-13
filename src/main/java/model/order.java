@@ -1,45 +1,60 @@
 package model;
-import java.util.ArrayList;
-import model.product;
+
+import java.time.LocalDate;
 
 public class order {
-    // contains array list of products
-    private long oID;
-    private String oDate;
-    private String oStatus;
-    private String oDeliveryStatus;
-    // private ArrayList<product> orderitems;
+    private long orderID;
+    private long userID;
+    private LocalDate orderDate;
+    private String orderStatus;
+    private double totalAmount;
 
-    public long getID() {
-        return this.oID;
+    public order(long orderID, long userID, LocalDate orderDate, String orderStatus, double totalAmount) {
+        this.orderID = orderID;
+        this.userID = userID;
+        this.orderDate = orderDate;
+        this.orderStatus = orderStatus;
+        this.totalAmount = totalAmount;
     }
 
-    public String getDate() {
-        return this.oDate;
+    // Getters and Setters
+    public long getOrderID() {
+        return orderID;
     }
 
-    public String getStatus() {
-        return this.oStatus;
+    public void setOrderID(long orderID) {
+        this.orderID = orderID;
     }
 
-    public String getDeliveryStatus() {
-        return this.oDeliveryStatus;
+    public long getUserID() {
+        return userID;
     }
 
-    public void setID(long id) {
-        this.oID = id;
+    public void setUserID(long userID) {
+        this.userID = userID;
     }
 
-    public void setDate(String date) {
-        this.oDate = date;
+    public LocalDate getOrderDate() {
+        return orderDate;
     }
 
-    public void setStatus(String status) {
-        this.oStatus = status;
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
     }
 
-    public void setDeliveryStatus(String dstatus) {
-        this.oStatus = dstatus;
+    public String getOrderStatus() {
+        return orderStatus;
     }
 
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
 }

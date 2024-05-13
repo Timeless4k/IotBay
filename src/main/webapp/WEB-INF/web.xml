@@ -76,6 +76,26 @@
     <servlet-class>Controller.PaymentServlet</servlet-class>
   </servlet>
 
+<servlet>
+    <servlet-name>OrderServlet</servlet-name>
+    <servlet-class>Controller.OrderServlet</servlet-class>
+</servlet>
+
+<servlet>
+    <servlet-name>CartServlet</servlet-name>
+    <servlet-class>Controller.CartServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>CartServlet</servlet-name>
+    <url-pattern>/CartServlet</url-pattern>
+</servlet-mapping>
+
+<servlet-mapping>
+    <servlet-name>OrderServlet</servlet-name>
+    <url-pattern>/OrderServlet</url-pattern>
+</servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>ConnServlet</servlet-name>
     <url-pattern>/ConnServlet</url-pattern>
