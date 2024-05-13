@@ -33,8 +33,8 @@
                     <div >
                         ${user.firstName} ${user.lastName}
                     </div>
-                    <a href="account.jsp">Account</a>
-                    <a href="register.jsp">Register</a>
+                    <a href="account.jsp#profile">Account</a>
+                    <!-- <a href="register.jsp">Register</a> -->
                     <!-- <a href="settings.jsp">Settings</a> -->
                     <a href="logout.jsp">Logout</a>
                 </div>

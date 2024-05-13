@@ -5,16 +5,28 @@
 <head>
     <meta charset="UTF-8">
     <title>User Management</title>
-    <link rel="stylesheet" href="css/account.css">
+    <link rel="stylesheet" href="css/general-settings.css">
+    <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>  
+    <header>
+        <img src="images/Logo.png" alt="IoTBay Logo" class="logo" onclick="window.location='main.jsp'">
+        <nav class="navbar">
+            <ul>
+                <li><a href="/account.jsp#profile">Profile</a></li>
+                <li><a href="PaymentHistoryServlet">Payment History</a></li>
+                <li><a href="OrderHistoryServlet">Order History</a></li>
+                <li><a href="/account.jsp#access">Access Logs</a></li>
+                <c:if test="${user.uType == 'Admin'}">
+                    <li><a href=usermanagement.jsp>User Management</a></li>
+                </c:if>
+                <li><a href="logout.jsp">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
     <div class="container">
         <h1>User Management</h1>
-        <a href="UserServlet?action=displayAll">Refresh User List</a>
-
-
-
-
         <!-- User Creation Form -->
         <h2>Add New User</h2>
         <form action="UserServlet" method="post">
@@ -39,8 +51,8 @@
             </select><br>
             <button type="submit">Add User</button>
         </form>
-
-
+    </div>
+    <div class="container">
         <h2>User List</h2>
         <table border="1">
             <thead>
@@ -71,7 +83,7 @@
                         <td><c:out value="${user.creationDate}"/></td>
                         <td>
                             <a href="UserServlet?action=delete&email=${user.email}">Delete</a>
-                            <a href="UserServlet?action=update&email=${user.email}">update</a> <!-- Add link for edit -->
+                            <a href="UserServlet?action=update&email=${user.email}">Edit</a> <!-- Add link for edit -->
                         </td>
                     </tr>      
                 </c:forEach>
