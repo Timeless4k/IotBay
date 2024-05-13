@@ -48,13 +48,13 @@ public class UserDAOTest {
         return userIDCounter++;
     }
 
-    @Test
+    @Test //#T0001
     public void testConnectionNotNull() {
         assertNotNull(conn, "Database connection should not be null");
         System.out.println("Connection test passed: Connection is not null.");
     }
 
-    @Test
+    @Test //#T0002
     public void testCreateUser() throws SQLException {
         // Generating a unique user ID for testing
         long userID = generateUniqueUserID();
@@ -79,7 +79,7 @@ public class UserDAOTest {
 }
 
 
-    @Test
+    @Test //#T0003
     public void testReadUser() throws SQLException {
         // Manually assigning specific dummy user IDs
         user createdUser = new user(1002, "readtest@example.com", "hashedpassword", "Jane", "D", "Doe", "1980-01-01", "987654321", "Female", "2024-01-01", "Customer");
@@ -94,7 +94,7 @@ public class UserDAOTest {
         conn.rollback();
     }
 
-    @Test
+    @Test //#T0004
     public void testUpdateUser() throws SQLException {
         // Manually assigning specific dummy user IDs
         user existingUser = new user(1003, "updatetest@example.com", "hashedpassword", "Alice", "B", "Wonderland", "1980-01-01", "1234567890", "Female", "2024-01-01", "Customer");
@@ -113,7 +113,7 @@ public class UserDAOTest {
         conn.rollback();
     }
 
-    @Test
+    @Test //#T0005
     public void testDeleteUser() throws SQLException {
         // Manually assigning specific dummy user IDs
         user toBeDeletedUser = new user(1004, "deletetest@example.com", "hashedpassword", "Bob", "C", "Builder", "1980-01-01", "1234567890", "Male", "2024-01-01", "Customer");
@@ -129,5 +129,51 @@ public class UserDAOTest {
         System.out.println("Verification of deletion passed: No user found post-deletion.");
         // Roll back transaction
         conn.rollback();
+    }
+
+    @Test //#T0006
+    public void testRegistrationSuccess() throws SQLException {
+        long userID = generateUniqueUserID();
+        user newUser = new user(userID, "newuser@example.com", "securepassword", "New", "User", "Example", "1990-01-01", "1234567890", "Other", "2024-01-01", "Customer");
+        boolean result = userDao.createUser(newUser);
+        assertTrue(result, "Registration should succeed.");
+        user registeredUser = userDao.getUserByEmail("newuser@example.com");
+        assertNotNull(registeredUser, "User should be retrievable post-registration.");
+        System.out.println("Registration test passed: User registered successfully.");
+    }
+
+    @Test //#T0007
+    public void testDuplicateEmailRegistration() throws SQLException {
+        long userID1 = generateUniqueUserID();
+        user firstUser = new user(userID1, "duplicate@example.com", "password1", "Duplicate", "Email", "User1", "1985-01-01", "987654321", "Male", "2024-01-01", "Customer");
+        userDao.createUser(firstUser); // This should succeed
+
+        long userID2 = generateUniqueUserID();
+        user secondUser = new user(userID2, "duplicate@example.com", "password2", "Duplicate", "Email", "User2", "1986-02-02", "987654322", "Female", "2024-01-01", "Customer");
+
+        assertThrows(SQLException.class, () -> userDao.createUser(secondUser), "Duplicate email registration should throw SQLException.");
+    }
+
+
+    @Test //#T0008
+    public void testLoginSuccess() throws SQLException {
+        long userID = generateUniqueUserID();
+        user newUser = new user(userID, "loginuser@example.com", "loginpassword", "Login", "User", "Success", "1995-02-02", "1231231234", "Male", "2024-01-01", "Customer");
+        userDao.createUser(newUser);
+        user fetchedUser = userDao.getUserByEmail("loginuser@example.com");
+        assertNotNull(fetchedUser, "User should not be null");
+        assertEquals("loginpassword", fetchedUser.getPassword(), "Passwords should match.");
+        System.out.println("Login test passed: User logged in successfully.");
+    }
+    
+    @Test //#T0009
+    public void testLoginFailure() throws SQLException {
+        long userID = generateUniqueUserID();
+        user newUser = new user(userID, "failedlogin@example.com", "rightpassword", "Failed", "Login", "User", "1988-03-03", "3213214321", "Female", "2024-01-01", "Customer");
+        userDao.createUser(newUser);
+        user fetchedUser = userDao.getUserByEmail("failedlogin@example.com");
+        assertNotNull(fetchedUser, "User should not be null");
+        assertNotEquals("wrongpassword", fetchedUser.getPassword(), "Passwords should not match.");
+        System.out.println("Login failure test passed: User login failed as expected with wrong password.");
     }
 }
