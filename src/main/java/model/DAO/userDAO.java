@@ -1,15 +1,21 @@
 package model.DAO;
 
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BooleanSupplier;
 
 import model.user;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.ZoneId;
+
 
 public class userDAO {
     private Connection conn;
@@ -44,6 +50,7 @@ public class userDAO {
         return userID;
     }
 
+
     // Check if a UserID already exists in the database
     private boolean userIDExists(long userID) throws SQLException {
         checkUserIDExistsSt.setLong(1, userID);
@@ -53,6 +60,7 @@ public class userDAO {
         }
         return false;
     }
+
 
     /**
      * Retrieves a user by their email address from the database.
@@ -80,12 +88,12 @@ public class userDAO {
         if (rs.next()) {
             throw new SQLException("Duplicate email registration");
         }
-    
+
         try {
             long uniqueUserID = generateUniqueUserID(); // Generate a unique UserID
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Australia/Sydney"));
             String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            
+           
             createUserSt.setLong(1, uniqueUserID);
             createUserSt.setString(2, newUser.getFirstName());
             createUserSt.setString(3, newUser.getMiddleName());
@@ -110,6 +118,7 @@ public class userDAO {
         }
         return false;
     }
+
 
     public boolean updateUser(user user) {
         try {
@@ -192,8 +201,52 @@ public class userDAO {
         return usr;
     }
 
+
     public BooleanSupplier validateLogin(String string, String string2) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'validateLogin'");
     }
+
+
+    public List<user> searchUsersByFullNameAndPhone(String fullName, String phoneNumber) throws SQLException {
+        List<user> userList = new ArrayList<>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM User WHERE 1=1");
+   
+            if (fullName != null && !fullName.isEmpty()) {
+                queryBuilder.append(" AND CONCAT(UserFirstName, ' ', UserMiddleName, ' ', UserLastName) LIKE ?");
+            }
+   
+            if (phoneNumber != null && !phoneNumber.isEmpty()) {
+                queryBuilder.append(" AND UserPhone LIKE ?");
+            }
+   
+            stmt = conn.prepareStatement(queryBuilder.toString());
+   
+            int parameterIndex = 1;
+   
+            if (fullName != null && !fullName.isEmpty()) {
+                stmt.setString(parameterIndex++, "%" + fullName + "%");
+            }
+   
+            if (phoneNumber != null && !phoneNumber.isEmpty()) {
+                stmt.setString(parameterIndex++, "%" + phoneNumber + "%");
+            }
+   
+            rs = stmt.executeQuery();
+   
+            while (rs.next()) {
+                user usr = extractUserFromResultSet(rs);
+                userList.add(usr);
+                System.out.println("User found: " + usr.getFirstName()); // Debugging line
+            }
+        } finally {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+        }
+        return userList;
+    }
+   
 }

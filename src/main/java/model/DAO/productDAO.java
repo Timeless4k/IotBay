@@ -138,9 +138,6 @@ public class productDAO {
 			searchProductTypeSt.setString(1, "%" + query + "%");
 			rs = searchProductTypeSt.executeQuery();
 		}
-		
-		
-
 		ArrayList<product> products = new ArrayList<product>(); // ArrayList to hold products
 		while (rs.next()) { // go to next item in rs table then run
 			long pID = rs.getLong(1); //retrieve variables from db query
@@ -150,7 +147,7 @@ public class productDAO {
             long pStockLevel = rs.getLong(5);
             String pDescription = rs.getString(6);
 			String pType = rs.getString(7);
-            double pPrice = rs.getLong(8);
+            double pPrice = Double.parseDouble(rs.getString(8));
 
 			product p = new product();
 			p.setpID(pID);
