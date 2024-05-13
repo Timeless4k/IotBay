@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/general-settings.css">
     <link rel="stylesheet" href="css/style.css">
 
+
     <!-- Modal Styles -->
     <style>
         .modal {
@@ -62,6 +63,16 @@
     </header>
     <div class="container">
         <h1>User Management</h1>
+        <!-- Search Form -->
+        <form id="searchForm" action="UserSearchServlet" method="post">
+            <input type="text" name="fullName" placeholder="Enter full name">
+            <input type="text" name="phoneNumber" placeholder="Enter phone number">
+            <button type="submit">Search</button>
+            <button type="button" onclick="clearForm()">Clear</button> <!-- Use type="button" to prevent form submission -->
+        </form>
+    </div>
+   
+    <div class="container">
         <!-- User Creation Form -->
         <h2>Add New User</h2>
         <form action="UserServlet" method="post">
@@ -126,6 +137,7 @@
         </table>
     </div>
 
+
     <!-- Modal for editing user -->
     <div id="editUserModal" class="modal">
         <div class="modal-content">
@@ -156,6 +168,7 @@
         </div>
     </div>
 
+
     <!-- Script to handle modal functionality -->
     <script>
         function openModal(userId, firstName, middleName, lastName, userType, email, phone, gender, creationDate) {
@@ -170,10 +183,21 @@
             document.getElementById('editUserModal').style.display = 'block';
         }
 
+
         function closeModal() {
             document.getElementById('editUserModal').style.display = 'none';
         }
+
+
+        function clearForm() {
+            // Reset the form
+            document.getElementById('searchForm').reset();
+            // Redirect to UserServlet?action=displayAll
+            window.location.href = "UserServlet?action=displayAll";
+        }
     </script>
+
+
     <script>
         // Check if the users are loaded, if not redirect to load them
         if (!${not empty users}) {
@@ -181,5 +205,11 @@
         }
     </script>
 
+
 </body>
 </html>
+
+
+
+
+
