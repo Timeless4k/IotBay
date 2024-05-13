@@ -12,6 +12,19 @@ import javax.servlet.http.HttpSession;
 import model.DAO.productDAO;
 
 public class RemoveProductServlet extends HttpServlet {
-    private Connection conn;
-    private productDAO PDAO;
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Connection conn = (Connection) session.getAttribute("acticonn");
+
+        try {
+            productDAO pDao = new productDAO(conn);
+            long pID = Long.parseLong(request.getParameter("productID"));
+            pDao.removeProduct(pID);
+            response.sendRedirect("productRemovedSuccess.jsp");
+        } catch (SQLException e) {
+            throw new ServletException("SQL error while initializing productDAO or removing product", e);
+        }
+    }
 }

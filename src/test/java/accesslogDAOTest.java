@@ -1,14 +1,18 @@
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import model.user;
 import model.DAO.DBConnector;
 import model.DAO.accesslogDAO;
-import model.user;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.ResultSet;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 public class accesslogDAOTest {
     private accesslogDAO accessLogDao;
@@ -41,7 +45,7 @@ public class accesslogDAOTest {
 
     private user createTestUser() {
         long userID = userIDCounter++;
-        return new user(userID, "testemail" + userID + "@example.com", "hashedpassword", "John", "Q", "Public", "1980-01-01", "1234567890", "Male", "2024-01-01", "Customer");
+        return new user(userID, "testemail" + userID + "@example.com", "hashedpassword", "John", "Q", "Public", "1980-01-01", "1234567890", "Male", "2024-01-01", "Customer", true);
     }
 
     @Test //#T0010

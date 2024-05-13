@@ -1,6 +1,8 @@
 package Controller;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.user;
+
 import model.accesslog;
-import model.DAO.userDAO;
+import model.user;
 import model.DAO.accesslogDAO;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import model.DAO.userDAO;
+
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -24,12 +26,12 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Connection conn = (Connection) session.getAttribute("acticonn");
-        
+       
         // FOR THE ERRORS!
         if (conn == null) {
             System.err.println("Database connection error: Database connection not established");
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error");
-            return; 
+            return;
         }
 
         userDAO userDao = null;
@@ -38,7 +40,7 @@ public class LoginServlet extends HttpServlet {
         } catch (SQLException e) {
             System.err.println("Error creating userDAO: " + e.getMessage());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error creating userDAO");
-            return; 
+            return;
         }
 
         accesslogDAO accesslogDAO = null;
@@ -51,11 +53,11 @@ public class LoginServlet extends HttpServlet {
         }
 
         String email = request.getParameter("email");
-        String password = request.getParameter("password"); 
+        String password = request.getParameter("password");
 
         try {
             user user = userDao.getUserByEmail(email);
-            if (user != null && user.getPassword().equals(password)) { 
+            if (user != null && user.getPassword().equals(password) && user.getActivationStatus()) {
                 accesslogDAO.logLogin(user);
 
                 ResultSet accessLogsRs = accesslogDAO.getLogsForUser(user);
@@ -75,7 +77,6 @@ public class LoginServlet extends HttpServlet {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
 
                 session.setAttribute("user", user);
                 session.setAttribute("logs", accessLogList);

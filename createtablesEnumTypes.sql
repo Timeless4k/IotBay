@@ -67,27 +67,35 @@ CREATE TABLE ShipmentData(
     primary key(ShipmentID)
 );
 
-CREATE TABLE Orders(
-    OrderID BIGINT,
-    OrderDate datetime,
-    OrderStatus varchar(20),
-    OrderDeliveryStatus ENUM('Being Prepared', "Delivered", 'Not Submitted', "On It's Way"),
+CREATE TABLE Orders (
+    OrderID BIGINT AUTO_INCREMENT PRIMARY KEY,
+    UserID BIGINT,
+    OrderDate DATETIME,
+    OrderStatus ENUM('Pending', 'Complete', 'Not submitted'),
+    OrderDeliveryStatus ENUM('Being Prepared', 'Delivered', 'Not Submitted', "On It's Way"),
     PaymentID BIGINT,
     ShippingID BIGINT,
-    UserID BIGINT,
-    primary key(OrderID),
-    foreign key(UserID) references User(UserID),
-    foreign key(PaymentID) references Payments(PaymentID),
-    foreign key(ShippingID) references ShipmentData(ShipmentID)
+    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (PaymentID) REFERENCES Payments(PaymentID),
+    FOREIGN KEY (ShippingID) REFERENCES ShipmentData(ShipmentID)
 );
 
-CREATE TABLE OrderLineItem(
+CREATE TABLE OrderLineItem (
     OrderID BIGINT,
     ProductID BIGINT,
-    OrderAmount int(99),
-    primary key(OrderID, ProductID),
-    foreign key(OrderID) references Orders(OrderID),
-    foreign key(ProductID) references ProductData(ProductID)
+    OrderAmount INT,
+    PRIMARY KEY (OrderID, ProductID),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES ProductData(ProductID)
+);
+
+CREATE TABLE Cart (
+    UserID BIGINT,
+    ProductID BIGINT,
+    Quantity INT,
+    PRIMARY KEY (UserID, ProductID),
+    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (ProductID) REFERENCES ProductData(ProductID)
 );
 
 ALTER TABLE `iotbay`.`Card` 

@@ -1,13 +1,9 @@
 package Controller;
 
-
-
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,27 +11,15 @@ import javax.servlet.http.HttpSession;
 import model.user;
 import model.DAO.userDAO;
 
-
-
-
 public class UserServlet extends HttpServlet {
-
-
-
 
     private Connection conn;
     private userDAO userDAO;
-
-
-
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         handleRequest(request, response);
     }
-
-
-
 
     private void searchUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws ServletException, IOException {
         try {
@@ -90,8 +74,14 @@ public class UserServlet extends HttpServlet {
                 case "delete":
                     deleteUser(request, response, userDAO);
                     break;
+                case "activate":
+                    activateUser(request, response, userDAO);
+                    break;
+                case "deactivate":
+                    deactivateUser(request, response, userDAO);
+                    break;
                 case "search":
-                    searchUser(request, response, userDAO); // Handle search action
+                    searchUser(request, response, userDAO);
                     break;
                 default:
                     response.getWriter().print("No valid action provided.");
@@ -104,8 +94,6 @@ public class UserServlet extends HttpServlet {
     }
 
 
-
-
     private void displayAllUsers(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws ServletException, IOException {
         try {
             List<user> users = userDao.getAllUsers();
@@ -116,6 +104,48 @@ public class UserServlet extends HttpServlet {
             response.getWriter().print("Error fetching users: " + e.getMessage());
         }
     }
+
+
+    private void activateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
+        String userId = request.getParameter("userId");
+        if (userId != null && !userId.isEmpty()) {
+            try {
+                if (userDao.activateUser(userId)) {
+                    response.sendRedirect("usermanagement.jsp");
+                } else {
+                    response.getWriter().print("Failed to activate user.");
+                }
+            } catch (Exception e) {
+                response.getWriter().print("Error activating user: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            response.getWriter().print("User ID is missing.");
+        }
+    }
+
+
+    private void deactivateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
+        String userId = request.getParameter("userId");
+        if (userId != null && !userId.isEmpty()) {
+            try {
+                if (userDao.deactivateUser(userId)) {
+                    response.sendRedirect("usermanagement.jsp");
+                } else {
+                    response.getWriter().print("Failed to deactivate user.");
+                }
+            } catch (Exception e) {
+                response.getWriter().print("Error deactivating user: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            response.getWriter().print("User ID is missing.");
+        }
+    }
+
+
+
+
 
 
 
@@ -133,7 +163,8 @@ public class UserServlet extends HttpServlet {
                 request.getParameter("phone"),
                 request.getParameter("gender"),
                 request.getParameter("creationDate"),
-                request.getParameter("userType")
+                request.getParameter("userType"),
+                true // Assuming new users are activated by default
             );
             if (userDao.createUser(newUser)) {
                 response.sendRedirect("usermanagement.jsp");
@@ -146,10 +177,6 @@ public class UserServlet extends HttpServlet {
         }
     }
    
-
-
-
-
     private void updateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         try {
             String email = request.getParameter("email");
@@ -164,7 +191,7 @@ public class UserServlet extends HttpServlet {
                 existingUser.setGender(request.getParameter("gender"));
                 existingUser.setCreationDate(request.getParameter("creationDate"));
                 existingUser.setuType(request.getParameter("userType"));
-    
+   
                 // Call updateUser method in userDAO
                 if (userDao.updateUser(existingUser)) {
                     // Update successful, redirect to usermanagement.jsp
@@ -186,14 +213,7 @@ public class UserServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-    
    
-   
-   
-
-
-
-
     private void deleteUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException {
         try {
             if (userDao.deleteUser(request.getParameter("email"))) {
@@ -207,27 +227,4 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-
-
-
-   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
