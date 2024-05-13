@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.*, model.user, model.payment"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,40 @@
     <link rel="stylesheet" href="css/general-settings.css">
     <link rel="stylesheet" href="css/style.css">
 
+    <!-- Modal Styles -->
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #007bff;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>  
     <header>
@@ -82,24 +117,69 @@
                         <td><c:out value="${user.gender}"/></td>
                         <td><c:out value="${user.creationDate}"/></td>
                         <td>
+                            <button onclick="openModal('${user.uID}', '${user.firstName}', '${user.middleName}', '${user.lastName}', '${user.uType}', '${user.email}', '${user.mobilePhone}', '${user.gender}', '${user.creationDate}')">Edit</button>
                             <a href="UserServlet?action=delete&email=${user.email}">Delete</a>
-                            <a href="UserServlet?action=update&email=${user.email}">Edit</a> <!-- Add link for edit -->
                         </td>
                     </tr>      
                 </c:forEach>
             </tbody>
         </table>
     </div>
+
+    <!-- Modal for editing user -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <form id="editUserForm" action="UserServlet" method="post">
+                <input type="hidden" id="userId" name="userId">
+                First Name: <input type="text" id="firstName" name="firstName" required><br>
+                Middle Name: <input type="text" id="middleName" name="middleName"><br>
+                Last Name: <input type="text" id="lastName" name="lastName" required><br>
+                Email: <input type="email" id="email" name="email" required><br>
+                Phone: <input type="text" id="phone" name="phone" required><br>
+                Gender:
+                <select id="gender" name="gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select><br>
+                Creation Date: <input type="text" id="creationDate" name="creationDate" readonly><br> <!-- Display creation date here -->
+                User Type:
+                <select id="userType" name="userType" required>
+                    <option value="Employee">Employee</option>
+                    <option value="Customer">Customer</option>
+                    <option value="Admin">Admin</option>
+                </select><br>
+                <input type="hidden" name="action" value="update">
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script to handle modal functionality -->
+    <script>
+        function openModal(userId, firstName, middleName, lastName, userType, email, phone, gender, creationDate) {
+            document.getElementById('userId').value = userId;
+            document.getElementById('firstName').value = firstName;
+            document.getElementById('middleName').value = middleName;
+            document.getElementById('lastName').value = lastName;
+            document.getElementById('email').value = email;
+            document.getElementById('phone').value = phone;
+            document.getElementById('gender').value = gender;
+            document.getElementById('creationDate').value = creationDate;
+            document.getElementById('editUserModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('editUserModal').style.display = 'none';
+        }
+    </script>
+    <script>
+        // Check if the users are loaded, if not redirect to load them
+        if (!${not empty users}) {
+            window.location.href = "UserServlet?action=displayAll";
+        }
+    </script>
+
 </body>
-<script>
-    // Check if the users are loaded, if not redirect to load them
-    if (!${not empty users}) {
-        window.location.href = "UserServlet?action=displayAll";
-    }
-</script>
 </html>
-
-
-
-
-
