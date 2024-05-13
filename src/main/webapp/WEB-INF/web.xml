@@ -32,8 +32,8 @@
   </servlet>
 
 <servlet>
-    <servlet-name>OrderHistoryServlet</servlet-name>
-    <servlet-class>Controller.OrderHistoryServlet</servlet-class>
+    <servlet-name>PaymentHistoryServlet</servlet-name>
+    <servlet-class>Controller.PaymentHistoryServlet</servlet-class>
   </servlet>
 
 <servlet>
@@ -82,8 +82,8 @@
   </servlet-mapping>
 
     <servlet-mapping>
-    <servlet-name>OrderHistoryServlet</servlet-name>
-    <url-pattern>/OrderHistoryServlet</url-pattern>
+    <servlet-name>PaymentHistoryServlet</servlet-name>
+    <url-pattern>/PaymentHistoryServlet</url-pattern>
   </servlet-mapping>
 
 <servlet-mapping>

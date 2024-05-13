@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Order History</title>
+    <title>Your Payment History</title>
     <link rel="stylesheet" href="css/account.css">
 
     <script>
@@ -19,7 +19,7 @@
     <h1>Your Order History</h1>
 
     <!-- Search Form -->
-    <form action="OrderHistoryServlet" method="GET">
+    <form action="PaymentHistoryServlet" method="GET">
         <input type="text" name="searchID" placeholder="Search by Payment ID" value="<%= request.getParameter("searchID") != null ? request.getParameter("searchID") : "" %>">
         <input type="text" name="searchDate" placeholder="Search by Date (YYYY-MM-DD)" value="<%= request.getParameter("searchDate") != null ? request.getParameter("searchDate") : "" %>">
         <button type="submit">Search</button>

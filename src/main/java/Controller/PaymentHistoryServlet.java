@@ -15,7 +15,7 @@ import model.payment;
 import model.DAO.paymentDAO;
 import model.user;
 
-public class OrderHistoryServlet extends HttpServlet {
+public class PaymentHistoryServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
