@@ -49,7 +49,7 @@
         <h1>Manage Payment</h1>
         
         <h2>Select a Payment Method</h2>
-        <form action="CardServlet" method="post">
+        <form action="PaymentServlet" method="post">
             <input type="hidden" name="action" value="processPayment">
             <select name="cardID" required>
                 <c:forEach var="card" items="${cardList}">
