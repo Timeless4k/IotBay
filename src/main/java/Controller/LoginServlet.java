@@ -79,7 +79,7 @@ public class LoginServlet extends HttpServlet {
 
                 session.setAttribute("user", user);
                 session.setAttribute("logs", accessLogList);
-                response.sendRedirect("account.jsp");
+                response.sendRedirect("account.jsp#profile");
             } else {
                 response.sendRedirect("login.jsp?error=invalid");
             }

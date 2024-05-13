@@ -52,7 +52,7 @@ public class PaymentHistoryServlet extends HttpServlet {
             }
 
             request.setAttribute("payments", payments);
-            request.getRequestDispatcher("/orderHistory.jsp").forward(request, response);
+            request.getRequestDispatcher("/paymentHistory.jsp").forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
