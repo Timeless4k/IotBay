@@ -1,5 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,10 +39,6 @@
                     <form action="logout" method="post">
                         <button type="submit">Logout</button>
                     </form>                    
-                    <!-- <a href="#logout">
-                        <img src="images/logout.png" alt="Logout Icon" width="45" height="45" class="logout-icon">
-                        <p class="logout-option">Logout</p>
-                    </a>   -->
                 </div>
             </div>
 
@@ -53,9 +47,9 @@
                     <form action="UpdateProfileServlet" method="POST">
                         <div id="profile">
                             <u><h1>Profile</h1></u>
-                            <p><b>First Name:</b><br><input type="text" name="firstName" value="${user.firstName}"></p>
-                            <p><b>Middle Name:</b><br><input type="text" name="middleName" value="${user.middleName}"></p>
-                            <p><b>Last Name:</b><br><input type="text" name="lastName" value="${user.lastName}"></p>
+                            <p><b>First Name:</b><br><input type="text" name="firstName" id="firstName" value="${user.firstName}" oninput="validateNameInput(this)" required></p>
+                            <p><b>Middle Name:</b><br><input type="text" name="middleName" id="middleName" value="${user.middleName}" oninput="validateNameInput(this)" required></p>
+                            <p><b>Last Name:</b><br><input type="text" name="lastName" id="lastName" value="${user.lastName}" oninput="validateNameInput(this)" required></p>
                             <p><b>Gender:</b><br>
                                 <select name="gender" required>
                                     <option value="">Please select</option>
@@ -66,7 +60,7 @@
                             </p>
                             <p><b>Email:</b><br><input type="email" name="email" value="${user.email}" readonly></p>
                             <p><b>Password:</b><br><input type="password" name="password" value="${user.password}"></p>
-                            <p><b>Mobile Phone:</b><br><input type="text" name="mobilePhone" value="${user.mobilePhone}"></p>
+                            <p><b>Mobile Phone:</b><br><input type="text" name="mobilePhone" id="mobilePhone" value="${user.mobilePhone}" onkeypress="return isNumberKey(event)" required></p>
                             <button type="submit">Save Changes</button>
                         </div>
                     </form>
@@ -91,9 +85,9 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="log" items="${logs}"> <!-- Assume logs are passed under the 'logs' attribute -->
+                <c:forEach var="log" items="${logs}">
                     <tr>
-                        <td><c:out value="${log.userID}"/></td>  <!-- Corrected to match accesslog model properties -->
+                        <td><c:out value="${log.userID}"/></td>
                         <td><c:out value="${log.logID}"/></td>
                         <td><c:out value="${log.loginTime}"/></td>
                         <td><c:out value="${log.logoutTime}"/></td>
@@ -104,6 +98,7 @@
                 <tr>
                     <td colspan="4">Total Logs: ${logs.size()}</td>
                 </tr>
+            </tfoot>
         </table>
 
         <br> <br> <br> <br> <br> <br>
@@ -115,38 +110,40 @@
 
     <script>
         function goBack() {
-            window.location.href = "main.jsp"; // Redirect to index.jsp
+            window.history.back();
         }
     </script>
 
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Get all sidebar links
             const links = document.querySelectorAll('.sidebar a');
-
-            // Add click event listener to each link
             links.forEach(function(link) {
                 link.addEventListener('click', function(event) {
-                    // Prevent default link behavior
                     event.preventDefault();
-                    
-                    // Get the target section ID from the href attribute
                     const targetId = this.getAttribute('href').substring(1);
-                    
-                    // Hide all sections
                     document.querySelectorAll('.main-content > div').forEach(function(section) {
                         section.style.display = 'none';
                     });
-                    
-                    // Display the target section
                     document.getElementById(targetId).style.display = 'block';
                 });
             });
         });
     </script>
 
-    
-    
+    <script>
+        function validateNameInput(input) {
+            input.value = input.value.replace(/[^a-zA-Z\s'-]/g, '');
+        }
+
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            return !(charCode > 31 && (charCode < 48 || charCode > 57));
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
 </body>
 </html>
