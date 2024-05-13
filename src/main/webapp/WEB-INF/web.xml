@@ -7,7 +7,7 @@
   <servlet>
     <servlet-name>ConnServlet</servlet-name>
     <servlet-class>Controller.ConnServlet</servlet-class>
-    <load-on-startup>0</load-on-startup> 
+    <load-on-startup>0</load-on-startup>
     <!-- IS automatically loaded on start -->
   </servlet>
 
@@ -24,6 +24,11 @@
   <servlet>
     <servlet-name>SearchAllProductServlet</servlet-name>
     <servlet-class>Controller.SearchAllProductServlet</servlet-class>
+  </servlet>
+
+    <servlet>
+    <servlet-name>UserSearchServlet</servlet-name>
+    <servlet-class>Controller.UserSearchServlet</servlet-class>
   </servlet>
 
   <servlet>
@@ -99,6 +104,11 @@
 <servlet-mapping>
     <servlet-name>RemoveProductServlet</servlet-name>
     <url-pattern>/RemoveProductServlet</url-pattern>
+  </servlet-mapping>
+
+<servlet-mapping>
+    <servlet-name>UserSearchServlet</servlet-name>
+    <url-pattern>/UserSearchServlet</url-pattern>
   </servlet-mapping>
 
 <servlet-mapping>
