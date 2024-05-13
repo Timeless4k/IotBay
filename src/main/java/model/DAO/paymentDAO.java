@@ -1,75 +1,50 @@
 package model.DAO;
 
+import java.sql.*;
+import java.time.LocalDate;
 import model.payment;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class paymentDAO {
     private Connection conn;
 
-    public paymentDAO(Connection conn) {
-        this.conn = conn;
+    public paymentDAO(Connection connection) throws SQLException {
+        this.conn = connection;
+        conn.setAutoCommit(false);
     }
 
-    // Create a payment entry
-    public boolean createPayment(payment pay) throws SQLException {
-        String sql = "INSERT INTO payments (PaymentAmount, PaymentMethod, PaymentDate, PaymentStatus, CardID) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setDouble(1, pay.getAmount());
-            ps.setString(2, pay.getMethod());
-            ps.setString(3, pay.getDate());
-            ps.setString(4, pay.getStatus());
-            ps.setString(5, pay.getCardID());
-            int affectedRows = ps.executeUpdate();
-            return affectedRows > 0;
-        }
-    }
-
-    // Fetch payment details by ID
-    public payment getPaymentById(long paymentID) throws SQLException {
-        String sql = "SELECT * FROM payments WHERE PaymentID = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, paymentID);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new payment(
-                        rs.getLong("PaymentID"),
-                        rs.getDouble("PaymentAmount"),
-                        rs.getString("PaymentMethod"),
-                        rs.getString("PaymentDate"),
-                        rs.getString("PaymentStatus"),
-                        rs.getString("CardID")
-                    );
-                }
+    public boolean createPayment(payment pay) {
+        String sql = "INSERT INTO payments (PaymentID, PaymentAmount, PaymentMethod, PaymentDate, PaymentStatus, CardID) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, pay.getPaymentID());
+            pstmt.setDouble(2, pay.getAmount());
+            pstmt.setString(3, pay.getMethod());
+            pstmt.setString(4, LocalDate.now().toString());  // Assuming the date is set to current date
+            pstmt.setString(5, pay.getStatus());
+            pstmt.setString(6, pay.getCardID());
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                conn.commit();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println("Create payment failed: " + e.getMessage());
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Transaction rollback failed: " + ex.getMessage());
             }
         }
-        return null;
+        return false;
     }
 
-    // Update payment details
-    public boolean updatePayment(payment pay) throws SQLException {
-        String sql = "UPDATE payments SET PaymentAmount = ?, PaymentMethod = ?, PaymentDate = ?, PaymentStatus = ?, CardID = ? WHERE PaymentID = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setDouble(1, pay.getAmount());
-            ps.setString(2, pay.getMethod());
-            ps.setString(3, pay.getDate());
-            ps.setString(4, pay.getStatus());
-            ps.setString(5, pay.getCardID());
-            ps.setLong(6, pay.getPaymentID());
-            int affectedRows = ps.executeUpdate();
-            return affectedRows > 0;
-        }
-    }
-
-    // Delete payment record
-    public boolean deletePayment(long paymentID) throws SQLException {
-        String sql = "DELETE FROM payments WHERE PaymentID = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, paymentID);
-            int affectedRows = ps.executeUpdate();
-            return affectedRows > 0;
+    public ResultSet getPaymentsForUser(long userID) {
+        String sql = "SELECT * FROM payments WHERE CardID IN (SELECT CardID FROM cardinformation WHERE UserID = ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, userID);
+            return pstmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("Get payments failed: " + e.getMessage());
+            return null;
         }
     }
 }
