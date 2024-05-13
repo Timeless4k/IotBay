@@ -28,13 +28,24 @@ public class UserDAOTest {
 
     @AfterEach
     public void tearDown() {
-        System.out.println("Starting cleanup: Attempting to roll back any changes.");
+        System.out.println("Starting cleanup: Attempting to roll back any changes and delete test case users.");
         try {
             if (conn != null) {
+                // Delete test case users
+                userDao.deleteUser("testemail@example.com");
+                userDao.deleteUser("readtest@example.com");
+                userDao.deleteUser("updatetest@example.com");
+                userDao.deleteUser("deletetest@example.com");
+                userDao.deleteUser("newuser@example.com");
+                userDao.deleteUser("loginuser@example.com");
+                userDao.deleteUser("failedlogin@example.com");
+                userDao.deleteUser("duplicate@example.com");
+               
+                
                 conn.rollback();
                 conn.setAutoCommit(true);
                 conn.close();
-                System.out.println("Cleanup complete: Connection closed and all changes rolled back.");
+                System.out.println("Cleanup complete: Connection closed, changes rolled back, and test case users deleted.");
             }
         } catch (SQLException e) {
             System.err.println("Error during cleanup: " + e.getMessage());
@@ -147,10 +158,10 @@ public class UserDAOTest {
         long userID1 = generateUniqueUserID();
         user firstUser = new user(userID1, "duplicate@example.com", "password1", "Duplicate", "Email", "User1", "1985-01-01", "987654321", "Male", "2024-01-01", "Customer");
         userDao.createUser(firstUser); // This should succeed
-
+    
         long userID2 = generateUniqueUserID();
         user secondUser = new user(userID2, "duplicate@example.com", "password2", "Duplicate", "Email", "User2", "1986-02-02", "987654322", "Female", "2024-01-01", "Customer");
-
+    
         assertThrows(SQLException.class, () -> userDao.createUser(secondUser), "Duplicate email registration should throw SQLException.");
     }
 
