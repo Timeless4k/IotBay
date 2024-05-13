@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.BooleanSupplier;
+
 import model.user;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -71,12 +73,19 @@ public class userDAO {
         return null;
     }
 
-    public boolean createUser(user newUser) {
+    public boolean createUser(user newUser) throws SQLException {
+        // First, check if the email already exists
+        getUserByEmailSt.setString(1, newUser.getEmail());
+        ResultSet rs = getUserByEmailSt.executeQuery();
+        if (rs.next()) {
+            throw new SQLException("Duplicate email registration");
+        }
+    
         try {
             long uniqueUserID = generateUniqueUserID(); // Generate a unique UserID
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Australia/Sydney"));
             String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-   
+            
             createUserSt.setLong(1, uniqueUserID);
             createUserSt.setString(2, newUser.getFirstName());
             createUserSt.setString(3, newUser.getMiddleName());
@@ -85,24 +94,19 @@ public class userDAO {
             createUserSt.setString(6, newUser.getEmail());
             createUserSt.setString(7, newUser.getMobilePhone());
             createUserSt.setString(8, newUser.getGender());
-            createUserSt.setString(9, newUser.getPassword());
-            createUserSt.setString(9, newUser.getPassword());
-            createUserSt.setString(8, newUser.getCreationDate());  // Assume you have a method to hash passwords
-            createUserSt.setString(10, newUser.getBirthDate());  // Store the DOB
-            createUserSt.setString(10, formattedDate); // Setting the formatted Sydney date and time
-            createUserSt.setString(11, "0"); // Assuming activation flag
-            createUserSt.setString(12, "");  // Assuming verification code
+            createUserSt.setString(9, newUser.getPassword());  // Password should be hashed
+            createUserSt.setString(10, formattedDate); // Setting the current Sydney date and time
+            createUserSt.setString(11, "1"); // Assuming activation flag is set to active
+            createUserSt.setString(12, "");  // Assuming verification code is not needed initially
             int rowsAffected = createUserSt.executeUpdate();
             if (rowsAffected > 0) {
+                conn.commit(); // Commit the transaction after successful insertion
                 return true;
             }
         } catch (SQLException e) {
             System.err.println("Create user failed: " + e.getMessage());
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                System.err.println("Rollback failed: " + ex.getMessage());
-            }
+            conn.rollback();
+            throw e;  // Re-throw the exception to be caught by the servlet or controller
         }
         return false;
     }
@@ -186,5 +190,10 @@ public class userDAO {
         usr.setGender(rs.getString("UserGender"));
         usr.setCreationDate(rs.getString("UserCreationDate"));
         return usr;
+    }
+
+    public BooleanSupplier validateLogin(String string, String string2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validateLogin'");
     }
 }
