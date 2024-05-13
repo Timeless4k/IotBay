@@ -21,7 +21,7 @@ public class productDAO {
 
     public productDAO(Connection connection) throws SQLException {
 		this.conn = connection;
-		conn.setAutoCommit(true);
+		conn.setAutoCommit(false);
 		fetchProdSt = conn.prepareStatement(readQuery);
 		addProductSt = conn.prepareStatement(CreateQuery);
 		removeProductSt = conn.prepareStatement(DeleteQuery);
@@ -77,7 +77,7 @@ public class productDAO {
 	 * @param price
 	 * @throws SQLException
 	 */
-	public void addProduct(long pID, String Name, String Status, String rDate, long Slevel, String desc, String pType, double price) throws SQLException{
+	public boolean addProduct(long pID, String Name, String Status, String rDate, long Slevel, String desc, String pType, double price) throws SQLException{
 		addProductSt.setLong(1, pID);
 		addProductSt.setString(2, Name);
 		addProductSt.setString(3, Status);
@@ -86,7 +86,7 @@ public class productDAO {
 		addProductSt.setString(6, desc);
 		addProductSt.setString(7, pType);
 		addProductSt.setDouble(8, price);
-		addProductSt.executeUpdate();
+		return (addProductSt.executeUpdate()>0);
 	}
 	/**
 	 * Removes a product from the DB based off product ID
