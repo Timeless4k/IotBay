@@ -28,9 +28,13 @@ public class GuestUserServlet extends HttpServlet {
 
             user newUser = new user();
             newUser.setuType("Guest"); // Assuming default user type
+            newUser.setEmail("guest@localhost.com"); // Assuming default email
             newUser.setFirstName("Guest");
 
             boolean createUserSuccess = UDAO.createUser(newUser);
+            user tempUser = UDAO.getUserByEmail("guest@localhost.com"); 
+            newUser.setuID(tempUser.getuID());
+            
             if (createUserSuccess) {
                 session.setAttribute("user", newUser);
                 response.sendRedirect("welcome.jsp");
