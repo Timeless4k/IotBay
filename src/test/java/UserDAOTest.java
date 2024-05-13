@@ -1,16 +1,21 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+
+import model.user;
 import model.DAO.DBConnector;
 import model.DAO.userDAO;
-import model.user;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class UserDAOTest {
     private userDAO userDao;
@@ -41,7 +46,7 @@ public class UserDAOTest {
                 userDao.deleteUser("failedlogin@example.com");
                 userDao.deleteUser("duplicate@example.com");
                
-                
+               
                 conn.rollback();
                 conn.setAutoCommit(true);
                 conn.close();
@@ -69,7 +74,7 @@ public class UserDAOTest {
     public void testCreateUser() throws SQLException {
         // Generating a unique user ID for testing
         long userID = generateUniqueUserID();
-        user newUser = new user(userID, "testemail@example.com", "hashedpassword", "John", "Q", "Public", "1980-01-01", "1234567890", "Male", "2024-01-01", "Customer");
+        user newUser = new user(userID, "testemail@example.com", "hashedpassword", "John", "Q", "Public", "1980-01-01", "1234567890", "Male", "2024-01-01", "Customer", true);
 
         // Start transaction
         conn.setAutoCommit(false);
@@ -89,11 +94,10 @@ public class UserDAOTest {
     }
 }
 
-
     @Test //#T0003
     public void testReadUser() throws SQLException {
         // Manually assigning specific dummy user IDs
-        user createdUser = new user(1002, "readtest@example.com", "hashedpassword", "Jane", "D", "Doe", "1980-01-01", "987654321", "Female", "2024-01-01", "Customer");
+        user createdUser = new user(1002, "readtest@example.com", "hashedpassword", "Jane", "D", "Doe", "1980-01-01", "987654321", "Female", "2024-01-01", "Customer", true);
         userDao.createUser(createdUser);
         // Start transaction
         conn.setAutoCommit(false);
@@ -108,7 +112,7 @@ public class UserDAOTest {
     @Test //#T0004
     public void testUpdateUser() throws SQLException {
         // Manually assigning specific dummy user IDs
-        user existingUser = new user(1003, "updatetest@example.com", "hashedpassword", "Alice", "B", "Wonderland", "1980-01-01", "1234567890", "Female", "2024-01-01", "Customer");
+        user existingUser = new user(1003, "updatetest@example.com", "hashedpassword", "Alice", "B", "Wonderland", "1980-01-01", "1234567890", "Female", "2024-01-01", "Customer", true);
         userDao.createUser(existingUser);
         // Start transaction
         conn.setAutoCommit(false);
@@ -127,7 +131,7 @@ public class UserDAOTest {
     @Test //#T0005
     public void testDeleteUser() throws SQLException {
         // Manually assigning specific dummy user IDs
-        user toBeDeletedUser = new user(1004, "deletetest@example.com", "hashedpassword", "Bob", "C", "Builder", "1980-01-01", "1234567890", "Male", "2024-01-01", "Customer");
+        user toBeDeletedUser = new user(1004, "deletetest@example.com", "hashedpassword", "Bob", "C", "Builder", "1980-01-01", "1234567890", "Male", "2024-01-01", "Customer", true);
         userDao.createUser(toBeDeletedUser);
         // Start transaction
         conn.setAutoCommit(false);
@@ -145,7 +149,7 @@ public class UserDAOTest {
     @Test //#T0006
     public void testRegistrationSuccess() throws SQLException {
         long userID = generateUniqueUserID();
-        user newUser = new user(userID, "newuser@example.com", "securepassword", "New", "User", "Example", "1990-01-01", "1234567890", "Other", "2024-01-01", "Customer");
+        user newUser = new user(userID, "newuser@example.com", "securepassword", "New", "User", "Example", "1990-01-01", "1234567890", "Other", "2024-01-01", "Customer", true);
         boolean result = userDao.createUser(newUser);
         assertTrue(result, "Registration should succeed.");
         user registeredUser = userDao.getUserByEmail("newuser@example.com");
@@ -156,37 +160,34 @@ public class UserDAOTest {
     @Test //#T0007
     public void testDuplicateEmailRegistration() throws SQLException {
         long userID1 = generateUniqueUserID();
-        user firstUser = new user(userID1, "duplicate@example.com", "password1", "Duplicate", "Email", "User1", "1985-01-01", "987654321", "Male", "2024-01-01", "Customer");
+        user firstUser = new user(userID1, "duplicate@example.com", "password1", "Duplicate", "Email", "User1", "1985-01-01", "987654321", "Male", "2024-01-01", "Customer", true);
         userDao.createUser(firstUser); // This should succeed
-    
+   
         long userID2 = generateUniqueUserID();
-        user secondUser = new user(userID2, "duplicate@example.com", "password2", "Duplicate", "Email", "User2", "1986-02-02", "987654322", "Female", "2024-01-01", "Customer");
-    
+        user secondUser = new user(userID2, "duplicate@example.com", "password2", "Duplicate", "Email", "User2", "1986-02-02", "987654322", "Female", "2024-01-01", "Customer", true);
+   
         assertThrows(SQLException.class, () -> userDao.createUser(secondUser), "Duplicate email registration should throw SQLException.");
     }
-
 
     @Test //#T0008
     public void testLoginSuccess() throws SQLException {
         long userID = generateUniqueUserID();
-        user newUser = new user(userID, "loginuser@example.com", "loginpassword", "Login", "User", "Success", "1995-02-02", "1231231234", "Male", "2024-01-01", "Customer");
+        user newUser = new user(userID, "loginuser@example.com", "loginpassword", "Login", "User", "Success", "1995-02-02", "1231231234", "Male", "2024-01-01", "Customer", true);
         userDao.createUser(newUser);
         user fetchedUser = userDao.getUserByEmail("loginuser@example.com");
         assertNotNull(fetchedUser, "User should not be null");
         assertEquals("loginpassword", fetchedUser.getPassword(), "Passwords should match.");
         System.out.println("Login test passed: User logged in successfully.");
     }
-    
+   
     @Test //#T0009
     public void testLoginFailure() throws SQLException {
         long userID = generateUniqueUserID();
-        user newUser = new user(userID, "failedlogin@example.com", "rightpassword", "Failed", "Login", "User", "1988-03-03", "3213214321", "Female", "2024-01-01", "Customer");
+        user newUser = new user(userID, "failedlogin@example.com", "rightpassword", "Failed", "Login", "User", "1988-03-03", "3213214321", "Female", "2024-01-01", "Customer", true);
         userDao.createUser(newUser);
         user fetchedUser = userDao.getUserByEmail("failedlogin@example.com");
         assertNotNull(fetchedUser, "User should not be null");
         assertNotEquals("wrongpassword", fetchedUser.getPassword(), "Passwords should not match.");
         System.out.println("Login failure test passed: User login failed as expected with wrong password.");
     }
-
-    
 }

@@ -1,12 +1,9 @@
-// 'User.java' for User object class
 package model;
+
 import java.io.Serializable;
 import java.util.List;
 
-// import java.math.*;
-
-
-public class user implements Serializable{
+public class user implements Serializable {
     private String email;
     private String password;
     private String firstName;
@@ -18,12 +15,11 @@ public class user implements Serializable{
     private String creationDate;
     private String uType;
     private long uID;
+    private boolean activationStatus; // New field for activation status
 
-
-    //Setters
     public user() {}
 
-    public user(long uid, String emai, String pass, String fName, String mname, String lName, String bday, String mPhone, String g, String cd, String Type) {
+    public user(long uid, String emai, String pass, String fName, String mname, String lName, String bday, String mPhone, String g, String cd, String Type, boolean activationStatus) {
         this.uID = uid;
         this.email = emai;
         this.password = pass;
@@ -35,9 +31,16 @@ public class user implements Serializable{
         this.gender = g;
         this.creationDate = cd;
         this.uType = Type;
+        this.activationStatus = activationStatus;
+    }
+    public boolean getActivationStatus() {
+        return this.activationStatus;
     }
 
-    
+    public void setActivationStatus(boolean activationStatus) {
+        this.activationStatus = activationStatus;
+    }
+
     public void setuType(String a) {
         this.uType = a;
     }
@@ -100,7 +103,7 @@ public class user implements Serializable{
     public String getBirthDate() {
         return this.birthDate;
     }
-  
+ 
     public String getMobilePhone() {
         return this.mobilePhone;
     }
@@ -124,7 +127,6 @@ public class user implements Serializable{
     public void setuID(long id) {
         this.uID = id;
     }
-
     public List<payment> getPayments() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPayments'");

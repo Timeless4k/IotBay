@@ -16,7 +16,6 @@ import java.util.function.BooleanSupplier;
 
 import model.user;
 
-
 public class userDAO {
     private Connection conn;
     private PreparedStatement createUserSt;
@@ -68,12 +67,15 @@ public class userDAO {
      * @param email The email address of the user to retrieve.
      * @return The user object if found, or null if not found.
      */
+    // Retrieve a user by email along with activation status
     public user getUserByEmail(String email) {
         try {
             getUserByEmailSt.setString(1, email);
             ResultSet rs = getUserByEmailSt.executeQuery();
             if (rs.next()) {
-                return extractUserFromResultSet(rs);
+                user usr = extractUserFromResultSet(rs);
+                usr.setActivationStatus(rs.getBoolean("ActivationFlag")); // Set activation status from the result set
+                return usr;
             }
         } catch (SQLException e) {
             System.err.println("Fetch user failed: " + e.getMessage());
@@ -88,7 +90,7 @@ public class userDAO {
         if (rs.next()) {
             throw new SQLException("Duplicate email registration");
         }
-
+   
         try {
             long uniqueUserID = generateUniqueUserID(); // Generate a unique UserID
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Australia/Sydney"));
@@ -130,8 +132,8 @@ public class userDAO {
             updateUserSt.setString(6, user.getGender());
             updateUserSt.setString(7, user.getPassword());
             updateUserSt.setString(8, user.getCreationDate());
-            updateUserSt.setString(9, "0");  // Assuming no changes to ActivationFlag and VerificationCode
-            updateUserSt.setString(10, ""); // Assuming no changes to ActivationFlag and VerificationCode
+            updateUserSt.setBoolean(9, user.getActivationStatus());  // Assuming the activation status is stored in the user object
+            updateUserSt.setString(10, ""); // Assuming no changes to VerificationCode
             updateUserSt.setString(11, user.getEmail());
             int rowsAffected = updateUserSt.executeUpdate();
             if (rowsAffected > 0) {
@@ -186,25 +188,38 @@ public class userDAO {
         return userList;
     }
 
-    private user extractUserFromResultSet(ResultSet rs) throws SQLException {
-        user usr = new user();
-        usr.setuID(rs.getLong("UserID"));
-        usr.setEmail(rs.getString("UserEmail"));
-        usr.setPassword(rs.getString("PasswordHash"));
-        usr.setFirstName(rs.getString("UserFirstName"));
-        usr.setMiddleName(rs.getString("UserMiddleName"));
-        usr.setLastName(rs.getString("UserLastName"));
-        usr.setuType(rs.getString("UserType"));
-        usr.setMobilePhone(Long.toString(rs.getLong("UserPhone")));
-        usr.setGender(rs.getString("UserGender"));
-        usr.setCreationDate(rs.getString("UserCreationDate"));
-        return usr;
+    public boolean activateUser(String userId) throws SQLException {
+        try {
+            PreparedStatement activateUserSt = conn.prepareStatement("UPDATE User SET ActivationFlag = ? WHERE UserID = ?");
+            activateUserSt.setString(1, "1"); // Assuming '1' represents activated status
+            activateUserSt.setString(2, userId);
+            int rowsAffected = activateUserSt.executeUpdate();
+            if (rowsAffected > 0) {
+                conn.commit(); // Commit the transaction after successful activation
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println("Activate user failed: " + e.getMessage());
+            conn.rollback();
+        }
+        return false;
     }
-
-
-    public BooleanSupplier validateLogin(String string, String string2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validateLogin'");
+   
+    public boolean deactivateUser(String userId) throws SQLException {
+        try {
+            PreparedStatement deactivateUserSt = conn.prepareStatement("UPDATE User SET ActivationFlag = ? WHERE UserID = ?");
+            deactivateUserSt.setString(1, "0"); // Assuming '0' represents deactivated status
+            deactivateUserSt.setString(2, userId);
+            int rowsAffected = deactivateUserSt.executeUpdate();
+            if (rowsAffected > 0) {
+                conn.commit(); // Commit the transaction after successful deactivation
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println("Deactivate user failed: " + e.getMessage());
+            conn.rollback();
+        }
+        return false;
     }
 
 
@@ -249,4 +264,24 @@ public class userDAO {
         return userList;
     }
    
+    private user extractUserFromResultSet(ResultSet rs) throws SQLException {
+        user usr = new user();
+        usr.setuID(rs.getLong("UserID"));
+        usr.setEmail(rs.getString("UserEmail"));
+        usr.setPassword(rs.getString("PasswordHash"));
+        usr.setFirstName(rs.getString("UserFirstName"));
+        usr.setMiddleName(rs.getString("UserMiddleName"));
+        usr.setLastName(rs.getString("UserLastName"));
+        usr.setuType(rs.getString("UserType"));
+        usr.setMobilePhone(Long.toString(rs.getLong("UserPhone")));
+        usr.setGender(rs.getString("UserGender"));
+        usr.setCreationDate(rs.getString("UserCreationDate"));
+        usr.setActivationStatus(rs.getBoolean("ActivationFlag")); // Set activation status
+        return usr;
+    }
+   
+    public BooleanSupplier validateLogin(String string, String string2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validateLogin'");
+    }
 }
