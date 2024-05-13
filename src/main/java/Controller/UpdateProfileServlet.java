@@ -54,7 +54,7 @@ public class UpdateProfileServlet extends HttpServlet {
                 // Update session with new user data
                 session.setAttribute("user", currentUser); 
                 // Refresh the page with updated data
-                response.sendRedirect("account.jsp"); 
+                response.sendRedirect("account.jsp#profile"); 
             } else {
                 conn.rollback();  // Rollback in case of failure
                 System.err.println("UpdateProfileServlet: Failed to update user data, transaction rolled back.");
