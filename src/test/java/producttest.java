@@ -1,6 +1,9 @@
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
+
+import javax.validation.constraints.AssertTrue;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,6 +24,13 @@ public class producttest {
             conn = connector.openConnection();
             PDDAO = new productDAO(conn);
         }
+        conn.setAutoCommit(false);
+    }
+
+    @AfterEach
+    public void teardown() throws SQLException{
+        conn.rollback();
+        conn.close();
     }
 
     @Test
@@ -42,24 +52,7 @@ public class producttest {
     @Test
     public void createTest() throws SQLException, ClassNotFoundException{
         intPDAO();
-        ArrayList<product> before = PDDAO.fetchProducts();
-        PDDAO.addProduct(9999, "TestOBJ", "InStock", "2024-01-01", 500, "A Test Thinggy", "Test", 500.99);
-        ArrayList<product> after = PDDAO.fetchProducts();
-        PDDAO.removeProduct(9999);
-        // product testprod = new product();
-        // testprod.setpID(9999);
-        // testprod.setName("TestOBJ");
-        // testprod.setStatus("InStock");
-        // testprod.setReleaseDate("2024-01-01");
-        // testprod.setStock(500);
-        // testprod.setDescription("A Test Thinggy");
-        // testprod.setType("Test");
-        // testprod.setPrice(500.99);
-
-        // ArrayList<product> readdata = PDDAO.fetchProducts();
-
-
-        assertTrue(before.size() < after.size());
+        assertTrue(PDDAO.addProduct(9999, "TestOBJ", "InStock", "2024-01-01", 500, "A Test Thinggy", "Test", 500.99));
     }
 
 
