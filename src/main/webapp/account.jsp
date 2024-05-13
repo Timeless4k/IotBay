@@ -81,14 +81,6 @@
                 </tfoot>
             </table>
             </div>
-
-        <c:if test="${user.uType == 'Admin'}">
-            <div id="user-management" class="content-section" style="display:none;">
-                <h1>User Management</h1>
-                <p>Manage user accounts and permissions here.</p>
-                <a href="UserManagementServlet">Manage Users</a>
-            </div>
-        </c:if>
     </div>
 
     <footer>
