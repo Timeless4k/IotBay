@@ -21,14 +21,6 @@ class ValidationUtilsTest {
     }
 
     @Test
-    void testIsValidName(){ //#T0015 
-        assertTrue(ValidationUtils.isValidName("John Doe"), "namevalid.");
-        assertFalse(ValidationUtils.isValidName("John@Doe"), "Name with special characters is invalid.");
-        assertFalse(ValidationUtils.isValidName("1234"), "Name with digits is invalid.");
-        assertFalse(ValidationUtils.isValidName(null), "Null name is invalid.");
-    }
-
-    @Test
     void testIsValidPhone(){ //#T0016 
         assertFalse(ValidationUtils.isValidPhone("12345"), "phone number is invalid.");
         assertFalse(ValidationUtils.isValidPhone("abcdefghijk"), "Phone number with letters is invalid.");

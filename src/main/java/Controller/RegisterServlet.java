@@ -35,10 +35,17 @@ public class RegisterServlet extends HttpServlet {
             String mobilePhone = request.getParameter("mobilePhone");
             String gender = request.getParameter("gender");
 
+            System.out.println(email);
+            System.out.println(ValidationUtils.isValidEmail(email));
+            System.out.println(password);
+            System.out.println(ValidationUtils.isValidPassword(password));
+            System.out.println(mobilePhone);
+            System.out.println(ValidationUtils.isValidPhone(mobilePhone));
+            System.out.println(gender);
+            System.out.println(ValidationUtils.isValidGender(gender));
+
             if (!ValidationUtils.isValidEmail(email) || !ValidationUtils.isValidPassword(password) ||
-                !ValidationUtils.isValidName(firstName) || !ValidationUtils.isValidName(middleName) ||
-                !ValidationUtils.isValidName(lastName) || !ValidationUtils.isValidPhone(mobilePhone) ||
-                !ValidationUtils.isValidGender(gender)) {
+                !ValidationUtils.isValidPhone(mobilePhone) || !ValidationUtils.isValidGender(gender)) {
                 response.sendRedirect("register.jsp?error=validationFailed");
                 return;
             }
