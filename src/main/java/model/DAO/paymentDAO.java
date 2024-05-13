@@ -2,6 +2,8 @@ package model.DAO;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import model.payment;
@@ -76,15 +78,66 @@ public class paymentDAO {
         return Math.abs(new Random().nextLong()); // Example: Using random long value
     }
 
-    public ResultSet getPaymentsForUser(long userID) {
-        // Corrected the SQL query to reference the correct table name `card`
-        String sql = "SELECT * FROM payments WHERE CardID IN (SELECT CardID FROM card WHERE UserID = ?)";
+    public List<payment> getPaymentsForUser(long userID) throws SQLException {
+        List<payment> payments = new ArrayList<>();
+        String sql = "SELECT p.*, c.CardNumber FROM payments p " +
+                     "JOIN card c ON p.CardID = c.CardID " +
+                     "WHERE c.UserID = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, userID);
-            return pstmt.executeQuery();
-        } catch (SQLException e) {
-            System.err.println("Get payments failed: " + e.getMessage());
-            return null;
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    payments.add(new payment(
+                        rs.getLong("PaymentID"),
+                        rs.getDouble("PaymentAmount"),
+                        rs.getString("PaymentMethod"),
+                        rs.getString("PaymentDate"),
+                        rs.getString("PaymentStatus"),
+                        rs.getString("CardNumber")
+                    ));
+                }
+            }
         }
+        return payments;
+    }
+
+    public List<payment> searchPayments(long userID, Long paymentID, String paymentDate) throws SQLException {
+        List<payment> payments = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(
+            "SELECT p.*, c.CardNumber FROM payments p " +
+            "JOIN card c ON p.CardID = c.CardID " +
+            "WHERE c.UserID = ?"
+        );
+
+        if (paymentID != null) {
+            sql.append(" AND p.PaymentID = ?");
+        }
+        if (paymentDate != null && !paymentDate.isEmpty()) {
+            sql.append(" AND p.PaymentDate = ?");
+        }
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+            pstmt.setLong(1, userID);
+            int index = 2;
+            if (paymentID != null) {
+                pstmt.setLong(index++, paymentID);
+            }
+            if (paymentDate != null && !paymentDate.isEmpty()) {
+                pstmt.setString(index, paymentDate);
+            }
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    payments.add(new payment(
+                        rs.getLong("PaymentID"),
+                        rs.getDouble("PaymentAmount"),
+                        rs.getString("PaymentMethod"),
+                        rs.getString("PaymentDate"),
+                        rs.getString("PaymentStatus"),
+                        rs.getString("CardNumber")
+                    ));
+                }
+            }
+        }
+        return payments;
     }
 }

@@ -32,6 +32,11 @@
   </servlet>
 
 <servlet>
+    <servlet-name>OrderHistoryServlet</servlet-name>
+    <servlet-class>Controller.OrderHistoryServlet</servlet-class>
+  </servlet>
+
+<servlet>
     <servlet-name>ProductNameSearchServlet</servlet-name>
     <servlet-class>Controller.ProductNameSearchServlet</servlet-class>
   </servlet>
@@ -74,6 +79,11 @@
   <servlet-mapping>
     <servlet-name>SearchAllProductServlet</servlet-name>
     <url-pattern>/SearchAllProductServlet</url-pattern>
+  </servlet-mapping>
+
+    <servlet-mapping>
+    <servlet-name>OrderHistoryServlet</servlet-name>
+    <url-pattern>/OrderHistoryServlet</url-pattern>
   </servlet-mapping>
 
 <servlet-mapping>
