@@ -33,7 +33,6 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
                 <div style="margin-top: 5px;">
-                    <a href="forgotPassword.jsp" style="font-size: 14px; color: #008CBA; text-decoration: none;">Forgot password?</a>
                 </div>
             </div>
             <div>

@@ -187,4 +187,6 @@ public class UserDAOTest {
         assertNotEquals("wrongpassword", fetchedUser.getPassword(), "Passwords should not match.");
         System.out.println("Login failure test passed: User login failed as expected with wrong password.");
     }
+
+    
 }
