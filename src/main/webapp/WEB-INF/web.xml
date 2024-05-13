@@ -17,6 +17,11 @@
   </servlet>
 
   <servlet>
+    <servlet-name>GuestUserServlet</servlet-name>
+    <servlet-class>Controller.GuestUserServlet</servlet-class>
+  </servlet>
+
+  <servlet>
     <servlet-name>SearchAllProductServlet</servlet-name>
     <servlet-class>Controller.SearchAllProductServlet</servlet-class>
   </servlet>
@@ -74,6 +79,11 @@
   <servlet-mapping>
     <servlet-name>RegisterServlet</servlet-name>
     <url-pattern>/RegisterServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>GuestUserServlet</servlet-name>
+    <url-pattern>/GuestUserServlet</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>

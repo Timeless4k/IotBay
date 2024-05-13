@@ -42,6 +42,9 @@
         <hr>
         <div style="text-align: center; margin-top: 20px;">
             <p>Not an IoTBay customer yet? <a href="register.jsp">Register now.</a></p>
+            <form action="/GuestUserServlet" method="post">
+                <input type="submit" value="Guest Access">
+            </form>
         </div>
     </div>
 </div>
