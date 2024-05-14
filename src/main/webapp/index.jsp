@@ -16,7 +16,7 @@
             <ul>
                 <li><a href="#about_us">About Us</a></li>
                 <li><a href="#FAQs">FAQs</a></li>
-                <li><a href="product.jsp">Catalog</a></li>
+                <li><a href="/ProductNameSearchServlet?SearchType=ProductName&SearchQuery=">Catalog</a></li>
             </ul>
         </nav>
 

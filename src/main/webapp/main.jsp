@@ -19,7 +19,7 @@
             <ul>
                 <li><a href="#best-sellers">Best Sellers</a></li>
                 <li><a href="#new-arrivals">New Arrivals</a></li>
-                <li><a href="product.jsp">Catalog</a></li>
+                <li><a href="ProductNameSearchServlet?SearchType=ProductName&SearchQuery=">Catalog</a></li>
             </ul>
         </nav>
 
