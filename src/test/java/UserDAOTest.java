@@ -80,8 +80,8 @@ public class UserDAOTest {
         conn.setAutoCommit(false);
 
         try {
-            boolean result = userDao.createUser(newUser);
-            assertTrue(result, "User creation failed when it should have succeeded.");
+            long result = userDao.createUser(newUser);
+            assertNotEquals(-1, result, "User creation failed when it should have succeeded.");
             System.out.println("User creation test passed: User was successfully created.");
 
             user fetchedUser = userDao.getUserByEmail("testemail@example.com");
@@ -150,8 +150,8 @@ public class UserDAOTest {
     public void testRegistrationSuccess() throws SQLException {
         long userID = generateUniqueUserID();
         user newUser = new user(userID, "newuser@example.com", "securepassword", "New", "User", "Example", "1990-01-01", "1234567890", "Other", "2024-01-01", "Customer", true);
-        boolean result = userDao.createUser(newUser);
-        assertTrue(result, "Registration should succeed.");
+        long result = userDao.createUser(newUser);
+        assertNotEquals(-1, result, "Registration should succeed.");
         user registeredUser = userDao.getUserByEmail("newuser@example.com");
         assertNotNull(registeredUser, "User should be retrievable post-registration.");
         System.out.println("Registration test passed: User registered successfully.");

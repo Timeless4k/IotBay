@@ -157,7 +157,7 @@ public class UserServlet extends HttpServlet {
                 request.getParameter("userType"),
                 true // Assuming new users are activated by default
             );
-            if (userDao.createUser(newUser)) {
+            if (userDao.createUser(newUser) != -1) {
                 response.sendRedirect("usermanagement.jsp");
             } else {
                 response.getWriter().print("Failed to create user.");

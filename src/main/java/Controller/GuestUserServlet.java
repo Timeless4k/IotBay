@@ -31,11 +31,11 @@ public class GuestUserServlet extends HttpServlet {
             newUser.setEmail("guest@localhost.com"); // Assuming default email
             newUser.setFirstName("Guest");
 
-            boolean createUserSuccess = UDAO.createUser(newUser);
+            long createUserSuccess = UDAO.createUser(newUser);
             user tempUser = UDAO.getUserByEmail("guest@localhost.com"); 
             newUser.setuID(tempUser.getuID());
             
-            if (createUserSuccess) {
+            if (createUserSuccess != -1) {
                 session.setAttribute("user", newUser);
                 response.sendRedirect("welcome.jsp");
             } else {
