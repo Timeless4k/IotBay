@@ -108,14 +108,15 @@ public class paymentDAO {
             "JOIN card c ON p.CardID = c.CardID " +
             "WHERE c.UserID = ?"
         );
-
+    
         if (paymentID != null) {
             sql.append(" AND p.PaymentID = ?");
         }
         if (paymentDate != null && !paymentDate.isEmpty()) {
-            sql.append(" AND p.PaymentDate = ?");
+            // Convert the search date to a range that includes the entire day
+            sql.append(" AND p.PaymentDate >= ? AND p.PaymentDate < DATE_ADD(?, INTERVAL 1 DAY)");
         }
-
+    
         try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
             pstmt.setLong(1, userID);
             int index = 2;
@@ -123,7 +124,9 @@ public class paymentDAO {
                 pstmt.setLong(index++, paymentID);
             }
             if (paymentDate != null && !paymentDate.isEmpty()) {
+                // Set the search date for both lower and upper bounds of the range
                 pstmt.setString(index, paymentDate);
+                pstmt.setString(index + 1, paymentDate);
             }
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -139,5 +142,5 @@ public class paymentDAO {
             }
         }
         return payments;
-    }
+    }    
 }
