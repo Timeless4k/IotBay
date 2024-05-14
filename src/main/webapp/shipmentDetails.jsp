@@ -32,10 +32,10 @@
             </ul>
         </nav>
     </header>
-    <div class="container">
+    <div class="container"> <!-- So do all the html in here formatting -->
     <h1>Shipment Details</h1>
     
-
+    
     <hr>
     <br><br>
 
@@ -45,8 +45,5 @@
 
     </div>
     </div>
-    <!-- <footer>
-        <p>&copy; 2024 IoTBay. All rights reserved.</p>
-    </footer> -->
 </body>
 </html>

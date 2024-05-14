@@ -30,6 +30,13 @@
             </ul>
         </nav>
     </header>
+
+    <div class="container">  <!-- So do all the html in here formatting -->
+    
+    
+    
+    
+    </div>
        
 </body>
 </html>
