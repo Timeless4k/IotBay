@@ -39,7 +39,7 @@
             <h1>Profile</h1>
             <form action="UpdateProfileServlet" method="POST">
                 <p><b>First Name:</b><br><input type="text" name="firstName" value="${user.firstName}" required></p>
-                <p><b>Middle Name:</b><br><input type="text" name="middleName" value="${user.middleName}" required></p>
+                <p><b>Middle Name:</b><br><input type="text" name="middleName" value="${user.middleName}" optional></p>
                 <p><b>Last Name:</b><br><input type="text" name="lastName" value="${user.lastName}" required></p>
                 <p><b>Gender:</b><br>
                     <select name="gender" required>
