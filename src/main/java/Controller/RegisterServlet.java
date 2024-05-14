@@ -2,7 +2,11 @@ package Controller;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import model.DAO.accesslogDAO;
 import model.DAO.userDAO;
+import model.accesslog;
 import model.user;
 import util.ValidationUtils;
 
@@ -68,10 +73,31 @@ public class RegisterServlet extends HttpServlet {
             newUser.setGender(gender);
             newUser.setuType("Customer"); // Assuming default user type
 
-            boolean createUserSuccess = UDAO.createUser(newUser);
-            if (createUserSuccess) {
+            long createUserSuccess = UDAO.createUser(newUser);
+            newUser.setuID(createUserSuccess);
+            if (createUserSuccess != -1) {
                 accesslogDAO accesslogDAO = new accesslogDAO(conn);
                 accesslogDAO.logLogin(newUser);
+
+                ResultSet accessLogsRs = accesslogDAO.getLogsForUser(newUser);
+                List<accesslog> accessLogList = new ArrayList<>();
+                try {
+                    while (accessLogsRs.next()) {
+                        accesslog accesslog = new accesslog();
+                        accesslog.setlogID(accessLogsRs.getLong("logID"));
+                        accesslog.setuserID(accessLogsRs.getLong("userID"));
+                        if (accessLogsRs.getTimestamp("loginTime") == null) {
+                            accesslog.setlogoutTime(accessLogsRs.getTimestamp("logoutTime").toString());
+                        } else {
+                            accesslog.setloginTime(accessLogsRs.getTimestamp("loginTime").toString());
+                        }
+                        accessLogList.add(accesslog);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                session.setAttribute("logs", accessLogList);
+                
                 session.setAttribute("user", newUser);
                 response.sendRedirect("welcome.jsp");
             } else {

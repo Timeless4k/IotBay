@@ -83,7 +83,7 @@ public class userDAO {
         return null;
     }
 
-    public boolean createUser(user newUser) throws SQLException {
+    public long createUser(user newUser) throws SQLException {
         // First, check if the email already exists
         getUserByEmailSt.setString(1, newUser.getEmail());
         ResultSet rs = getUserByEmailSt.executeQuery();
@@ -111,14 +111,14 @@ public class userDAO {
             int rowsAffected = createUserSt.executeUpdate();
             if (rowsAffected > 0) {
                 conn.commit(); // Commit the transaction after successful insertion
-                return true;
+                return uniqueUserID;
             }
         } catch (SQLException e) {
             System.err.println("Create user failed: " + e.getMessage());
             conn.rollback();
             throw e;  // Re-throw the exception to be caught by the servlet or controller
         }
-        return false;
+        return -1;
     }
 
 

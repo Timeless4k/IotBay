@@ -77,9 +77,9 @@ public class LoginServlet extends HttpServlet {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                session.setAttribute("logs", accessLogList);
 
                 session.setAttribute("user", user);
-                session.setAttribute("logs", accessLogList);
                 response.sendRedirect("account.jsp#profile");
             } else {
                 response.sendRedirect("login.jsp?error=invalid");
