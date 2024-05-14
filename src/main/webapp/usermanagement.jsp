@@ -54,7 +54,10 @@
                 <li><a href="OrderHistoryServlet">Order History</a></li>
                 <li><a href="/account.jsp#access">Access Logs</a></li>
                 <c:if test="${user.uType == 'Admin'}">
-                    <li><a href=usermanagement.jsp>User Management</a></li>
+                    <li><a href=UserServlet?action=displayAll>User Management</a></li>
+                </c:if>
+                <c:if test="${user.uType == 'Employee'}">
+                    <li><a href=productmanagement.jsp>Product Management</a></li>
                 </c:if>
                 <li><a href="logout.jsp">Logout</a></li>
             </ul>
@@ -146,7 +149,6 @@
         </table>
     </div>
 
-
     <!-- Modal for editing user -->
     <div id="editUserModal" class="modal">
         <div class="modal-content">
@@ -180,21 +182,6 @@
     </div>
 
 
-    <!-- Activation/Deactivation buttons -->
-    <form id="activationForm" action="UserServlet" method="post">
-        <input type="hidden" id="activateDeactivateUserId" name="userId">
-        <c:choose>
-            <c:when test="${user.activationStatus}">
-                <input type="hidden" name="action" value="deactivate">
-                <button type="submit">Deactivate</button>
-            </c:when>
-            <c:otherwise>
-                <input type="hidden" name="action" value="activate">
-                <button type="submit">Activate</button>
-            </c:otherwise>
-        </c:choose>
-    </form>
-
     <!-- Script to handle modal functionality -->
     <script>
         function openModal(userId, firstName, middleName, lastName, userType, email, phone, gender, creationDate) {
@@ -218,12 +205,6 @@
             // Reset the form
             document.getElementById('searchForm').reset();
             // Redirect to UserServlet?action=displayAll
-            window.location.href = "UserServlet?action=displayAll";
-        }
-    </script>
-    <script>
-        // Check if the users are loaded, if not redirect to load them
-        if (!${not empty users}) {
             window.location.href = "UserServlet?action=displayAll";
         }
     </script>
