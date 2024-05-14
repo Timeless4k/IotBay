@@ -25,6 +25,7 @@ public class LogoutServlet extends HttpServlet {
                 try {
                     logDao = new accesslogDAO((java.sql.Connection) session.getAttribute("acticonn"));
                     logDao.logLogout(currentUser);
+                    System.out.println("Logged out user: " + currentUser.getEmail());
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

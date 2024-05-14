@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import model.DAO.accesslogDAO;
 import model.DAO.userDAO;
 import model.user;
 import util.ValidationUtils;
@@ -68,6 +70,8 @@ public class RegisterServlet extends HttpServlet {
 
             boolean createUserSuccess = UDAO.createUser(newUser);
             if (createUserSuccess) {
+                accesslogDAO accesslogDAO = new accesslogDAO(conn);
+                accesslogDAO.logLogin(newUser);
                 session.setAttribute("user", newUser);
                 response.sendRedirect("welcome.jsp");
             } else {

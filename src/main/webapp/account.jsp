@@ -27,7 +27,9 @@
                 <c:if test="${user.uType == 'Employee'}">
                     <li><a href=productmanagement.jsp>Product Management</a></li>
                 </c:if>
-                <li><a href="logout.jsp">Logout</a></li>
+                <form action="logout" method="post">
+                    <input type="submit" value="Logout">
+                </form>
             </ul>
         </nav>
     </header>
