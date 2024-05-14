@@ -4,8 +4,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="css\style.css" type="text/css">
-        <link rel="stylesheet" href="css\product.css" type="text/css">
+    
+        <link rel="stylesheet" href="css/product.css" type="text/css">
+        <link rel="stylesheet" href="css/style.css" type="text/css">
         <link rel="icon" type="image/png" href="images/Logo.webp">
         <title>IoTBay - Products</title>
     </head>

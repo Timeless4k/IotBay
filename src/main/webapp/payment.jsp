@@ -133,14 +133,4 @@
             document.getElementById('editPaymentModal').style.display = 'none';
         }
     </script>
-    
-
-    <% if (loggedInUser != null) { %>
-        <div>User ID: <%= loggedInUser.getuID() %></div>
-        <div>Email Address: <%= loggedInUser.getEmail() %></div>
-        <div>Debugging Info: User is logged in</div>
-    <% } else { %>
-        <div>User is not logged in</div>
-    <% } %>
-</body>
 </html>
