@@ -17,7 +17,7 @@
             <ul>
                 <li><a href="/account.jsp#profile">Profile</a></li>
                 <li><a href="PaymentHistoryServlet">Payment History</a></li>
-                <li><a href="OrderHistoryServlet">Order History</a></li>
+                <li><a href="order.jsp">Order History</a></li>
                 <li><a href="shipmentDetails.jsp">Shipment Details</a></li>
                 <li><a href="/account.jsp#access">Access Logs</a></li>
                 <c:if test="${user.uType == 'Admin'}">
@@ -26,7 +26,9 @@
                 <c:if test="${user.uType == 'Employee'}">
                     <li><a href=productmanagement.jsp>Product Management</a></li>
                 </c:if>
-                <li><a href="logout.jsp">Logout</a></li>
+                <form action="logout" method="post">
+                    <input type="submit" value="Logout">
+                </form>
             </ul>
         </nav>
     </header>
