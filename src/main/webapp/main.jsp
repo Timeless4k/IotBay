@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>IoTBay - Main</title>
+    <link rel="stylesheet" href="css/general-settings.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/png" href="images/Logo.webp">
 </head>
@@ -36,7 +37,9 @@
                     <a href="account.jsp#profile">Account</a>
                     <!-- <a href="register.jsp">Register</a> -->
                     <!-- <a href="settings.jsp">Settings</a> -->
-                    <a href="logout.jsp">Logout</a>
+                    <form action="logout" method="post">
+                        <input type="submit" value="Logout">
+                    </form>
                 </div>
             </div>
         </div>
