@@ -154,6 +154,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <form id="editUserForm" action="UserServlet" method="post">
+                <input type="hidden" name="action" value="update"> <!-- Ensure action is set to "update" -->
                 <input type="hidden" id="userId" name="userId">
                 First Name: <input type="text" id="firstName" name="firstName" required><br>
                 Middle Name: <input type="text" id="middleName" name="middleName"><br>
@@ -173,14 +174,10 @@
                     <option value="Customer">Customer</option>
                     <option value="Admin">Admin</option>
                 </select><br>
-                <!-- Status:
-                <input type="checkbox" id="activationStatus" name="activationStatus" checked> Active<br>
-                <input type="hidden" name="action" value="update"> -->
                 <button type="submit">Save Changes</button>
             </form>
         </div>
     </div>
-
 
     <!-- Script to handle modal functionality -->
     <script>

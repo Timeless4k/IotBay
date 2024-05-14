@@ -93,7 +93,6 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-
     private void displayAllUsers(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws ServletException, IOException {
         try {
             List<user> users = userDao.getAllUsers();
@@ -104,7 +103,6 @@ public class UserServlet extends HttpServlet {
             response.getWriter().print("Error fetching users: " + e.getMessage());
         }
     }
-
 
     private void activateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         String userId = request.getParameter("userId");
@@ -142,13 +140,6 @@ public class UserServlet extends HttpServlet {
             response.getWriter().print("User ID is missing.");
         }
     }
-
-
-
-
-
-
-
 
     private void createUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         try {
@@ -194,11 +185,8 @@ public class UserServlet extends HttpServlet {
    
                 // Call updateUser method in userDAO
                 if (userDao.updateUser(existingUser)) {
-                    // Update successful, redirect to usermanagement.jsp
-                    // Instead of redirecting, set the updated user in session and then forward to usermanagement.jsp
-                    HttpSession session = request.getSession();
-                    session.setAttribute("user", existingUser);
-                    request.getRequestDispatcher("/usermanagement.jsp").forward(request, response);
+                    // Update successful, redirect to user management page
+                    response.sendRedirect("UserServlet?action=displayAll");
                 } else {
                     // Update failed
                     response.getWriter().print("Failed to update user.");
@@ -226,5 +214,4 @@ public class UserServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
 }
