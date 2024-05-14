@@ -35,6 +35,19 @@
 
     <div class="container">  <!-- So do all the html in here formatting -->
     
+    <table>
+        <tr>
+            <th>ProductID</th>
+            <th>ProductName</th>
+            <th>ProductType</th>
+            <th>ProductStatus</th>
+            <th>ProductPrice</th>
+            <th>ProductDescription</th>
+            <th>ProductQuantity</th>
+        </tr>
+        <% for() {} %>
+
+    </table>
     
     
     
