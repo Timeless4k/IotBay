@@ -43,20 +43,20 @@ public class ShipmentTest {
     //     assertTrue(check);
     // }
 
-    // @Test
-    // public void createTest() throws SQLException, ClassNotFoundException {
-    //     intSDAO();
+    @Test
+    public void createTest() throws SQLException, ClassNotFoundException {
+        intSDAO();
 
-    //     shipment test = new shipment("University of Technology Sydney", "2024-05-25", "FedEx");
+        shipment test = new shipment("1982159379976824584", "University of Technology Sydney", "2024-05-25", "FedEx");
 
-    //     System.out.println("Creating shipment: " + test.toString());
+        System.out.println("Creating shipment: " + test.toString());
 
-    //     boolean check = SDAO.createShipment(test);
-    //     // conn.commit(); // pushing data to db
+        boolean check = SDAO.createShipment(test);
+        // conn.commit(); // pushing data to db
 
-    //     System.out.println("Shipment creation status: " + check);
+        System.out.println("Shipment creation status: " + check);
 
-    //     assertTrue(check);
-    // }
+        assertTrue(check);
+    }
 
 }
