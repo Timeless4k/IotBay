@@ -39,6 +39,42 @@ public class UpdateProductServlet extends HttpServlet {
             PDAO = new productDAO(conn);
         } catch (SQLException ex) {
             System.out.println(ex);
-        }   
+        }
+
+        String action = request.getParameter("action");
+
+        if(action != null) {
+            switch(action) {
+                case "update":
+                    updateProduct(request, response);
+                    break;
+                case "show":
+                    showProduct(request, response); // redundant entry might delete
+                    break;
+                case "add":
+                    addProduct(request, response);
+                    break;
+                default:
+                    showProduct(request, response);
+                    break;
+            }
+        }
+    }
+
+    public void showProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            request.setAttribute("products", PDAO.fetchProducts());
+            request.getRequestDispatcher("productmanagement.jsp").forward(request, response);
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void updateProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    public void addProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     }
 }
