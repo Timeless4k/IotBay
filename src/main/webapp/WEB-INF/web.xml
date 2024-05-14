@@ -31,11 +31,6 @@
     <servlet-class>Controller.UserSearchServlet</servlet-class>
   </servlet>
 
-  <servlet>
-    <servlet-name>RemoveProductServlet</servlet-name>
-    <servlet-class>Controller.RemoveProductServlet</servlet-class>
-  </servlet>
-
 <servlet>
     <servlet-name>UpdateProductServlet</servlet-name>
     <servlet-class>Controller.UpdateProductServlet</servlet-class>
@@ -49,11 +44,6 @@
 <servlet>
     <servlet-name>ProductNameSearchServlet</servlet-name>
     <servlet-class>Controller.ProductNameSearchServlet</servlet-class>
-  </servlet>
-
-<servlet>
-    <servlet-name>AddProductServlet</servlet-name>
-    <servlet-class>Controller.AddProductServlet</servlet-class>
   </servlet>
 
 <servlet>
@@ -91,6 +81,16 @@
     <servlet-class>Controller.CartServlet</servlet-class>
 </servlet>
 
+<servlet>
+    <servlet-name>ActualUpdateProductServlet</servlet-name>
+    <servlet-class>Controller.ActualUpdateProductServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ActualUpdateProductServlet</servlet-name>
+    <url-pattern>/ActualUpdateProductServlet</url-pattern>
+</servlet-mapping>
+
 <servlet-mapping>
     <servlet-name>CartServlet</servlet-name>
     <url-pattern>/CartServlet</url-pattern>
@@ -127,11 +127,6 @@
   </servlet-mapping>
 
 <servlet-mapping>
-    <servlet-name>RemoveProductServlet</servlet-name>
-    <url-pattern>/RemoveProductServlet</url-pattern>
-  </servlet-mapping>
-
-<servlet-mapping>
     <servlet-name>UserSearchServlet</servlet-name>
     <url-pattern>/UserSearchServlet</url-pattern>
   </servlet-mapping>
@@ -147,10 +142,7 @@
     <url-pattern>/ProductNameSearchServlet</url-pattern>
   </servlet-mapping>
 
-<servlet-mapping>
-    <servlet-name>AddProductServlet</servlet-name>
-    <url-pattern>/AddProductServlet</url-pattern>
-  </servlet-mapping>
+
 
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>

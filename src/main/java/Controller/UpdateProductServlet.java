@@ -39,14 +39,14 @@ public class UpdateProductServlet extends HttpServlet {
         System.out.println("Deciding actions");
         if(action != null) {
             switch(action) {
-                case "update":
-                    updateProduct(request, response);
-                    break;
                 case "add":
                     addProduct(request, response, session);
                     break;
                 case "delete":
                     deleteProduct(request, response); // might be implemented later
+                    break;
+                case "update":
+                    updateProduct(request, response); // might be implemented later
                     break;
                 default:
                    request.getRequestDispatcher("productmanagement.jsp").include(request, response);
@@ -88,7 +88,23 @@ public class UpdateProductServlet extends HttpServlet {
     }
 
     public void updateProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        try {
+            System.out.println("Updating product");
+            long pID = Long.parseLong(request.getParameter("id"));
+            String pName = request.getParameter("name");
+            String pStatus = request.getParameter("status");
+            String pReleaseDate = request.getParameter("releaseDate");
+            long pStockLevel = Long.parseLong(request.getParameter("stockLevel"));
+            String pDescription = request.getParameter("description");
+            String pType = request.getParameter("type");
+            double pPrice = Double.parseDouble(request.getParameter("price"));
+            PDAO.updateProduct(pID, pName, pStatus, pReleaseDate, pStockLevel, pDescription, pType, pPrice);
+            conn.commit();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        System.out.println("Redirecting to productmanagement.jsp");
+        response.sendRedirect("UpdateProductServlet");
     }
 
     public long genID() {
