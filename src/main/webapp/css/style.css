@@ -103,6 +103,7 @@ header {
     right: 0;
     min-width: 160px;
     z-index: 100;
+    padding: 15px;
 }
 
 .dropdown-content a {
