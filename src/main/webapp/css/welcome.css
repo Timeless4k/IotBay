@@ -1,25 +1,60 @@
-
 body {
-    background-color: white !important;
-    font-family: FreeMono, monospace;
-    color: black;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f5f5f5 25%, #0073e6 75%);
+    animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+    0%, 100% {
+        background: linear-gradient(135deg, #f5f5f5 25%, #0073e6 75%);
+    }
+    50% {
+        background: linear-gradient(135deg, #0073e6 25%, #f5f5f5 75%);
+    }
+}
+
+.welcome-container {
+    text-align: center;
+    background: rgba(0, 102, 204, 0.8);
+    color: white;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 2s ease-in-out;
+    transition: transform 0.5s;
+}
+
+.welcome-container:hover {
+    transform: scale(1.05);
 }
 
 .welcome {
-    position: fixed;
-    top: 40%;
-    left: 50%; 
-    transform: translate(-50%, -50%); 
-    font-size: 90px; 
-    text-align: center;
-    z-index: 1;
+    font-size: 3em;
+    margin: 0 0 20px;
+    animation: textPopUp 2s ease-in-out;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 #countdown {
-    position: fixed;
-    top: 75%; 
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 38px;
-    text-align: center;
+    font-size: 3em;
+    font-weight: bold;
+    margin-top: 20px;
+    animation: fadeIn 3s ease-in-out;
+}
+
+/* Keyframes for animations */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes textPopUp {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
 }
