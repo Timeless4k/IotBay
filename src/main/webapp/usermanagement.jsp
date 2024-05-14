@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="css/general-settings.css">
     <link rel="stylesheet" href="css/style.css">
 
-
     <!-- Modal Styles -->
     <style>
         .modal {
@@ -112,6 +111,7 @@
                     <th>Phone</th>
                     <th>Gender</th>
                     <th>Creation Date</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -127,9 +127,18 @@
                         <td><c:out value="${user.mobilePhone}"/></td>
                         <td><c:out value="${user.gender}"/></td>
                         <td><c:out value="${user.creationDate}"/></td>
+                        <td><c:if test="${user.activationStatus}">Active</c:if><c:if test="${!user.activationStatus}">Inactive</c:if></td>
                         <td>
-                            <button onclick="openModal('${user.uID}', '${user.firstName}', '${user.middleName}', '${user.lastName}', '${user.uType}', '${user.email}', '${user.mobilePhone}', '${user.gender}', '${user.creationDate}')">Edit</button>
+                            <button onclick="openModal('${user.uID}', '${user.firstName}', '${user.middleName}', '${user.lastName}', '${user.uType}', '${user.email}', '${user.mobilePhone}', '${user.gender}', '${user.creationDate}', '${user.activationStatus}')">Edit</button>
                             <a href="UserServlet?action=delete&email=${user.email}">Delete</a>
+                            <c:choose>
+                                <c:when test="${user.activationStatus}">
+                                    <a href="UserServlet?action=deactivate&userId=${user.uID}">Deactivate</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="UserServlet?action=activate&userId=${user.uID}">Activate</a>
+                                </c:otherwise>
+                            </c:choose>
                         </td>
                     </tr>      
                 </c:forEach>
@@ -162,12 +171,29 @@
                     <option value="Customer">Customer</option>
                     <option value="Admin">Admin</option>
                 </select><br>
-                <input type="hidden" name="action" value="update">
+                <!-- Status:
+                <input type="checkbox" id="activationStatus" name="activationStatus" checked> Active<br>
+                <input type="hidden" name="action" value="update"> -->
                 <button type="submit">Save Changes</button>
             </form>
         </div>
     </div>
 
+
+    <!-- Activation/Deactivation buttons -->
+    <form id="activationForm" action="UserServlet" method="post">
+        <input type="hidden" id="activateDeactivateUserId" name="userId">
+        <c:choose>
+            <c:when test="${user.activationStatus}">
+                <input type="hidden" name="action" value="deactivate">
+                <button type="submit">Deactivate</button>
+            </c:when>
+            <c:otherwise>
+                <input type="hidden" name="action" value="activate">
+                <button type="submit">Activate</button>
+            </c:otherwise>
+        </c:choose>
+    </form>
 
     <!-- Script to handle modal functionality -->
     <script>
@@ -180,14 +206,13 @@
             document.getElementById('phone').value = phone;
             document.getElementById('gender').value = gender;
             document.getElementById('creationDate').value = creationDate;
+            document.getElementById('userType').value = userType;
             document.getElementById('editUserModal').style.display = 'block';
         }
-
 
         function closeModal() {
             document.getElementById('editUserModal').style.display = 'none';
         }
-
 
         function clearForm() {
             // Reset the form
@@ -196,14 +221,11 @@
             window.location.href = "UserServlet?action=displayAll";
         }
     </script>
-
-
     <script>
         // Check if the users are loaded, if not redirect to load them
         if (!${not empty users}) {
             window.location.href = "UserServlet?action=displayAll";
         }
     </script>
-
 </body>
 </html>
