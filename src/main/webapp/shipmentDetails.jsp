@@ -41,11 +41,50 @@
     <hr>
     <br><br>
 
-    <div class="shipment-info">
-
-
-
+    <div class="shipment-info" id="shipmentContainer">
+        <!-- Shipment data will be dynamically added here -->
     </div>
-    </div>
+
+    <!-- Reference to jQuery library (you can replace this with your own version or use the CDN) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- JavaScript code to trigger the AJAX request when the page loads -->
+    <script>
+        $(document).ready(function() {
+            // Function to retrieve shipment data
+            function getShipmentData() {
+                $.ajax({
+                    url: 'ShipmentServlet?action=read', // Endpoint of your servlet
+                    method: 'GET',
+                    success: function(response) {
+                        // Process the shipment data received from the server
+                        displayShipmentData(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching shipment data:', error);
+                    }
+                });
+            }
+
+            // Function to display shipment data on the webpage
+            function displayShipmentData(shipments) {
+                var container = $('#shipmentContainer');
+                container.empty(); // Clear existing content
+                
+                // Iterate over the shipments and append them to the container
+                shipments.forEach(function(shipment) {
+                    container.append('<div>' +
+                        '<p>Shipment ID: ' + shipment.shipmentID + '</p>' +
+                        '<p>Address: ' + shipment.shipmentAddress + '</p>' +
+                        '<p>Date: ' + shipment.shipmentDate + '</p>' +
+                        '<p>Type: ' + shipment.shipmentMethod + '</p>' +
+                        '</div>');
+                });
+            }
+
+            // Call the function to retrieve shipment data when the page loads
+            getShipmentData();
+        });
+    </script>
 </body>
 </html>

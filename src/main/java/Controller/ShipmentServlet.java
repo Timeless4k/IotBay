@@ -153,6 +153,8 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpSession;
 
+import java.util.List;
+
 @WebServlet("/ShipmentServlet")
 public class ShipmentServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -222,8 +224,11 @@ public class ShipmentServlet extends HttpServlet {
 
                 connection.commit();
 
+                // // Redirect or forward to a success page
+                // response.sendRedirect("CardServlet?action=displayAll");
+
                 // Redirect or forward to a success page
-                response.sendRedirect("CardServlet?action=displayAll");
+                response.sendRedirect("payment.jsp");
             } catch (SQLException e) {
                 // Handle database operation failure
                 e.printStackTrace(); // Log the exception or handle it according to your application's error handling strategy
@@ -238,8 +243,32 @@ public class ShipmentServlet extends HttpServlet {
 
 
     private void readShipment(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
+        // Retrieve the user ID from the session
+        String userId = (String) request.getSession().getAttribute("userId");
 
+        // Retrieve the connection from the session
+        HttpSession session = request.getSession();
+        Connection connection = (Connection) session.getAttribute("acticonn");
+
+        // Check if the connection is not null
+        if (connection != null) {
+            try {
+                // Create a new ShipmentDAO instance with the connection, for database operations
+                SDAO = new shipmentDAO(connection);
+
+                // Call the DAO method to retrieve shipment data from the database based on the user ID
+                SDAO.readShipment(userId);
+            } catch (SQLException e) {
+                // Handle database operation failure
+                e.printStackTrace(); // Log the exception or handle it according to your application's error handling strategy
+                // Redirect or forward to an error page 
+                response.sendRedirect("error.jsp");
+            }
+        } else {
+            // If the connection is null, throw a ServletException
+            throw new ServletException("Connection attribute 'acticonn' is null. Check your session setup.");
+        }
     }
 
 

@@ -39,6 +39,8 @@ package model.DAO;
 import model.shipment;
 import java.sql.*;
 import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
 
 public class shipmentDAO {
     private Connection connection;
@@ -86,6 +88,7 @@ public class shipmentDAO {
     //     }
     // }
 
+
     public boolean createShipment(shipment shipmentDetails) throws SQLException {
         int status = 0;
 
@@ -103,4 +106,59 @@ public class shipmentDAO {
 
         return (status > 0);
     }
+
+
+    // Method to retrieve shipment data
+    public List<shipment> readShipment(String userId) throws SQLException {
+        List<shipment> shipments = new ArrayList<>(); // Create a new ArrayList to hold shipment objects
+
+        String query = "SELECT * FROM ShipmentData WHERE UserID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                // String shipmentID = resultSet.getString("ShipmentID");
+                String shipmentAddress = resultSet.getString("ShipmentAddress");
+                String shipmentDate = resultSet.getString("ShipmentExpectedDate");
+                String shipmentMethod = resultSet.getString("ShipmentType");
+
+                // Create a new Shipment object and add it to the list
+                shipment shipmentObj = new shipment(shipmentAddress, shipmentDate, shipmentMethod);
+                // shipment shipmentObj = new shipment(shipmentID, shipmentAddress, shipmentDate, shipmentMethod);
+                shipments.add(shipmentObj);
+            }
+        } catch (SQLException e) {
+            System.err.println("Read shipment failed: " + e.getMessage());
+        }
+
+        return shipments; // Return the list of shipment objects
+    }
+
+
+    // // Method to retrieve shipment data
+    // public List<shipment> readShipment(String userId) throws SQLException {
+    //     List<shipment> shipments = new ArrayList<>();
+
+    //     String query = "SELECT * FROM ShipmentData WHERE UserID = ?";
+    //     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    //         preparedStatement.setString(1, userId);
+    //         ResultSet resultSet = preparedStatement.executeQuery();
+
+    //         while (resultSet.next()) {
+    //             String shipmentId = resultSet.getString("ShipmentID");
+    //             String shipmentAddress = resultSet.getString("ShipmentAddress");
+    //             String shipmentDate = resultSet.getString("ShipmentExpectedDate");
+    //             String shipmentType = resultSet.getString("ShipmentType");
+
+    //             // Create a new Shipment object and add it to the list
+    //             shipment.add(new shipment(shipmentId, shipmentAddress, shipmentDate, shipmentType));
+    //         }
+    //     } catch (SQLException e) {
+    //         System.err.println("Read shipment failed: " + e.getMessage());
+    //     }
+
+    //     return shipments;
+    // }
+
 }
