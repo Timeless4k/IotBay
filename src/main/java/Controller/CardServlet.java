@@ -115,20 +115,29 @@ public class CardServlet extends HttpServlet {
         request.getRequestDispatcher("payment.jsp").forward(request, response);
     }
     
-
-    private void editCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void editCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         try {
             long cardID = Long.parseLong(request.getParameter("cardID"));
             long cardNumber = Long.parseLong(request.getParameter("cardNumber"));
             String cardHolderName = request.getParameter("cardHolderName");
             String cardExpiry = request.getParameter("cardExpiry");
             int cardCVV = Integer.parseInt(request.getParameter("cardCVV"));
-            long userID = ((user) request.getSession().getAttribute("user")).getuID();
+    
+            // Retrieve the logged-in user from the session
+            user loggedInUser = (user) request.getSession().getAttribute("user");
+            if (loggedInUser == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+            long userID = loggedInUser.getuID();
     
             // Logging to check received parameters
             System.out.println("Received parameters - cardID: " + cardID + ", cardNumber: " + cardNumber + ", cardHolderName: " + cardHolderName + ", cardExpiry: " + cardExpiry + ", cardCVV: " + cardCVV);
     
             card cardToUpdate = new card(cardID, cardNumber, cardHolderName, cardExpiry, cardCVV, userID);
+    
+            // Update the card in the database
+            cardDAO cardDao = new cardDAO((Connection) request.getSession().getAttribute("acticonn"));
     
             boolean success = cardDao.updateCard(cardToUpdate);
     
@@ -142,7 +151,6 @@ public class CardServlet extends HttpServlet {
             response.sendRedirect("error.jsp"); // Handle parsing errors
         }
     }
-    
     
 
     private void deleteCard(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {

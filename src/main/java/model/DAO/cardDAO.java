@@ -20,26 +20,21 @@ public class cardDAO {
     public cardDAO(Connection connection) throws SQLException {
         this.conn = connection;
 
-        // Prepare statements
-        getCardsForUserSt = conn.prepareStatement(
-            "SELECT * FROM Card WHERE UserID = ?");
-        getCardByIdSt = conn.prepareStatement(
-            "SELECT * FROM Card WHERE CardID = ?");
-        deleteCardSt = conn.prepareStatement(
-            "DELETE FROM Card WHERE CardID = ?");
-        createCardSt = conn.prepareStatement(
-            "INSERT INTO Card (CardID, CardNumber, CardHolderName, CardExpiry, CardCVV, UserID) VALUES (?, ?, ?, ?, ?, ?)");
-        updateCardSt = conn.prepareStatement("UPDATE Card SET CardNumber = ?, CardHolderName = ?, CardExpiry = ?, CardCVV = ? WHERE CardID = ? AND UserID = ?");
-        }
-
-
+    // Prepare statements
+    getCardsForUserSt = conn.prepareStatement(
+        "SELECT * FROM Card WHERE UserID = ?");
+    getCardByIdSt = conn.prepareStatement(
+        "SELECT * FROM Card WHERE CardID = ?");
+    deleteCardSt = conn.prepareStatement(
+        "DELETE FROM Card WHERE CardID = ?");
+    createCardSt = conn.prepareStatement(
+        "INSERT INTO Card (CardID, CardNumber, CardHolderName, CardExpiry, CardCVV, UserID) VALUES (?, ?, ?, ?, ?, ?)");
+    updateCardSt = conn.prepareStatement("UPDATE Card SET CardNumber = ?, CardHolderName = ?, CardExpiry = ?, CardCVV = ? WHERE CardID = ? AND UserID = ?");
+    }
     public List<card> getCardsForUser(long userID) {
         List<card> cardList = new ArrayList<>();
         ResultSet rs = null;
-        PreparedStatement getCardsForUserSt = null;
         try {
-            getCardsForUserSt = conn.prepareStatement(
-                "SELECT * FROM Card WHERE UserID = ?");
             getCardsForUserSt.setLong(1, userID);
             rs = getCardsForUserSt.executeQuery();
             while (rs.next()) {
@@ -49,9 +44,8 @@ public class cardDAO {
         } catch (SQLException e) {
             System.err.println("Error fetching cards for user: " + e.getMessage());
         } finally {
-            // Close PreparedStatement and ResultSet
+            // Close ResultSet (PreparedStatement will be closed when the connection is closed)
             try {
-                if (getCardsForUserSt != null) getCardsForUserSt.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
                 System.err.println("Error closing resources: " + e.getMessage());
@@ -175,8 +169,7 @@ public class cardDAO {
             updateCardSt.setString(3, cardToUpdate.getCardExpiry());
             updateCardSt.setInt(4, cardToUpdate.getCardCVV());
             updateCardSt.setLong(5, cardToUpdate.getCardID());
-            updateCardSt.setLong(6, cardToUpdate.getUserID());
-
+            updateCardSt.setLong(6, cardToUpdate.getUserID()); // Set the UserID parameter
             int rowsAffected = updateCardSt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -184,6 +177,7 @@ public class cardDAO {
             return false;
         }
     }
+    
 
     private card extractCardFromResultSet(ResultSet rs) throws SQLException {
         card card = new card();
