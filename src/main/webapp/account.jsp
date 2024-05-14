@@ -22,10 +22,10 @@
                 <li><a href="shipmentDetails.jsp">Shipment Details</a></li>
                 <li><a href="/account.jsp#access">Access Logs</a></li>
                 <c:if test="${user.uType == 'Admin'}">
-                    <li><a href=UserServlet?action=displayAll>User Management</a></li>
+                    <li><a href="UserServlet?action=displayAll">User Management</a></li>
                 </c:if>
                 <c:if test="${user.uType == 'Employee'}">
-                    <li><a href=productmanagement.jsp>Product Management</a></li>
+                    <li><a href="UpdateProductServlet">Product Management</a></li>
                 </c:if>
                 <form action="logout" method="post">
                     <input type="submit" value="Logout">

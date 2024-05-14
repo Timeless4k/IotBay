@@ -3,68 +3,85 @@ package Controller;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.DAO.productDAO;
+import model.product;
+import java.util.Random;
+
 
 public class UpdateProductServlet extends HttpServlet {
     private Connection conn;
     private productDAO PDAO;
 
-    private String email;
-    private String password;
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private String birthDate;
-    private String mobilePhone;
-    private String gender;
-    private String creationDate;
-    private String uType;
-    private long uID;
-
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    
         response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
         conn = (Connection) session.getAttribute("acticonn");
 
-
-        try{
-            PDAO = new productDAO(conn);
-        } catch (SQLException ex) {
-            System.out.println(ex);
+        if(PDAO == null) {
+            try{
+                PDAO = new productDAO(conn);
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
         }
+        
 
         String action = request.getParameter("action");
-
+        System.out.println("Deciding actions");
         if(action != null) {
             switch(action) {
                 case "update":
                     updateProduct(request, response);
                     break;
-                case "show":
-                    showProduct(request, response); // redundant entry might delete
-                    break;
                 case "add":
-                    addProduct(request, response);
+                    addProduct(request, response, session);
+                    break;
+                case "delete":
+                    deleteProduct(request, response); // might be implemented later
                     break;
                 default:
-                    showProduct(request, response);
+                   request.getRequestDispatcher("productmanagement.jsp").include(request, response);
                     break;
             }
         }
     }
 
-    public void showProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+        response.setContentType("text/html;charset=UTF-8");
+		HttpSession session = request.getSession();
+        conn = (Connection) session.getAttribute("acticonn");
+
+
+        if(PDAO == null) {
+            try{
+                PDAO = new productDAO(conn);
+                System.out.println("added PDAO to session");
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
+        System.out.println("Get request for productmanagement.jsp");
+        showProduct(request, response, session);
+
+        
+    }
+
+    public void showProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
         try {
-            request.setAttribute("products", PDAO.fetchProducts());
-            request.getRequestDispatcher("productmanagement.jsp").forward(request, response);
+            System.out.println("Showing product");
+            session.setAttribute("products", PDAO.fetchProducts());
+            request.getRequestDispatcher("productmanagement.jsp").include(request, response);
         } catch (SQLException ex) {
             System.out.println(ex);
         }
@@ -74,7 +91,51 @@ public class UpdateProductServlet extends HttpServlet {
 
     }
 
-    public void addProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public long genID() {
+        Random random = new Random();
+        long pID;
+        boolean isuniqueId = false;
+        do {
+            pID = Math.abs(1000000000000000L + random.nextLong());
+            try {
+                isuniqueId = PDAO.checkpID(pID);
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+            
+        } while (!isuniqueId);
+        return pID;
+    }
 
+    public void addProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+        try {
+            System.out.println("Adding product");
+            String pName = request.getParameter("name");
+            String pStatus = request.getParameter("status");
+            String pReleaseDate = request.getParameter("releaseDate");
+            long pStockLevel = Long.parseLong(request.getParameter("stockLevel"));
+            String pDescription = request.getParameter("description");
+            String pType = request.getParameter("type");
+            double pPrice = Double.parseDouble(request.getParameter("price"));
+            PDAO.addProduct(genID(), pName, pStatus, pReleaseDate, pStockLevel, pDescription, pType, pPrice);
+            conn.commit();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        System.out.println("Redirecting to productmanagement.jsp");
+        response.sendRedirect("UpdateProductServlet");
+    }
+
+    public void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            System.out.println("Deleting product");
+            long delpID = Long.parseLong(request.getParameter("pID"));
+            PDAO.removeProduct(delpID);
+            conn.commit();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        System.out.println("Redirecting to productmanagement.jsp");
+        response.sendRedirect("UpdateProductServlet");
     }
 }

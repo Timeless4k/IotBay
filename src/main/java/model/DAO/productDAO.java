@@ -12,12 +12,14 @@ public class productDAO {
 	private PreparedStatement updateProductSt;
 	private PreparedStatement searchProductNameSt;
 	private PreparedStatement searchProductTypeSt;
+	private PreparedStatement isUniqueST;
 	private String readQuery = "SELECT * FROM productdata";
 	private String CreateQuery = "INSERT INTO productdata VALUES (?,?,?,?,?,?,?,?)";
 	private String DeleteQuery = "DELETE FROM productdata WHERE ProductID=?";
 	private String UpdateQuery = "UPDATE productdata SET ProductName = '?', ProductStatus = '?', ProductReleaseDate = '?', ProductStockLevel = ?, ProductDescription = '?', ProductType = '?', ProductCost = ? WHERE ProductID=?";
 	private String SearchQueryName = "SELECT * FROM productdata WHERE ProductName LIKE ? ";
 	private String SearchQueryType = "SELECT * FROM productdata WHERE ProductType LIKE ? ";
+	private String isUnique = "SELECT * FROM productdata WHERE ProductID = ?";
 
     public productDAO(Connection connection) throws SQLException {
 		this.conn = connection;
@@ -28,6 +30,20 @@ public class productDAO {
 		updateProductSt = conn.prepareStatement(UpdateQuery);
 		searchProductNameSt = conn.prepareStatement(SearchQueryName);
 		searchProductTypeSt = conn.prepareStatement(SearchQueryType);
+		isUniqueST = conn.prepareStatement(isUnique);
+	}
+
+	/**
+	 * Checks if a product ID is unique in the database.
+	 *
+	 * @param check the product ID to check
+	 * @return true if the product ID is unique, false otherwise
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean checkpID(long check) throws SQLException{
+		isUniqueST.setLong(1, check);
+		ResultSet rs = isUniqueST.executeQuery();
+		return !rs.next();
 	}
 
 	
