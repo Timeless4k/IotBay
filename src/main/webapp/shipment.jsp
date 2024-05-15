@@ -11,6 +11,19 @@
 <body>
     <h1>Shipment Information</h1>
 
+    <!-- Add the validation error message display here -->
+    <%
+        String validationError = (String) request.getAttribute("validationError");
+        if (validationError != null && !validationError.isEmpty()) {
+    %>
+        <div class="error-message">
+            <%= validationError %>
+        </div>
+    <%
+        }
+    %>
+
+
     <hr>
     <br><br>
 

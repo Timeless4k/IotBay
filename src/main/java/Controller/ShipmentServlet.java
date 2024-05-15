@@ -206,12 +206,33 @@ public class ShipmentServlet extends HttpServlet {
     }
 
 
+    // Function to check for weird symbols in the shipment address
+    private boolean containsWeirdSymbols(String shipmentAddress) {
+        // Define a pattern for acceptable characters (letters, numbers, spaces, etc.)
+        String regex = "^[a-zA-Z0-9\\s,.-]+$";
+        // Check if the shipment address contains characters outside the defined pattern
+        return !shipmentAddress.matches(regex);
+    }
+
+
     private void createShipment(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         // Retrieve shipment details from request parameters
         String shipmentAddress = request.getParameter("shipmentAddress");
         String shipmentDate = request.getParameter("shipmenttDate");
         String shipmentMethod = request.getParameter("shipmentMethod");
+
+        // Validate shipment details
+        if (shipmentAddress == null || shipmentAddress.isEmpty() ||
+            shipmentDate == null || shipmentDate.isEmpty() ||
+            shipmentMethod == null || shipmentMethod.isEmpty() ||
+            containsWeirdSymbols(shipmentAddress)) {
+            // Set an attribute to indicate the validation error
+            request.setAttribute("validationError", "Invalid shipment details");
+            // Forward the request back to the same page
+            request.getRequestDispatcher("shipmentConfirmation.jsp").forward(request, response);
+            return; // Exit the method
+        }
 
         // Retrieve the connection from the session
         HttpSession session = request.getSession();
