@@ -3,7 +3,6 @@ package model.DAO;
 import java.sql.*;
 import java.util.ArrayList;
 import model.order;
-
 import java.util.Random;
 
 public class orderDAO {
@@ -19,39 +18,34 @@ public class orderDAO {
     private PreparedStatement checkOrderID;
 
     private String readQuery = "SELECT * FROM orders";
-    private String CreateQuery = "INSERT INTO orders VALUES (?,?,?,?,?,?,?,?)";
-	private String UpdateQuery = "UPDATE orders SET OrderName = ?, OrderType = ?, OrderQuantity = ?, OrderDate = ? WHERE OrderID=?";
-	private String DeleteQuery = "DELETE FROM orders WHERE OrderID=?";
-	private String SearchQueryID = "SELECT * FROM orders WHERE OrderID LIKE ? ";
-	private String SearchQueryDate = "SELECT * FROM orders WHERE OrderDate LIKE ? ";
+    private String CreateQuery = "INSERT INTO orders VALUES (?,?,?,?,?)";
+    private String UpdateQuery = "UPDATE orders SET OrderName = ?, OrderType = ?, OrderQuantity = ?, OrderDate = ? WHERE OrderID=?";
+    private String DeleteQuery = "DELETE FROM orders WHERE OrderID=?";
+    private String SearchQueryID = "SELECT * FROM orders WHERE OrderID LIKE ? ";
+    private String SearchQueryDate = "SELECT * FROM orders WHERE OrderDate LIKE ? ";
     private String CheckOrderIDQuery = "SELECT COUNT(*) FROM orders WHERE OrderID = ?";
-
 
     /* Initialisation of orderDAO, Check if the connection works, if it throws Exception, error occurs */
     public orderDAO(Connection connection) throws SQLException {
-
         this.conn = connection;
         conn.setAutoCommit(false);
 
         fetchOrder = conn.prepareStatement(readQuery);
         createOrder = conn.prepareStatement(CreateQuery);
-		deleteOrder = conn.prepareStatement(DeleteQuery);
-		updateOrder = conn.prepareStatement(UpdateQuery);
-		searchOrderID = conn.prepareStatement(SearchQueryID);
-		searchOrderDate = conn.prepareStatement(SearchQueryDate);
+        deleteOrder = conn.prepareStatement(DeleteQuery);
+        updateOrder = conn.prepareStatement(UpdateQuery);
+        searchOrderID = conn.prepareStatement(SearchQueryID);
+        searchOrderDate = conn.prepareStatement(SearchQueryDate);
         checkOrderID = conn.prepareStatement(CheckOrderIDQuery);
-        
     }
 
-
     /* Unique Order ID Generation */
-    private long randomOrderID(){
+    public long randomOrderID(){
         return Math.abs(new Random().nextLong());
     }
 
-
     /* Unique Order ID Check */
-    private long uniqueOrderID() {
+    public long uniqueOrderID() {
         long orderID = 0;
         boolean isUnique = false;
         while (!isUnique) {
@@ -74,7 +68,6 @@ public class orderDAO {
         return orderID;
     }
 
-
     /* Check if Order ID exists */
     public boolean orderIDExists(long orderID) throws SQLException {
         checkOrderID.setLong(1, orderID);
@@ -84,7 +77,6 @@ public class orderDAO {
         }
         return false;
     }
-
 
     /* Retrieving order with Order ID */
     public order getOrder(long orderID) throws SQLException {
@@ -100,7 +92,6 @@ public class orderDAO {
         }
         return o;
     }
-
 
     /* Fetching the existed data that are already sets */
     public ArrayList<order> fetchOrders() throws SQLException {
@@ -127,25 +118,34 @@ public class orderDAO {
         return orders;
     }
 
-
     /* Creating a new order in the database, if it's returning true, the order successfully created. */
     public boolean createOrder(long orderID, String orderName, String orderType, long orderQuantity, String orderDate) throws SQLException {
-        
-        orderID = uniqueOrderID();
-
-        createOrder.setLong(1, orderID);
-        createOrder.setString(2, orderName);
-        createOrder.setString(3, orderType);
-        createOrder.setLong(4, orderQuantity);
-        createOrder.setString(5, orderDate);
-
-        return(createOrder.executeUpdate()>0);
-    }
-
+        String sql = "INSERT INTO orders (OrderID, OrderName, OrderType, OrderQuantity, OrderDate) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, orderID);
+            pstmt.setString(2, orderName);
+            pstmt.setString(3, orderType);
+            pstmt.setLong(4, orderQuantity);
+            pstmt.setString(5, orderDate);
+            
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                conn.commit();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println("Create order failed: " + e.getMessage());
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Transaction rollback failed: " + ex.getMessage());
+            }
+        }
+        return false;
+    }    
 
     /* Updating a new order in the database base off. */
     public void updateOrder(long orderID, String orderName, String orderType, long orderQuantity, String orderDate) throws SQLException {
-        
         if (!orderIDExists(orderID)) {
             throw new SQLException("Order ID " + orderID + " does not exist.");
         }
@@ -159,13 +159,11 @@ public class orderDAO {
         updateOrder.executeUpdate();
     }
 
-
     /* Deleting an order from the DB based off orderID */
     public void deleteOrder(long orderID) throws SQLException{
-		deleteOrder.setLong(1, orderID);
-		deleteOrder.executeUpdate();
-	}
-
+        deleteOrder.setLong(1, orderID);
+        deleteOrder.executeUpdate();
+    }
 
     /* Searching with filtering ID and the date */
     public ArrayList<order> searchOrderBy(String type, String query) throws SQLException {
@@ -201,6 +199,4 @@ public class orderDAO {
 
         return orders;
     }
-
-
 }

@@ -3,38 +3,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import static org.junit.jupiter.api.Assertions.*;
-import java.util.ArrayList;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import model.DAO.DBConnector;
 import model.DAO.orderDAO;
 import model.order;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class OrderDAOTest {
-
-    public DBConnector connector;
-    public Connection conn;
-    public orderDAO ODAO;
-
-    public void intODAO() throws SQLException,ClassNotFoundException{
-        if(ODAO == null) {
-            connector = new DBConnector();
-            conn = connector.openConnection();
-            ODAO = new orderDAO(conn);
-        }
-        conn.setAutoCommit(false);
-    }
-
+    private orderDAO orderDao;
+    private Connection conn;
+    
     @BeforeEach
     public void setUp() throws SQLException, ClassNotFoundException {
         // Setup DB connection
         DBConnector connector = new DBConnector();
         conn = connector.openConnection();
         conn.setAutoCommit(false);  // Start each test with a clean slate
-        ODAO = new orderDAO(conn);
+        orderDao = new orderDAO(conn);
         System.out.println("Setup complete: Database connected and DAO initialized.");
     }
 
@@ -53,57 +42,80 @@ public class OrderDAOTest {
     }
 
     @Test
-    public void connTest() throws SQLException, ClassNotFoundException {
-        intODAO();
-        assertNotNull(conn, "Connection does not exist");
+    public void testCreateOrder_Success() throws SQLException {
+        // Example order data
+        long orderID = orderDao.uniqueOrderID();
+        boolean result = orderDao.createOrder(orderID, "TestOrder", "TestType", 10, "2024-05-10 10:00:00");
+        assertTrue(result, "Order creation should be successful.");
+        System.out.println("Order creation test passed.");
     }
 
     @Test
-    public void readTest() throws SQLException, ClassNotFoundException {
-        intODAO();
-        ArrayList<order> testList = ODAO.fetchOrders();
-        assertTrue(testList.size() >= 1, "Table is empty");
+    public void testFetchOrders() throws SQLException {
+        // Create example orders
+        long orderID1 = orderDao.uniqueOrderID();
+        long orderID2 = orderDao.uniqueOrderID();
+        orderDao.createOrder(orderID1, "TestOrder1", "TestType1", 10, "2024-05-10 10:00:00");
+        orderDao.createOrder(orderID2, "TestOrder2", "TestType2", 20, "2024-05-11 11:00:00");
+
+        // Fetch all orders
+        ArrayList<order> orders = orderDao.fetchOrders();
+        assertNotNull(orders, "Orders list should not be null when orders exist.");
+        assertTrue(orders.size() >= 2, "Should fetch at least 2 orders.");
+        System.out.println("Fetch orders test passed: Found " + orders.size() + " orders.");
     }
 
     @Test
-    public void createTest() throws SQLException, ClassNotFoundException {
-        intODAO();
-        assertTrue(ODAO.createOrder(9999, "TestOrder", "TestType", 10, "2024-01-01 10:00:00"));
+    public void testUpdateOrder_Success() throws SQLException {
+        // Create example order
+        long orderID = orderDao.uniqueOrderID();
+        orderDao.createOrder(orderID, "TestOrder", "TestType", 10, "2024-05-10 10:00:00");
+
+        // Update the order
+        orderDao.updateOrder(orderID, "UpdatedOrder", "UpdatedType", 20, "2024-05-11 11:00:00");
+        order updatedOrder = orderDao.getOrder(orderID);
+        assertEquals("UpdatedOrder", updatedOrder.getOrderName());
+        assertEquals("UpdatedType", updatedOrder.getOrderType());
+        assertEquals(20, updatedOrder.getOrderQuantity());
+        assertEquals("2024-05-11 11:00:00", updatedOrder.getOrderDate());
+        System.out.println("Order update test passed.");
     }
 
     @Test
-    public void deleteTest() throws SQLException, ClassNotFoundException {
-        intODAO();
-        ODAO.createOrder(9999, "TestOrder", "TestType", 10, "2024-01-01 10:00:00");
-        ArrayList<order> before = ODAO.fetchOrders();
-        ODAO.deleteOrder(9999);
-        ArrayList<order> after = ODAO.fetchOrders();
-        assertTrue(before.size() > after.size());
+    public void testDeleteOrder_Success() throws SQLException {
+        // Create example order
+        long orderID = orderDao.uniqueOrderID();
+        orderDao.createOrder(orderID, "TestOrder", "TestType", 10, "2024-05-10 10:00:00");
+
+        // Delete the order
+        orderDao.deleteOrder(orderID);
+        assertFalse(orderDao.orderIDExists(orderID), "Order should be deleted.");
+        System.out.println("Order deletion test passed.");
     }
 
     @Test
-    public void updateTest() throws SQLException, ClassNotFoundException {
-        intODAO();
-        ODAO.createOrder(9999, "TestOrder", "TestType", 10, "2024-01-01 10:00:00");
-        ODAO.updateOrder(9999, "UpdatedOrder", "UpdatedType", 20, "2024-01-02 10:00:00");
-        ArrayList<order> test = ODAO.searchOrderBy("OrderName", "UpdatedOrder");
-        assertTrue(test.size() > 0);
+    public void testSearchOrderByOrderID() throws SQLException {
+        // Create example order
+        long orderID = orderDao.uniqueOrderID();
+        orderDao.createOrder(orderID, "TestOrder", "TestType", 10, "2024-05-10 10:00:00");
+
+        // Search by order ID
+        ArrayList<order> orders = orderDao.searchOrderBy("OrderID", String.valueOf(orderID));
+        assertTrue(orders.size() > 0, "Should find at least one order with the given ID.");
+        assertEquals(orderID, orders.get(0).getOrderID());
+        System.out.println("Order search by ID test passed.");
     }
 
     @Test
-    public void searchTest() throws SQLException, ClassNotFoundException {
-        intODAO();
-        ArrayList<order> test = ODAO.searchOrderBy("OrderName", "Test");
-        for (order o : test) {
-            System.out.println(o.getOrderName());
-        }
-        assertTrue(test.size() > 0);
-    }
+    public void testSearchOrderByOrderDate() throws SQLException {
+        // Create example order
+        long orderID = orderDao.uniqueOrderID();
+        orderDao.createOrder(orderID, "TestOrder", "TestType", 10, "2024-05-10 10:00:00");
 
-    @Test
-    public void genIDTest() throws SQLException, ClassNotFoundException {
-        intODAO();
-        assertTrue(ODAO.orderIDExists(99999999)); // does not exist
-        assertFalse(ODAO.orderIDExists(999999999)); // does exist
+        // Search by order date
+        ArrayList<order> orders = orderDao.searchOrderBy("OrderDate", "2024-05-10");
+        assertTrue(orders.size() > 0, "Should find at least one order with the given date.");
+        assertEquals("2024-05-10 10:00:00", orders.get(0).getOrderDate());
+        System.out.println("Order search by date test passed.");
     }
 }

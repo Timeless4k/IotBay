@@ -72,7 +72,7 @@ CREATE TABLE Orders(
     OrderName varchar(50),
     OrderType varchar(150),
     OrderQuantity BIGINT,
-    OrderDate datetime,
+    OrderDate datetime
 );
 
 ALTER TABLE `iotbay`.`Card` 
