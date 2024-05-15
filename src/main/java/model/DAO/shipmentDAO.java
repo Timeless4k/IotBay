@@ -136,6 +136,7 @@ public class shipmentDAO {
 
 
     // Method to retrieve shipment data
+<<<<<<< Updated upstream
     public List<String> getShipmentIdsByUserId(String userId) throws SQLException {
         List<String> shipmentIds = new ArrayList<>();
         String query = "SELECT ShippingID FROM orders WHERE UserID = ?";
@@ -194,10 +195,23 @@ public class shipmentDAO {
 
                 // Retrieve shipment details from the result set
                 String shipmentID= resultSet.getString("ShipmentID");
+=======
+    public List<shipment> readShipment(String userId) throws SQLException {
+        List<shipment> shipments = new ArrayList<>(); // Create a new ArrayList to hold shipment objects
+
+        String query = "SELECT * FROM ShipmentData WHERE UserID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                // String shipmentID = resultSet.getString("ShipmentID");
+>>>>>>> Stashed changes
                 String shipmentAddress = resultSet.getString("ShipmentAddress");
                 String shipmentDate = resultSet.getString("ShipmentExpectedDate");
                 String shipmentMethod = resultSet.getString("ShipmentType");
 
+<<<<<<< Updated upstream
                 // Print statement to indicate the retrieved shipment details
                 System.out.println("Shipment ID: " + shipmentID);
                 System.out.println("Shipment Address: " + shipmentAddress);
@@ -249,6 +263,21 @@ public class shipmentDAO {
     }     
 
 
+=======
+                // Create a new Shipment object and add it to the list
+                shipment shipmentObj = new shipment(shipmentAddress, shipmentDate, shipmentMethod);
+                // shipment shipmentObj = new shipment(shipmentID, shipmentAddress, shipmentDate, shipmentMethod);
+                shipments.add(shipmentObj);
+            }
+        } catch (SQLException e) {
+            System.err.println("Read shipment failed: " + e.getMessage());
+        }
+
+        return shipments; // Return the list of shipment objects
+    }
+
+
+>>>>>>> Stashed changes
     // // Method to retrieve shipment data
     // public List<shipment> readShipment(String userId) throws SQLException {
     //     List<shipment> shipments = new ArrayList<>();

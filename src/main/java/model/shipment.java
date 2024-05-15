@@ -71,8 +71,12 @@ public class shipment {
     // }
 
 
+<<<<<<< Updated upstream
     public shipment(String shipmentID, String shipmentAddress, String shipmentDate, String shipmentMethod) {
         this.shipmentID = shipmentID;
+=======
+    public shipment(String shipmentAddress, String shipmentDate, String shipmentMethod) {
+>>>>>>> Stashed changes
         this.shipmentAddress = shipmentAddress;
         this.shipmentDate = shipmentDate;
         this.shipmentMethod = shipmentMethod;

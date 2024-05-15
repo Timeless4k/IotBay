@@ -155,10 +155,13 @@ import javax.servlet.http.HttpSession;
 
 import java.util.List;
 
+<<<<<<< Updated upstream
 import model.user;
 
 import java.io.PrintWriter;
 
+=======
+>>>>>>> Stashed changes
 @WebServlet("/ShipmentServlet")
 public class ShipmentServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -249,6 +252,7 @@ public class ShipmentServlet extends HttpServlet {
     }
 
 
+<<<<<<< Updated upstream
     // private void readShipment(HttpServletRequest request, HttpServletResponse response)
     //     throws ServletException, IOException {
     //     // Retrieve the connection from the session
@@ -301,10 +305,18 @@ public class ShipmentServlet extends HttpServlet {
 
     protected void readShipment(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+=======
+    private void readShipment(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        // Retrieve the user ID from the session
+        String userId = (String) request.getSession().getAttribute("userId");
+
+>>>>>>> Stashed changes
         // Retrieve the connection from the session
         HttpSession session = request.getSession();
         Connection connection = (Connection) session.getAttribute("acticonn");
 
+<<<<<<< Updated upstream
         // Retrieve the user ID from the session
         // You have to get the session out of the request first, not straight from the request itself
         user user = (user) session.getAttribute("user");
@@ -316,11 +328,14 @@ public class ShipmentServlet extends HttpServlet {
         // Print statement to check if connection is retrieved correctly
         System.out.println("(READ SHIPMENT) Connection: " + connection);
 
+=======
+>>>>>>> Stashed changes
         // Check if the connection is not null
         if (connection != null) {
             try {
                 // Create a new ShipmentDAO instance with the connection, for database operations
                 SDAO = new shipmentDAO(connection);
+<<<<<<< Updated upstream
                 
                 // Print statement to indicate DAO instance creation
                 System.out.println("(READ SHIPMENT) ShipmentDAO instance created.");
@@ -357,6 +372,11 @@ public class ShipmentServlet extends HttpServlet {
                 // Write JSON response to PrintWriter
                 out.println(json.toString());
                 
+=======
+
+                // Call the DAO method to retrieve shipment data from the database based on the user ID
+                SDAO.readShipment(userId);
+>>>>>>> Stashed changes
             } catch (SQLException e) {
                 // Handle database operation failure
                 e.printStackTrace(); // Log the exception or handle it according to your application's error handling strategy
