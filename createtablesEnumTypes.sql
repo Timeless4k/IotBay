@@ -69,25 +69,10 @@ CREATE TABLE ShipmentData(
 
 CREATE TABLE Orders(
     OrderID BIGINT,
+    OrderName varchar(50),
+    OrderType varchar(150),
+    OrderQuantity BIGINT,
     OrderDate datetime,
-    OrderStatus varchar(20),
-    OrderDeliveryStatus ENUM('Being Prepared', "Delivered", 'Not Submitted', "On It's Way"),
-    PaymentID BIGINT,
-    ShippingID BIGINT,
-    UserID BIGINT,
-    primary key(OrderID),
-    foreign key(UserID) references User(UserID),
-    foreign key(PaymentID) references Payments(PaymentID),
-    foreign key(ShippingID) references ShipmentData(ShipmentID)
-);
-
-CREATE TABLE OrderLineItem(
-    OrderID BIGINT,
-    ProductID BIGINT,
-    OrderAmount int(99),
-    primary key(OrderID, ProductID),
-    foreign key(OrderID) references Orders(OrderID),
-    foreign key(ProductID) references ProductData(ProductID)
 );
 
 ALTER TABLE `iotbay`.`Card` 
@@ -478,5 +463,24 @@ INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VAL
 INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('20', '1111111122', '3');
 INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('21', '1111111122', '3');
 
-
-
+INSERT INTO Orders (OrderID, OrderName, OrderType, OrderQuantity, OrderDate) VALUES
+(1, 'PlayStation 5', 'Console', 10, '2023-01-01 10:00:00'),
+(2, 'iPhone 13', 'Phone', 15, '2023-01-02 11:00:00'),
+(3, 'Samsung Galaxy S21', 'Phone', 20, '2023-01-03 12:00:00'),
+(4, 'MacBook Pro', 'Laptop', 25, '2023-01-04 13:00:00'),
+(5, 'Dell XPS 13', 'Laptop', 30, '2023-01-05 14:00:00'),
+(6, 'Google Nest Hub', 'Smart Home', 35, '2023-01-06 15:00:00'),
+(7, 'Amazon Echo', 'Smart Home', 40, '2023-01-07 16:00:00'),
+(8, 'Raspberry Pi 4', 'Single Board Computer', 45, '2023-01-08 17:00:00'),
+(9, 'Arduino Uno', 'Microcontroller', 50, '2023-01-09 18:00:00'),
+(10, 'GoPro Hero 9', 'Camera', 55, '2023-01-10 19:00:00'),
+(11, 'Oculus Quest 2', 'VR Headset', 60, '2023-01-11 20:00:00'),
+(12, 'Fitbit Charge 4', 'Wearable', 65, '2023-01-12 21:00:00'),
+(13, 'Nest Thermostat', 'Smart Home', 70, '2023-01-13 22:00:00'),
+(14, 'Sonos One', 'Smart Speaker', 75, '2023-01-14 23:00:00'),
+(15, 'DJI Mavic Air 2', 'Drone', 80, '2023-01-15 09:00:00'),
+(16, 'Canon EOS R5', 'Camera', 85, '2023-01-16 08:00:00'),
+(17, 'Samsung Smart Fridge', 'Smart Home', 90, '2023-01-17 07:00:00'),
+(18, 'Microsoft Surface Pro 7', 'Tablet', 95, '2023-01-18 06:00:00'),
+(19, 'Bose QuietComfort 35 II', 'Headphones', 100, '2023-01-19 05:00:00'),
+(20, 'Tile Pro', 'Tracker', 105, '2023-01-20 04:00:00');

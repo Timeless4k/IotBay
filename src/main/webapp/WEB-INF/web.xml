@@ -77,11 +77,6 @@
 </servlet>
 
 <servlet>
-    <servlet-name>CartServlet</servlet-name>
-    <servlet-class>Controller.CartServlet</servlet-class>
-</servlet>
-
-<servlet>
     <servlet-name>ActualUpdateProductServlet</servlet-name>
     <servlet-class>Controller.ActualUpdateProductServlet</servlet-class>
 </servlet>
@@ -89,11 +84,6 @@
 <servlet-mapping>
     <servlet-name>ActualUpdateProductServlet</servlet-name>
     <url-pattern>/ActualUpdateProductServlet</url-pattern>
-</servlet-mapping>
-
-<servlet-mapping>
-    <servlet-name>CartServlet</servlet-name>
-    <url-pattern>/CartServlet</url-pattern>
 </servlet-mapping>
 
 <servlet-mapping>

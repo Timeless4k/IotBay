@@ -1,23 +1,15 @@
 package model;
 
-import java.time.LocalDate;
-
 public class order {
+
     private long orderID;
-    private long userID;
-    private LocalDate orderDate;
-    private String orderStatus;
-    private double totalAmount;
+    private String orderName;
+    private String orderType;
+    private long orderQuantity;
+    private String orderDate;
 
-    public order(long orderID, long userID, LocalDate orderDate, String orderStatus, double totalAmount) {
-        this.orderID = orderID;
-        this.userID = userID;
-        this.orderDate = orderDate;
-        this.orderStatus = orderStatus;
-        this.totalAmount = totalAmount;
-    }
+    // Getter and Setter methods
 
-    // Getters and Setters
     public long getOrderID() {
         return orderID;
     }
@@ -26,35 +18,35 @@ public class order {
         this.orderID = orderID;
     }
 
-    public long getUserID() {
-        return userID;
-    }
-
-    public void setUserID(long userID) {
-        this.userID = userID;
-    }
-
-    public LocalDate getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDate orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
+    public String getOrderType() {
+        return orderType;
     }
 
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
     }
 
-    public double getTotalAmount() {
-        return totalAmount;
+    public String getOrderName() {
+        return orderName;
     }
 
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
+    public void setOrderName(String orderName) {
+        this.orderName = orderName;
+    }
+
+    public long getOrderQuantity() {
+        return orderQuantity;
+    }
+
+    public void setOrderQuantity(long orderQuantity) {
+        this.orderQuantity = orderQuantity;
     }
 }
