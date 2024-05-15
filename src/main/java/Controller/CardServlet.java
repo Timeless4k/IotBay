@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import model.card;
 import model.DAO.cardDAO;
 import model.user;
-
+import util.ValidationUtils;
 
 public class CardServlet extends HttpServlet {
 
@@ -118,10 +118,24 @@ public class CardServlet extends HttpServlet {
     private void editCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         try {
             long cardID = Long.parseLong(request.getParameter("cardID"));
-            long cardNumber = Long.parseLong(request.getParameter("cardNumber"));
+            String cardNumber = request.getParameter("cardNumber");
             String cardHolderName = request.getParameter("cardHolderName");
             String cardExpiry = request.getParameter("cardExpiry");
-            int cardCVV = Integer.parseInt(request.getParameter("cardCVV"));
+            String cardCVV = request.getParameter("cardCVV");
+    
+            // Validate inputs
+            if (!ValidationUtils.isValidCardNumber(cardNumber)) {
+                response.getWriter().print("Invalid card number format.");
+                return;
+            }
+            if (!ValidationUtils.isValidCardHolderName(cardHolderName)) {
+                response.getWriter().print("Invalid card holder name.");
+                return;
+            }
+            if (!ValidationUtils.isValidCardCVV(cardCVV)) {
+                response.getWriter().print("Invalid card CVV. Must be 3 or 4 digits.");
+                return;
+            }
     
             // Retrieve the logged-in user from the session
             user loggedInUser = (user) request.getSession().getAttribute("user");
@@ -134,7 +148,7 @@ public class CardServlet extends HttpServlet {
             // Logging to check received parameters
             System.out.println("Received parameters - cardID: " + cardID + ", cardNumber: " + cardNumber + ", cardHolderName: " + cardHolderName + ", cardExpiry: " + cardExpiry + ", cardCVV: " + cardCVV);
     
-            card cardToUpdate = new card(cardID, cardNumber, cardHolderName, cardExpiry, cardCVV, userID);
+            card cardToUpdate = new card(cardID, Long.parseLong(cardNumber), cardHolderName, cardExpiry, Integer.parseInt(cardCVV), userID);
     
             // Update the card in the database
             cardDAO cardDao = new cardDAO((Connection) request.getSession().getAttribute("acticonn"));
@@ -184,10 +198,10 @@ public class CardServlet extends HttpServlet {
     }
 
     private void createCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        long cardNumber = Long.parseLong(request.getParameter("cardNumber"));
+        String cardNumber = request.getParameter("cardNumber");
         String cardHolderName = request.getParameter("cardHolderName");
         String cardExpiry = request.getParameter("cardExpiry"); // The expiry date from the form
-        int cardCVV = Integer.parseInt(request.getParameter("cardCVV"));
+        String cardCVV = request.getParameter("cardCVV");
     
         HttpSession session = request.getSession();
         user loggedInUser = (user) session.getAttribute("user");
@@ -196,6 +210,24 @@ public class CardServlet extends HttpServlet {
             return;
         }
         long userID = loggedInUser.getuID();
+    
+        // Validate inputs
+        if (!ValidationUtils.isValidCardNumber(cardNumber)) {
+            response.getWriter().print("Invalid card number format.");
+            return;
+        }
+        if (!ValidationUtils.isValidCardHolderName(cardHolderName)) {
+            response.getWriter().print("Invalid card holder name.");
+            return;
+        }
+        if (!ValidationUtils.isValidCardExpiry(cardExpiry)) {
+            response.getWriter().print("Invalid card expiry date format. Use MM/yyyy or date is in the past.");
+            return;
+        }
+        if (!ValidationUtils.isValidCardCVV(cardCVV)) {
+            response.getWriter().print("Invalid card CVV. Must be 3 or 4 digits.");
+            return;
+        }
     
         try {
             conn.setAutoCommit(false);
@@ -206,16 +238,14 @@ public class CardServlet extends HttpServlet {
                 throw new Exception("Invalid date format");
             }
     
-            card newCard = new card(0, cardNumber, cardHolderName, formattedExpiryDate, cardCVV, userID);
+            card newCard = new card(0, Long.parseLong(cardNumber), cardHolderName, formattedExpiryDate, Integer.parseInt(cardCVV), userID);
     
             boolean success = cardDao.createCard(newCard);
     
             if (success) {
                 conn.commit();
                 // Fetch updated list of cards to reflect the new addition
-                List<card> cardList = cardDao.getCardsForUser(loggedInUser.getuID());
-                request.setAttribute("cardList", cardList);
-                request.getRequestDispatcher("payment.jsp").forward(request, response); // Forward to JSP with updated list
+                response.sendRedirect("CardServlet?action=displayAll"); // Redirect to avoid form resubmission
             } else {
                 conn.rollback();
                 response.sendRedirect("error.jsp");
@@ -228,7 +258,4 @@ public class CardServlet extends HttpServlet {
             conn.setAutoCommit(true);
         }
     }
-    
-
-
 }

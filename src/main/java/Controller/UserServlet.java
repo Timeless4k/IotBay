@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.user;
 import model.DAO.userDAO;
+import util.ValidationUtils;
 
 public class UserServlet extends HttpServlet {
 
@@ -122,7 +123,6 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-
     private void deactivateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         String userId = request.getParameter("userId");
         if (userId != null && !userId.isEmpty()) {
@@ -143,20 +143,44 @@ public class UserServlet extends HttpServlet {
 
     private void createUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         try {
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String phone = request.getParameter("phone");
+            String gender = request.getParameter("gender");
+
+            // Validate inputs
+            if (!ValidationUtils.isValidEmail(email)) {
+                response.getWriter().print("Invalid email format.");
+                return;
+            }
+            if (!ValidationUtils.isValidPassword(password)) {
+                response.getWriter().print("Password cannot be empty.");
+                return;
+            }
+            if (!ValidationUtils.isValidPhone(phone)) {
+                response.getWriter().print("Invalid phone number. Must be 10 digits.");
+                return;
+            }
+            if (!ValidationUtils.isValidGender(gender)) {
+                response.getWriter().print("Invalid gender. Must be 'Male', 'Female', or 'Other'.");
+                return;
+            }
+
             user newUser = new user(
                 0, // Assuming userID is auto-generated or not needed here
-                request.getParameter("email"),
-                request.getParameter("password"), // Make sure to hash the password in practice
+                email,
+                password, // Make sure to hash the password in practice
                 request.getParameter("firstName"),
                 request.getParameter("middleName"),
                 request.getParameter("lastName"),
                 request.getParameter("birthDate"),
-                request.getParameter("phone"),
-                request.getParameter("gender"),
+                phone,
+                gender,
                 request.getParameter("creationDate"),
                 request.getParameter("userType"),
                 true // Assuming new users are activated by default
             );
+
             if (userDao.createUser(newUser) != -1) {
                 response.sendRedirect("usermanagement.jsp");
             } else {
@@ -171,6 +195,19 @@ public class UserServlet extends HttpServlet {
     private void updateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         try {
             String email = request.getParameter("email");
+            String phone = request.getParameter("phone");
+            String gender = request.getParameter("gender");
+
+            // Validate inputs
+            if (!ValidationUtils.isValidEmail(email)) {
+                response.getWriter().print("Invalid email format.");
+                return;
+            }
+            if (!ValidationUtils.isValidGender(gender)) {
+                response.getWriter().print("Invalid gender. Must be 'Male', 'Female', or 'Other'.");
+                return;
+            }
+
             user existingUser = userDao.getUserByEmail(email);
             if (existingUser != null) {
                 // Update user object with new values from the request
@@ -178,11 +215,11 @@ public class UserServlet extends HttpServlet {
                 existingUser.setMiddleName(request.getParameter("middleName"));
                 existingUser.setLastName(request.getParameter("lastName"));
                 existingUser.setBirthDate(request.getParameter("birthDate"));
-                existingUser.setMobilePhone(request.getParameter("phone"));
-                existingUser.setGender(request.getParameter("gender"));
+                existingUser.setMobilePhone(phone);
+                existingUser.setGender(gender);
                 existingUser.setCreationDate(request.getParameter("creationDate"));
                 existingUser.setuType(request.getParameter("userType"));
-   
+
                 // Call updateUser method in userDAO
                 if (userDao.updateUser(existingUser)) {
                     // Update successful, redirect to user management page
