@@ -3,18 +3,14 @@ package Controller;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.mail.Session;
+import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.DAO.productDAO;
-import model.product;
-import java.util.Random;
-
+import util.ValidationUtils;
 
 public class UpdateProductServlet extends HttpServlet {
     private Connection conn;
@@ -23,22 +19,20 @@ public class UpdateProductServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-		HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         conn = (Connection) session.getAttribute("acticonn");
 
-        if(PDAO == null) {
-            try{
+        if (PDAO == null) {
+            try {
                 PDAO = new productDAO(conn);
             } catch (SQLException ex) {
                 System.out.println(ex);
             }
         }
-        
 
         String action = request.getParameter("action");
-        System.out.println("Deciding actions");
-        if(action != null) {
-            switch(action) {
+        if (action != null) {
+            switch (action) {
                 case "add":
                     addProduct(request, response, session);
                     break;
@@ -49,7 +43,7 @@ public class UpdateProductServlet extends HttpServlet {
                     updateProduct(request, response); // might be implemented later
                     break;
                 default:
-                   request.getRequestDispatcher("productmanagement.jsp").include(request, response);
+                    request.getRequestDispatcher("productmanagement.jsp").include(request, response);
                     break;
             }
         }
@@ -57,29 +51,24 @@ public class UpdateProductServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
         response.setContentType("text/html;charset=UTF-8");
-		HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         conn = (Connection) session.getAttribute("acticonn");
 
-
-        if(PDAO == null) {
-            try{
+        if (PDAO == null) {
+            try {
                 PDAO = new productDAO(conn);
                 System.out.println("added PDAO to session");
             } catch (SQLException ex) {
                 System.out.println(ex);
             }
         }
-        System.out.println("Get request for productmanagement.jsp");
         showProduct(request, response, session);
-
-        
     }
 
-    public void showProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+    public void showProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+            throws ServletException, IOException {
         try {
-            System.out.println("Showing product");
             session.setAttribute("products", PDAO.fetchProducts());
             request.getRequestDispatcher("productmanagement.jsp").include(request, response);
         } catch (SQLException ex) {
@@ -89,7 +78,6 @@ public class UpdateProductServlet extends HttpServlet {
 
     public void updateProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            System.out.println("Updating product");
             long pID = Long.parseLong(request.getParameter("id"));
             String pName = request.getParameter("name");
             String pStatus = request.getParameter("status");
@@ -98,12 +86,20 @@ public class UpdateProductServlet extends HttpServlet {
             String pDescription = request.getParameter("description");
             String pType = request.getParameter("type");
             double pPrice = Double.parseDouble(request.getParameter("price"));
+
+            if (!ValidationUtils.isValidProductName(pName)) {
+                request.setAttribute("validationError", "Invalid product name");
+                request.getRequestDispatcher("productmanagement.jsp").forward(request, response);
+                return;
+            }
+
             PDAO.updateProduct(pID, pName, pStatus, pReleaseDate, pStockLevel, pDescription, pType, pPrice);
             conn.commit();
         } catch (SQLException ex) {
             System.out.println(ex);
+            request.setAttribute("errorMessage", "Database operation failed. Please try again later.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-        System.out.println("Redirecting to productmanagement.jsp");
         response.sendRedirect("UpdateProductServlet");
     }
 
@@ -118,14 +114,13 @@ public class UpdateProductServlet extends HttpServlet {
             } catch (SQLException ex) {
                 System.out.println(ex);
             }
-            
         } while (!isuniqueId);
         return pID;
     }
 
-    public void addProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+    public void addProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+    throws ServletException, IOException {
         try {
-            System.out.println("Adding product");
             String pName = request.getParameter("name");
             String pStatus = request.getParameter("status");
             String pReleaseDate = request.getParameter("releaseDate");
@@ -133,25 +128,31 @@ public class UpdateProductServlet extends HttpServlet {
             String pDescription = request.getParameter("description");
             String pType = request.getParameter("type");
             double pPrice = Double.parseDouble(request.getParameter("price"));
+
+            if (!ValidationUtils.isValidProductName(pName)) {
+                request.setAttribute("validationError", "Invalid product name");
+                request.getRequestDispatcher("productmanagement.jsp").forward(request, response);
+                return;
+            }
+
             PDAO.addProduct(genID(), pName, pStatus, pReleaseDate, pStockLevel, pDescription, pType, pPrice);
             conn.commit();
         } catch (SQLException ex) {
             System.out.println(ex);
+            request.setAttribute("errorMessage", "Database operation failed. Please try again later.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-        System.out.println("Redirecting to productmanagement.jsp");
         response.sendRedirect("UpdateProductServlet");
     }
 
     public void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            System.out.println("Deleting product");
             long delpID = Long.parseLong(request.getParameter("pID"));
             PDAO.removeProduct(delpID);
             conn.commit();
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-        System.out.println("Redirecting to productmanagement.jsp");
         response.sendRedirect("UpdateProductServlet");
     }
 }

@@ -50,6 +50,19 @@ public class ValidationUtils {
                                   gender.equalsIgnoreCase("Other"));
     }
 
+        /**
+     * Validates a shipment address.
+     * 
+     * @param address the shipment address to validate
+     * @return true if the address is valid, false otherwise
+     */
+    public static boolean isValidShipmentAddress(String address) {
+        // Define a pattern for acceptable characters (letters, numbers, spaces, etc.)
+        String addressRegex = "^[a-zA-Z0-9\\s,.-]+$";
+        // Check if the shipment address contains characters outside the defined pattern
+        return address != null && address.matches(addressRegex);
+    }
+
     /**
      * Validates a card number.
      * 
@@ -59,6 +72,18 @@ public class ValidationUtils {
     public static boolean isValidCardNumber(String cardNumber) {
         String cardNumberRegex = "^[0-9]{13,19}$";
         return cardNumber != null && cardNumber.matches(cardNumberRegex);
+    }
+
+        /**
+     * Validates a product name.
+     * 
+     * @param name the product name to validate
+     * @return true if the name is valid, false otherwise
+     */
+    public static boolean isValidProductName(String name) {
+        // Define a pattern for acceptable characters (letters, numbers, spaces, etc.)
+        String nameRegex = "^[a-zA-Z0-9\\s]+$";
+        return name != null && name.matches(nameRegex);
     }
 
     /**

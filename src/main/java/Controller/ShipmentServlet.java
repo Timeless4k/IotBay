@@ -147,6 +147,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.shipment; 
 import model.DAO.shipmentDAO;
+import util.ValidationUtils;
 
 import java.sql.Connection;
 import java.sql.SQLException;  
@@ -284,60 +285,34 @@ public class ShipmentServlet extends HttpServlet {
     // }
     
 
-    private void createShipment(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-        // Retrieve shipment details from request parameters
+   private void createShipment(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String shipmentAddress = request.getParameter("shipmentAddress");
+        String shipmentContactInfoEmail = request.getParameter("shipmentContactInfo_Email");
+        String shipmentContactInfoPhoneNumber = request.getParameter("shipmentContactInfo_PhoneNumber");
         String shipmentDate = request.getParameter("shipmenttDate");
         String shipmentMethod = request.getParameter("shipmentMethod");
 
-        // Retrieve the connection from the session
+        if (!ValidationUtils.isValidShipmentAddress(shipmentAddress)) {
+            request.setAttribute("validationError", "Invalid shipment address");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+
         HttpSession session = request.getSession();
         Connection connection = (Connection) session.getAttribute("acticonn");
- 
-        // Check if the connection is not null
+
         if (connection != null) {
             try {
-                // Create a new ShipmentDAO instance with the connection, for database operations
                 SDAO = new shipmentDAO(connection);
-
-                // Generate a unique shipment ID
-                String shipmentID = SDAO.generateUniqueShipmentID();
-
-                System.out.println("GENERATED LOOOK HEREEEEEEE:" + shipmentID);
-
-                // Pass the shipmentID to readForCurrentOrder method
-                session.setAttribute("currentShipmentID", shipmentID);
-
-                System.out.println("SET SESSION LOOOK HEREEEEEEE:" + shipmentID);
-
-                // Create a Shipment object
-                shipment shipment = new shipment(shipmentID, shipmentAddress, shipmentDate, shipmentMethod);
-
-                // Call the DAO method to insert the shipment into the database
+                shipment shipment = new shipment(shipmentAddress, shipmentContactInfoEmail, shipmentContactInfoPhoneNumber, shipmentDate);
                 SDAO.createShipment(shipment);
-
-                connection.commit();
-
-                // // Pass the shipmentID to readForCurrentOrder method
-                // readForCurrentOrder(request, response, shipmentID);
-
-                // // Redirect or forward to a success page
-                // response.sendRedirect("CardServlet?action=displayAll");
-
-                // Redirect or forward to a success page
                 response.sendRedirect("shipmentConfirmation.jsp");
-
-                // // Redirect or forward to a success page
-                // response.sendRedirect("payment.jsp");
             } catch (SQLException e) {
-                // Handle database operation failure
-                e.printStackTrace(); // Log the exception or handle it according to your application's error handling strategy
-                // Redirect or forward to an error page 
+                e.printStackTrace();
                 response.sendRedirect("error.jsp");
             }
         } else {
-            // If the connection is null, throw a ServletException
             throw new ServletException("Connection attribute 'acticonn' is null. Check your session setup.");
         }
     }
