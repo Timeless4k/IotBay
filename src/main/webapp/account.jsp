@@ -52,6 +52,9 @@
                 <p><b>Email:</b><br><input type="email" name="email" value="${user.email}" readonly></p>
                 <p><b>Password:</b><br><input type="password" name="password" value="${user.password}"></p>
                 <p><b>Mobile Phone:</b><br><input type="text" name="mobilePhone" value="${user.mobilePhone}" required></p>
+                <p><b>Activation Status:</b><br>
+                    <input type="text" name="activationStatus" value="${user.activationStatus ? 'Active' : 'Inactive'}" readonly>
+                </p>
                 <div class="form-actions">
                     <button type="submit">Save Changes</button>
                     <button type="submit" formaction="DeleteProfileServlet">Delete Account</button>
@@ -86,7 +89,7 @@
                     </tr>
                 </tfoot>
             </table>
-            </div>
+        </div>
     </div>
 
     <footer>
@@ -101,33 +104,32 @@
             document.getElementById(sectionId).style.display = 'block';
         }
     </script>
-</body>
 
-<script>
-    // Function to control the visibility of sections based on the hash
-    function showSectionFromHash() {
-        const hash = window.location.hash.replace('#', ''); // Remove the '#' from the hash
-        if (hash) {
-            // Hide all sections first
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            // Show the selected section based on the hash
-            const sectionToShow = document.getElementById(hash);
-            if (sectionToShow) {
-                sectionToShow.style.display = 'block';
-            } else {
-                // Default to the first section if the hash is not recognized
-                document.getElementById('profile').style.display = 'block';
+    <script>
+        // Function to control the visibility of sections based on the hash
+        function showSectionFromHash() {
+            const hash = window.location.hash.replace('#', ''); // Remove the '#' from the hash
+            if (hash) {
+                // Hide all sections first
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.style.display = 'none';
+                });
+                // Show the selected section based on the hash
+                const sectionToShow = document.getElementById(hash);
+                if (sectionToShow) {
+                    sectionToShow.style.display = 'block';
+                } else {
+                    // Default to the first section if the hash is not recognized
+                    document.getElementById('profile').style.display = 'block';
+                }
             }
         }
-    }
 
-    // Listen for hash changes to update the section visibility
-    window.addEventListener('hashchange', showSectionFromHash);
+        // Listen for hash changes to update the section visibility
+        window.addEventListener('hashchange', showSectionFromHash);
 
-    // Also call the function on page load to check the initial hash
-    window.addEventListener('load', showSectionFromHash);
-</script>
-
+        // Also call the function on page load to check the initial hash
+        window.addEventListener('load', showSectionFromHash);
+    </script>
+</body>
 </html>

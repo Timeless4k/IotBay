@@ -27,7 +27,6 @@ public class UpdateProfileServlet extends HttpServlet {
 
         user currentUser = (user) session.getAttribute("user");
         if (currentUser == null) {
-
             // Log and send an error response if the user is not found in the session
             System.err.println("UpdateProfileServlet: User not found in session.");
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "User not found in session");
@@ -42,6 +41,9 @@ public class UpdateProfileServlet extends HttpServlet {
         String gender = request.getParameter("gender"); 
         String mobilePhone = request.getParameter("mobilePhone");
 
+        // Preserve the current activation status
+        boolean currentActivationStatus = currentUser.getActivationStatus();
+
         // Update current user object with new details
         currentUser.setFirstName(firstName);
         currentUser.setMiddleName(middleName);
@@ -49,6 +51,8 @@ public class UpdateProfileServlet extends HttpServlet {
         currentUser.setPassword(password); 
         currentUser.setGender(gender);
         currentUser.setMobilePhone(mobilePhone);
+        // Restore the activation status
+        currentUser.setActivationStatus(currentActivationStatus);
 
         try {
             userDAO userDao = new userDAO(conn);
