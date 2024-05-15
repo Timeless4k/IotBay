@@ -1,12 +1,16 @@
 package Controller;
 
 import model.order;
+import model.cart;
 import model.DAO.orderDAO;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderServlet extends HttpServlet {
 
@@ -53,8 +57,20 @@ public class OrderServlet extends HttpServlet {
             LocalDate date = LocalDate.parse(request.getParameter("date"));
             String status = request.getParameter("status");
             double totalAmount = Double.parseDouble(request.getParameter("totalAmount"));
-    
-            order newOrder = new order(orderID, userID, date, status, totalAmount);
+            String shippingAddress = request.getParameter("shippingAddress");
+            String paymentMethod = request.getParameter("paymentMethod");
+
+            // collect order
+            String[] productIDs = request.getParameterValues("productID");
+            String[] quantities = request.getParameterValues("quantity");
+            List<cart> items = new ArrayList<>();
+            for (int i = 0; i < productIDs.length; i++) {
+                long productID = Long.parseLong(productIDs[i]);
+                int quantity = Integer.parseInt(quantities[i]);
+                items.add(new cart(userID, productID, quantity));
+            }
+
+            order newOrder = new order(orderID, userID, date, status, totalAmount, items, shippingAddress, paymentMethod);
             if (orderDao.createOrder(newOrder)) {
                 response.sendRedirect("orderSuccess.jsp");
             } else {
@@ -65,7 +81,7 @@ public class OrderServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println("Invalid input or server error: " + e.getMessage());
         }
-    }    
+    }   
 
     private void readOrder(HttpServletRequest request, HttpServletResponse response, orderDAO orderDao) throws IOException, ServletException {
         try {

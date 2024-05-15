@@ -13,6 +13,7 @@
 
     <link rel="icon" type="image/png" href="images/Logo.webp">
 </head>
+<body>
     <header>
         <img src="images/Logo.png" alt="IoTBay Logo" class="logo" onclick="window.location='main.jsp'">
         <nav class="navbar">
@@ -23,10 +24,10 @@
                 <li><a href="shipmentDetails.jsp">Shipment Details</a></li>
                 <li><a href="/account.jsp#access">Access Logs</a></li>
                 <c:if test="${user.uType == 'Admin'}">
-                    <li><a href=UserServlet?action=displayAll>User Management</a></li>
+                    <li><a href="UserServlet?action=displayAll">User Management</a></li>
                 </c:if>
                 <c:if test="${user.uType == 'Employee'}">
-                    <li><a href=productmanagement.jsp>Product Management</a></li>
+                    <li><a href="productmanagement.jsp">Product Management</a></li>
                 </c:if>
                 <form action="logout" method="post">
                     <input type="submit" value="Logout">
@@ -56,7 +57,7 @@
             </tr>
         </table>
 
-        <c:if test="${not empty orderItems}">
+        <c:if test="${not empty order.items}">
             <table class="order-items">
                 <thead>
                     <tr>
@@ -67,7 +68,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="item" items="${orderItems}">
+                    <c:forEach var="item" items="${order.items}">
                         <tr>
                             <td>${item.product.name}</td>
                             <td>${item.quantity}</td>
@@ -79,6 +80,5 @@
             </table>
         </c:if>
     </div>
-
 </body>
 </html>

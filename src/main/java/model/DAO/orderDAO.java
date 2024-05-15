@@ -1,8 +1,9 @@
 package model.DAO;
 
-import java.sql.*;
-import java.time.LocalDate;
 import model.order;
+import model.cart;
+import java.sql.*;
+import java.util.List;
 
 public class orderDAO {
     private Connection conn;
@@ -11,15 +12,41 @@ public class orderDAO {
         this.conn = conn;
     }
 
-    public boolean createOrder(order order) throws SQLException {
-        String sql = "INSERT INTO orders (orderID, userID, orderDate, orderStatus, totalAmount) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setLong(1, order.getOrderID());
-            statement.setLong(2, order.getUserID());
-            statement.setDate(3, Date.valueOf(order.getOrderDate()));
-            statement.setString(4, order.getOrderStatus());
-            statement.setDouble(5, order.getTotalAmount());
-            return statement.executeUpdate() > 0;
+    public boolean createOrder(order newOrder) throws SQLException {
+        String orderSql = "INSERT INTO orders (orderID, userID, orderDate, orderStatus, totalAmount, shippingAddress, paymentMethod) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String itemSql = "INSERT INTO order_items (orderID, productID, quantity) VALUES (?, ?, ?)";
+
+        try (PreparedStatement orderStmt = conn.prepareStatement(orderSql);
+             PreparedStatement itemStmt = conn.prepareStatement(itemSql)) {
+            
+            conn.setAutoCommit(false);
+            
+            // insert order
+            orderStmt.setLong(1, newOrder.getOrderID());
+            orderStmt.setLong(2, newOrder.getUserID());
+            orderStmt.setDate(3, Date.valueOf(newOrder.getOrderDate()));
+            orderStmt.setString(4, newOrder.getOrderStatus());
+            orderStmt.setDouble(5, newOrder.getTotalAmount());
+            orderStmt.setString(6, newOrder.getShippingAddress());
+            orderStmt.setString(7, newOrder.getPaymentMethod());
+            orderStmt.executeUpdate();
+            
+            //insert orderitems
+            for (cart item : newOrder.getItems()) {
+                itemStmt.setLong(1, newOrder.getOrderID());
+                itemStmt.setLong(2, item.getProductID());
+                itemStmt.setInt(3, item.getQuantity());
+                itemStmt.addBatch();
+            }
+            itemStmt.executeBatch();
+            
+            conn.commit();
+            return true;
+        } catch (SQLException e) {
+            conn.rollback();
+            throw e;
+        } finally {
+            conn.setAutoCommit(true);
         }
     }
 
