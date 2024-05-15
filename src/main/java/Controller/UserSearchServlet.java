@@ -13,16 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import model.user;
 import model.DAO.userDAO;
 
-
 public class UserSearchServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);
     }
-
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -30,20 +27,23 @@ public class UserSearchServlet extends HttpServlet {
         String fullName = request.getParameter("fullName");
         String phoneNumber = request.getParameter("phoneNumber");
 
-
         try {
             Connection conn = (Connection) request.getSession().getAttribute("acticonn");
             userDAO userDao = new userDAO(conn);
-           
+
             if ((fullName != null && !fullName.isEmpty()) || (phoneNumber != null && !phoneNumber.isEmpty())) {
                 List<user> searchResults = userDao.searchUsersByFullNameAndPhone(fullName, phoneNumber);
-                request.setAttribute("users", searchResults);
+                if (searchResults != null && !searchResults.isEmpty()) {
+                    request.setAttribute("users", searchResults);
+                    request.getRequestDispatcher("/usermanagement.jsp").forward(request, response);
+                } else {
+                    request.getRequestDispatcher("/usernotfound.jsp").forward(request, response);
+                }
             } else {
                 // Handle case when both fullName and phoneNumber are empty
                 request.setAttribute("message", "Please provide full name or phone number to search.");
+                request.getRequestDispatcher("/usermanagement.jsp").forward(request, response);
             }
-           
-            request.getRequestDispatcher("/usermanagement.jsp").forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
