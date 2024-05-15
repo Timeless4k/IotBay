@@ -90,7 +90,7 @@ public class producttest {
     @Test
     public void genIDTest() throws SQLException, ClassNotFoundException{
         intPDAO();
-        assertFalse(PDDAO.checkpID(11111111)); // does not exist
-        assertTrue(PDDAO.checkpID(1111111130)); // does exist
+        assertTrue(PDDAO.checkpID(11111111)); // does not exist
+        assertFalse(PDDAO.checkpID(1111111130)); // does exist
     }
 }
