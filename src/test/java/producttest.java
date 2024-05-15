@@ -93,4 +93,13 @@ public class producttest {
         assertTrue(PDDAO.checkpID(11111111)); // does not exist
         assertFalse(PDDAO.checkpID(1111111130)); // does exist
     }
+
+    @Test
+    public void testUpdate() throws SQLException,ClassNotFoundException{
+        intPDAO();
+        PDDAO.addProduct(9999, "TestOBJ", "InStock", "2024-01-01", 500, "A Test Thinggy", "Test", 500.99);
+        PDDAO.updateProduct(9999, "ChangedOBJName", "InStock", "2024-01-01", 500, "A Test Thinggy", "Test", 500.99);
+        ArrayList<product> test = PDDAO.searchProdBy("ProductName","ChangedOBJName");
+        assertTrue(test.size()>0);
+    }
 }
