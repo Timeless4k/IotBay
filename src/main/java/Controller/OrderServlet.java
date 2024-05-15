@@ -22,7 +22,6 @@ public class OrderServlet extends HttpServlet {
         }
 
         orderDAO orderDao = new orderDAO(conn);
-
         try {
             switch (action) {
                 case "create":
