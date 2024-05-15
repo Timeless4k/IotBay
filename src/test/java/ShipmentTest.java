@@ -1,6 +1,8 @@
 
 // Just testing DAOs
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,6 +28,11 @@ public class ShipmentTest {
             conn = connector.openConnection();
             SDAO = new shipmentDAO(conn);
         }
+    }
+
+    @AfterEach
+    public void teardown() throws SQLException{
+        conn.rollback();
     }
 
     @Test
@@ -78,10 +85,10 @@ public class ShipmentTest {
     @Test
     public void updateTest() throws SQLException, ClassNotFoundException {
         intSDAO();
+        SDAO.createShipment(new shipment("1982159379976824584", "NOt of Technology Sydney", "2024-05-25", "FedEx"));
+        boolean test = SDAO.updateShipment("1982159379976824584", "Address Testing 1", "2024-05-26", "FedEx");
 
-        shipment test = SDAO.updateShipment("1982159379976824584", "Address Testing 1", "2024-05-26", "FedEx");
-
-        assertNotNull(test);
+        assertTrue(test);
     }
 
 
