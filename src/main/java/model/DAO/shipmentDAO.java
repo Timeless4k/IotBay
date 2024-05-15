@@ -429,7 +429,7 @@ public class shipmentDAO {
     // } 
 
     
-    public shipment updateShipment(String shipmentId, String shipmentAddress, String shipmentDate, String shipmentMethod) throws SQLException {
+    public boolean updateShipment(String shipmentId, String shipmentAddress, String shipmentDate, String shipmentMethod) throws SQLException {
         try {
             // Create the SQL query to update the shipment details
             String query = "UPDATE ShipmentData SET ShipmentAddress = ?, ShipmentExpectedDate = ?, ShipmentType = ? WHERE ShipmentID = ?";
@@ -449,17 +449,17 @@ public class shipmentDAO {
             if (rowsAffected > 0) {
                 System.out.println("Shipment details updated successfully.");
                 // If the update was successful, return the updated shipment details
-                return new shipment(shipmentId, shipmentAddress, shipmentDate, shipmentMethod);
+                return true;
             } else {
                 System.out.println("Shipment details NOT updated successfully.");
                 // If no rows were affected, return null to indicate failure
-                return null;
             }
         } catch (SQLException e) {
             // Handle any SQL exceptions
             e.printStackTrace();
             throw e; // Rethrow the exception for handling at a higher level
         }
+        return false;
     }
 
 
