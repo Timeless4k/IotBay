@@ -18,10 +18,10 @@ public class cartDAO {
             statement.setLong(1, item.getUserID());
             statement.setLong(2, item.getProductID());
             statement.setInt(3, item.getQuantity());
-            statement.executeUpdate();
-            return statement.executeUpdate() > 0;
+            int affectedRows = statement.executeUpdate(); // Corrected to execute only once
+            return affectedRows > 0;
         }
-    }
+    }    
 
     public boolean updateCartItem(cart item) throws SQLException {
         String sql = "UPDATE cart SET quantity = ? WHERE userID = ? AND productID = ?";

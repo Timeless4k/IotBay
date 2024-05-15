@@ -486,5 +486,3 @@ INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VAL
 INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('20', '1111111122', '3');
 INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('21', '1111111122', '3');
 
-
-

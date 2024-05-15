@@ -6,7 +6,6 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class CartServlet extends HttpServlet {
 
@@ -25,31 +24,33 @@ public class CartServlet extends HttpServlet {
         }
 
         cartDAO cartDao = new cartDAO(conn);
+        long userID = ((Long) session.getAttribute("userID")).longValue();
+        long productID = Long.parseLong(request.getParameter("productID"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
 
         try {
-            long userID = ((Long) session.getAttribute("userID")).longValue();
-            long productID = Long.parseLong(request.getParameter("productID"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
-
             switch (action) {
                 case "add":
                     cart newItem = new cart(userID, productID, quantity);
-                    if (cartDao.addCart(newItem)) {
-                        response.getWriter().print("success:" + cartDao.getCartItemCount(userID)); // Assuming such a method exists
+                    boolean added = cartDao.addCart(newItem);
+                    if (added) {
+                        response.getWriter().print("success:" + cartDao.getCartItemCount(userID));
                     } else {
                         response.getWriter().print("Failed to add item to cart.");
                     }
                     break;
                 case "update":
                     cart updateItem = new cart(userID, productID, quantity);
-                    if (cartDao.updateCartItem(updateItem)) {
+                    boolean updated = cartDao.updateCartItem(updateItem);
+                    if (updated) {
                         response.getWriter().print("success:" + cartDao.getCartItemCount(userID));
                     } else {
                         response.getWriter().print("Failed to update cart item.");
                     }
                     break;
                 case "remove":
-                    if (cartDao.removeCart(userID, productID)) {
+                    boolean removed = cartDao.removeCart(userID, productID);
+                    if (removed) {
                         response.getWriter().print("success:" + cartDao.getCartItemCount(userID));
                     } else {
                         response.getWriter().print("Failed to remove item from cart.");

@@ -19,10 +19,10 @@ public class orderDAO {
             statement.setDate(3, Date.valueOf(order.getOrderDate()));
             statement.setString(4, order.getOrderStatus());
             statement.setDouble(5, order.getTotalAmount());
-            statement.executeUpdate();
-            return statement.executeUpdate() > 0;
+            int affectedRows = statement.executeUpdate();
+            return affectedRows > 0;
         }
-    }
+    }    
 
     public order readOrder(long orderID) throws SQLException {
         String sql = "SELECT * FROM orders WHERE orderID = ?";
@@ -62,4 +62,13 @@ public class orderDAO {
             return statement.executeUpdate() > 0;
         }
     }
+    
+    public boolean cancelOrder(long orderID) throws SQLException {
+        String sql = "UPDATE orders SET orderStatus = 'cancelled' WHERE orderID = ?";
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setLong(1, orderID);
+            return statement.executeUpdate() > 0;
+        }
+    }
+    
 }
