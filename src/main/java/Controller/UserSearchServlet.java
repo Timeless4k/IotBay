@@ -16,11 +16,17 @@ import model.DAO.userDAO;
 public class UserSearchServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Handles GET requests by forwarding them to doPost method.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);
     }
 
+    /**
+     * Handles POST requests for searching users by full name and/or phone number.
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -31,12 +37,16 @@ public class UserSearchServlet extends HttpServlet {
             Connection conn = (Connection) request.getSession().getAttribute("acticonn");
             userDAO userDao = new userDAO(conn);
 
+            // Check if either fullName or phoneNumber is provided
             if ((fullName != null && !fullName.isEmpty()) || (phoneNumber != null && !phoneNumber.isEmpty())) {
+                // Perform the search based on provided fullName and/or phoneNumber
                 List<user> searchResults = userDao.searchUsersByFullNameAndPhone(fullName, phoneNumber);
                 if (searchResults != null && !searchResults.isEmpty()) {
+                    // Set search results to be displayed
                     request.setAttribute("users", searchResults);
                     request.getRequestDispatcher("/usermanagement.jsp").forward(request, response);
                 } else {
+                    // No users found
                     request.getRequestDispatcher("/usernotfound.jsp").forward(request, response);
                 }
             } else {

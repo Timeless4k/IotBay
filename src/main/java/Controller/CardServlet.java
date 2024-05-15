@@ -56,12 +56,14 @@ public class CardServlet extends HttpServlet {
         }
     }
     
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         handleRequest(request, response);
     }
 
+    /**
+     * Handles both GET and POST requests.
+     */
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         conn = (Connection) session.getAttribute("acticonn");
@@ -109,12 +111,18 @@ public class CardServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Displays all cards associated with the logged-in user.
+     */
     private void displayAllCards(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<card> cardList = cardDao.getCardsForUser(loggedInUser.getuID());
         request.setAttribute("cardList", cardList);
         request.getRequestDispatcher("payment.jsp").forward(request, response);
     }
     
+    /**
+     * Edits the details of an existing card.
+     */
     private void editCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         try {
             long cardID = Long.parseLong(request.getParameter("cardID"));
@@ -165,8 +173,10 @@ public class CardServlet extends HttpServlet {
             response.sendRedirect("error.jsp"); // Handle parsing errors
         }
     }
-    
 
+    /**
+     * Deletes an existing card by its ID.
+     */
     private void deleteCard(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         long cardId = Long.parseLong(request.getParameter("cardId"));
         card deleteCard = cardDao.getCardById(cardId);
@@ -182,6 +192,9 @@ public class CardServlet extends HttpServlet {
         }
     }  
 
+    /**
+     * Converts a date string in MM/yyyy format to the last day of that month in yyyy-MM-dd format.
+     */
     private String convertToLastDayOfMonth(String expiry) {
         try {
             SimpleDateFormat originalFormat = new SimpleDateFormat("MM/yyyy");
@@ -197,6 +210,9 @@ public class CardServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Creates a new card with the provided details and saves it to the database.
+     */
     private void createCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         String cardNumber = request.getParameter("cardNumber");
         String cardHolderName = request.getParameter("cardHolderName");

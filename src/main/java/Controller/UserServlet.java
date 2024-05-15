@@ -45,7 +45,10 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         handleRequest(request, response);
     }
-   
+    
+    /**
+     * Handles both GET and POST requests.
+     */
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
@@ -94,6 +97,9 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Displays all users by fetching them from the database and forwarding to usermanagement.jsp.
+     */
     private void displayAllUsers(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws ServletException, IOException {
         try {
             List<user> users = userDao.getAllUsers();
@@ -105,6 +111,9 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Activates a user by their userId.
+     */
     private void activateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         String userId = request.getParameter("userId");
         if (userId != null && !userId.isEmpty()) {
@@ -123,6 +132,9 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Deactivates a user by their userId.
+     */
     private void deactivateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         String userId = request.getParameter("userId");
         if (userId != null && !userId.isEmpty()) {
@@ -141,6 +153,9 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Creates a new user with the provided details and saves them to the database.
+     */
     private void createUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         try {
             String email = request.getParameter("email");
@@ -192,6 +207,9 @@ public class UserServlet extends HttpServlet {
         }
     }
    
+    /**
+     * Updates an existing user with the provided details and saves them to the database.
+     */
     private void updateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         try {
             String email = request.getParameter("email");
@@ -238,7 +256,10 @@ public class UserServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-   
+
+     /**
+     * Deletes a user by their email.
+     */
     private void deleteUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException {
         try {
             if (userDao.deleteUser(request.getParameter("email"))) {

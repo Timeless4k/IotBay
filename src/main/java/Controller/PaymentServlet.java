@@ -24,6 +24,9 @@ public class PaymentServlet extends HttpServlet {
     private paymentDAO paymentDao;
     private user loggedInUser;
 
+    /**
+     * Handles POST requests for processing payments.
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         conn = (Connection) session.getAttribute("acticonn");
@@ -66,6 +69,9 @@ public class PaymentServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Handles GET requests for confirming payments.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if ("confirm".equals(action)) {
@@ -98,14 +104,18 @@ public class PaymentServlet extends HttpServlet {
             response.sendRedirect("index.jsp");
         }
     }
-    
-    
 
+    /**
+     * Fetches card information by card ID.
+     */
     private card fetchCardInformation(String cardID) throws SQLException {
         cardDAO cardDao = new cardDAO(conn);
         return cardDao.getCardById(Long.parseLong(cardID));
     }
 
+    /**
+     * Processes payment details from the request.
+     */
     private payment processPayment(HttpServletRequest request) {
         double amount = 0.0;
         String method = "Card";
