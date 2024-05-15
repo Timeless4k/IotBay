@@ -18,12 +18,17 @@
             <ul>
                 <li><a href="/account.jsp#profile">Profile</a></li>
                 <li><a href="PaymentHistoryServlet">Payment History</a></li>
-                <li><a href="order.jsp">Order History</a></li>
+                <li><a href="OrderHistoryServlet">Order History</a></li>
                 <li><a href="/account.jsp#access">Access Logs</a></li>
                 <c:if test="${user.uType == 'Admin'}">
-                    <li><a href=usermanagement.jsp>User Management</a></li>
+                    <li><a href="UserServlet?action=displayAll">User Management</a></li>
                 </c:if>
-                <li><a href="logout.jsp">Logout</a></li>
+                <c:if test="${user.uType == 'Employee'}">
+                    <li><a href="UpdateProductServlet">Product Management</a></li>
+                </c:if>
+                <form action="logout" method="post">
+                    <input type="submit" value="Logout">
+                </form>
             </ul>
         </nav>
     </header>
@@ -33,7 +38,7 @@
             <h1>Profile</h1>
             <form action="UpdateProfileServlet" method="POST">
                 <p><b>First Name:</b><br><input type="text" name="firstName" value="${user.firstName}" required></p>
-                <p><b>Middle Name:</b><br><input type="text" name="middleName" value="${user.middleName}" required></p>
+                <p><b>Middle Name:</b><br><input type="text" name="middleName" value="${user.middleName}" optional></p>
                 <p><b>Last Name:</b><br><input type="text" name="lastName" value="${user.lastName}" required></p>
                 <p><b>Gender:</b><br>
                     <select name="gender" required>

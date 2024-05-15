@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="css/general-settings.css">
     <link rel="stylesheet" href="css/style.css">
 
-
     <!-- Modal Styles -->
     <style>
         .modal {
@@ -43,6 +42,36 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 4px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-deactivate {
+            background-color: #dc3545;
+        }
+        .btn-deactivate:hover {
+            background-color: #c82333;
+        }
+        .btn-activate {
+            background-color: #28a745;
+        }
+        .btn-activate:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>  
@@ -52,12 +81,18 @@
             <ul>
                 <li><a href="/account.jsp#profile">Profile</a></li>
                 <li><a href="PaymentHistoryServlet">Payment History</a></li>
-                <li><a href="OrderHistoryServlet">Order History</a></li>
+                <li><a href="order.jsp">Order History</a></li>
+                <li><a href="shipmentDetails.jsp">Shipment Details</a></li>
                 <li><a href="/account.jsp#access">Access Logs</a></li>
                 <c:if test="${user.uType == 'Admin'}">
-                    <li><a href=usermanagement.jsp>User Management</a></li>
+                    <li><a href=UserServlet?action=displayAll>User Management</a></li>
                 </c:if>
-                <li><a href="logout.jsp">Logout</a></li>
+                <c:if test="${user.uType == 'Employee'}">
+                    <li><a href=productmanagement.jsp>Product Management</a></li>
+                </c:if>
+                <form action="logout" method="post">
+                    <input type="submit" value="Logout">
+                </form>
             </ul>
         </nav>
     </header>
@@ -112,6 +147,7 @@
                     <th>Phone</th>
                     <th>Gender</th>
                     <th>Creation Date</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -127,9 +163,18 @@
                         <td><c:out value="${user.mobilePhone}"/></td>
                         <td><c:out value="${user.gender}"/></td>
                         <td><c:out value="${user.creationDate}"/></td>
+                        <td><c:if test="${user.activationStatus}">Active</c:if><c:if test="${!user.activationStatus}">Inactive</c:if></td>
                         <td>
-                            <button onclick="openModal('${user.uID}', '${user.firstName}', '${user.middleName}', '${user.lastName}', '${user.uType}', '${user.email}', '${user.mobilePhone}', '${user.gender}', '${user.creationDate}')">Edit</button>
-                            <a href="UserServlet?action=delete&email=${user.email}">Delete</a>
+                            <button class="btn" onclick="openModal('${user.uID}', '${user.firstName}', '${user.middleName}', '${user.lastName}', '${user.uType}', '${user.email}', '${user.mobilePhone}', '${user.gender}', '${user.creationDate}', '${user.activationStatus}')">Edit</button>
+                            <a href="UserServlet?action=delete&email=${user.email}" class="btn btn-deactivate">Delete</a>
+                            <c:choose>
+                                <c:when test="${user.activationStatus}">
+                                    <a href="UserServlet?action=deactivate&userId=${user.uID}" class="btn btn-deactivate">Deactivate</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="UserServlet?action=activate&userId=${user.uID}" class="btn btn-activate">Activate</a>
+                                </c:otherwise>
+                            </c:choose>
                         </td>
                     </tr>      
                 </c:forEach>
@@ -137,12 +182,12 @@
         </table>
     </div>
 
-
     <!-- Modal for editing user -->
     <div id="editUserModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <form id="editUserForm" action="UserServlet" method="post">
+                <input type="hidden" name="action" value="update"> <!-- Ensure action is set to "update" -->
                 <input type="hidden" id="userId" name="userId">
                 First Name: <input type="text" id="firstName" name="firstName" required><br>
                 Middle Name: <input type="text" id="middleName" name="middleName"><br>
@@ -162,12 +207,10 @@
                     <option value="Customer">Customer</option>
                     <option value="Admin">Admin</option>
                 </select><br>
-                <input type="hidden" name="action" value="update">
                 <button type="submit">Save Changes</button>
             </form>
         </div>
     </div>
-
 
     <!-- Script to handle modal functionality -->
     <script>
@@ -180,14 +223,13 @@
             document.getElementById('phone').value = phone;
             document.getElementById('gender').value = gender;
             document.getElementById('creationDate').value = creationDate;
+            document.getElementById('userType').value = userType;
             document.getElementById('editUserModal').style.display = 'block';
         }
-
 
         function closeModal() {
             document.getElementById('editUserModal').style.display = 'none';
         }
-
 
         function clearForm() {
             // Reset the form
@@ -204,6 +246,7 @@
             window.location.href = "UserServlet?action=displayAll";
         }
     </script>
+
 
 </body>
 </html>

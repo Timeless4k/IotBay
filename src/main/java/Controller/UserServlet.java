@@ -11,6 +11,9 @@ import javax.servlet.http.HttpSession;
 import model.user;
 import model.DAO.userDAO;
 
+
+
+
 public class UserServlet extends HttpServlet {
 
     private Connection conn;
@@ -44,7 +47,10 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         handleRequest(request, response);
     }
-   
+    
+    /**
+     * Handles both GET and POST requests.
+     */
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
@@ -94,6 +100,8 @@ public class UserServlet extends HttpServlet {
     }
 
 
+
+
     private void displayAllUsers(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws ServletException, IOException {
         try {
             List<user> users = userDao.getAllUsers();
@@ -106,67 +114,49 @@ public class UserServlet extends HttpServlet {
     }
 
 
-    private void activateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
-        String userId = request.getParameter("userId");
-        if (userId != null && !userId.isEmpty()) {
-            try {
-                if (userDao.activateUser(userId)) {
-                    response.sendRedirect("usermanagement.jsp");
-                } else {
-                    response.getWriter().print("Failed to activate user.");
-                }
-            } catch (Exception e) {
-                response.getWriter().print("Error activating user: " + e.getMessage());
-                e.printStackTrace();
-            }
-        } else {
-            response.getWriter().print("User ID is missing.");
-        }
-    }
-
-
-    private void deactivateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
-        String userId = request.getParameter("userId");
-        if (userId != null && !userId.isEmpty()) {
-            try {
-                if (userDao.deactivateUser(userId)) {
-                    response.sendRedirect("usermanagement.jsp");
-                } else {
-                    response.getWriter().print("Failed to deactivate user.");
-                }
-            } catch (Exception e) {
-                response.getWriter().print("Error deactivating user: " + e.getMessage());
-                e.printStackTrace();
-            }
-        } else {
-            response.getWriter().print("User ID is missing.");
-        }
-    }
-
-
-
-
-
-
 
 
     private void createUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         try {
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String phone = request.getParameter("phone");
+            String gender = request.getParameter("gender");
+
+            // Validate inputs
+            if (!ValidationUtils.isValidEmail(email)) {
+                response.getWriter().print("Invalid email format.");
+                return;
+            }
+            if (!ValidationUtils.isValidPassword(password)) {
+                response.getWriter().print("Password cannot be empty.");
+                return;
+            }
+            if (!ValidationUtils.isValidPhone(phone)) {
+                response.getWriter().print("Invalid phone number. Must be 10 digits.");
+                return;
+            }
+            if (!ValidationUtils.isValidGender(gender)) {
+                response.getWriter().print("Invalid gender. Must be 'Male', 'Female', or 'Other'.");
+                return;
+            }
+
             user newUser = new user(
                 0, // Assuming userID is auto-generated or not needed here
-                request.getParameter("email"),
-                request.getParameter("password"), // Make sure to hash the password in practice
+                email,
+                password, // Make sure to hash the password in practice
                 request.getParameter("firstName"),
                 request.getParameter("middleName"),
                 request.getParameter("lastName"),
                 request.getParameter("birthDate"),
-                request.getParameter("phone"),
-                request.getParameter("gender"),
+                phone,
+                gender,
                 request.getParameter("creationDate"),
                 request.getParameter("userType"),
                 true // Assuming new users are activated by default
             );
-            if (userDao.createUser(newUser)) {
+
+            if (userDao.createUser(newUser) != -1) {
                 response.sendRedirect("usermanagement.jsp");
             } else {
                 response.getWriter().print("Failed to create user.");
@@ -177,9 +167,26 @@ public class UserServlet extends HttpServlet {
         }
     }
    
+
+
+
+
     private void updateUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException, ServletException {
         try {
             String email = request.getParameter("email");
+            String phone = request.getParameter("phone");
+            String gender = request.getParameter("gender");
+
+            // Validate inputs
+            if (!ValidationUtils.isValidEmail(email)) {
+                response.getWriter().print("Invalid email format.");
+                return;
+            }
+            if (!ValidationUtils.isValidGender(gender)) {
+                response.getWriter().print("Invalid gender. Must be 'Male', 'Female', or 'Other'.");
+                return;
+            }
+
             user existingUser = userDao.getUserByEmail(email);
             if (existingUser != null) {
                 // Update user object with new values from the request
@@ -187,18 +194,15 @@ public class UserServlet extends HttpServlet {
                 existingUser.setMiddleName(request.getParameter("middleName"));
                 existingUser.setLastName(request.getParameter("lastName"));
                 existingUser.setBirthDate(request.getParameter("birthDate"));
-                existingUser.setMobilePhone(request.getParameter("phone"));
-                existingUser.setGender(request.getParameter("gender"));
+                existingUser.setMobilePhone(phone);
+                existingUser.setGender(gender);
                 existingUser.setCreationDate(request.getParameter("creationDate"));
                 existingUser.setuType(request.getParameter("userType"));
-   
+    
                 // Call updateUser method in userDAO
                 if (userDao.updateUser(existingUser)) {
-                    // Update successful, redirect to usermanagement.jsp
-                    // Instead of redirecting, set the updated user in session and then forward to usermanagement.jsp
-                    HttpSession session = request.getSession();
-                    session.setAttribute("user", existingUser);
-                    request.getRequestDispatcher("/usermanagement.jsp").forward(request, response);
+                    // Update successful, redirect to user management page
+                    response.sendRedirect("UserServlet?action=displayAll");
                 } else {
                     // Update failed
                     response.getWriter().print("Failed to update user.");
@@ -213,7 +217,14 @@ public class UserServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+    
    
+   
+   
+
+
+
+
     private void deleteUser(HttpServletRequest request, HttpServletResponse response, userDAO userDao) throws IOException {
         try {
             if (userDao.deleteUser(request.getParameter("email"))) {
@@ -227,4 +238,27 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+
+
+
+   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

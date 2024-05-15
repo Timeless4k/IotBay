@@ -86,7 +86,7 @@
                         <td>${fn:escapeXml(card.cardHolderName)}</td>
                         <td>${card.cardExpiry}</td>
                         <td class="action-buttons">
-                            <button onclick="openModal('${card.cardID}', '${card.cardNumber}', '${fn:escapeXml(card.cardHolderName)}', '${card.cardExpiry}', '${card.cardCVV}')">Edit</button>
+                            <button onclick="openPaymentModal('${card.cardID}', '${card.cardNumber}', '${card.cardExpiry}', '${card.cardCVV}', '${card.cardHolderName}')">Edit</button>
                             <form method="post" action="CardServlet" style="display: inline;">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="cardId" value="${card.cardID}">
@@ -99,67 +99,38 @@
         </table>
     </div>
 
-    <div id="editCardModal" class="modal">
+    <!-- Modal for editing payment details -->
+    <div id="editPaymentModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <form id="updateCardForm" action="CardServlet" method="post">
-                <input type="hidden" name="action" value="edit">
-                Card Number: <input type="text" id="modalCardNumber" name="cardNumber" required><br>
-                Card Holder Name: <input type="text" id="modalCardHolderName" name="cardHolderName" required><br>
-                Expiry Date: <input type="text" id="modalCardExpiry" name="cardExpiry" required><br>
-                CVV: <input type="text" id="modalCardCVV" name="cardCVV" required><br>
-                <input type="hidden" id="modalCardID" name="cardID">
-                <input type="hidden" name="action" value="update">
+            <span class="close" onclick="closePaymentModal()">&times;</span>
+            <form id="editPaymentForm" action="CardServlet" method="post">
+                <input type="hidden" name="action" value="edit"> 
+                <input type="hidden" id="paymentId" name="cardID">
+                <label for="cardNumber">Card Number:</label>
+                <input type="text" id="editCardNumber" name="cardNumber" required><br>
+                <label for="expiryDate">Expiry Date:</label>
+                <input type="text" id="editExpiryDate" name="cardExpiry" placeholder="MM/YYYY" required><br> 
+                <label for="cvv">CVV:</label>
+                <input type="text" id="editCvv" name="cardCVV" required><br> 
+                <label for="cardHolderName">Card Holder Name:</label>
+                <input type="text" id="editCardHolderName" name="cardHolderName" required><br>
                 <button type="submit">Save Changes</button>
-            </form>
+            </form>            
         </div>
     </div>
 
     <script>
-        function openModal(cardID, cardNumber, cardHolderName, cardExpiry, cardCVV) {
-            // Fill the form with the current card data
-            document.getElementById('modalCardNumber').value = cardNumber;
-            document.getElementById('modalCardHolderName').value = cardHolderName;
-            document.getElementById('modalCardExpiry').value = cardExpiry;
-            document.getElementById('modalCardCVV').value = cardCVV;
-            document.getElementById('modalCardID').value = cardID;
-            document.getElementById('editCardModal').style.display = 'block';
+        function openPaymentModal(paymentId, cardNumber, expiryDate, cvv, cardHolderName) {
+            document.getElementById('paymentId').value = paymentId;
+            document.getElementById('editCardNumber').value = cardNumber;
+            document.getElementById('editExpiryDate').value = expiryDate;
+            document.getElementById('editCvv').value = cvv;
+            document.getElementById('editCardHolderName').value = cardHolderName; // Set card holder name value
+            document.getElementById('editPaymentModal').style.display = 'block';
         }
-
-        function closeModal() {
-            document.getElementById('editCardModal').style.display = 'none';
+    
+        function closePaymentModal() {
+            document.getElementById('editPaymentModal').style.display = 'none';
         }
-
-        document.getElementById('updateCardForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            var formData = new FormData(this);
-            console.log("Form Data Prepared:", Object.fromEntries(formData)); // Debugging line
-
-            fetch('CardServlet', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(html => {
-                console.log("Server Response:", html); // Debugging line
-                closeModal();
-                location.reload(); // Reload the page to see the updates
-            })
-            .catch(err => {
-                console.error('Error updating card:', err);
-                alert('Error updating card. Please try again.');
-            });
-        });
-
     </script>
-
-    <% if (loggedInUser != null) { %>
-        <div>User ID: <%= loggedInUser.getuID() %></div>
-        <div>Email Address: <%= loggedInUser.getEmail() %></div>
-        <div>Debugging Info: User is logged in</div>
-    <% } else { %>
-        <div>User is not logged in</div>
-    <% } %>
-</body>
 </html>

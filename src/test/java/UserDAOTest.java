@@ -80,8 +80,8 @@ public class UserDAOTest {
         conn.setAutoCommit(false);
 
         try {
-            boolean result = userDao.createUser(newUser);
-            assertTrue(result, "User creation failed when it should have succeeded.");
+            long result = userDao.createUser(newUser);
+            assertNotEquals(-1, result, "User creation failed when it should have succeeded.");
             System.out.println("User creation test passed: User was successfully created.");
 
             user fetchedUser = userDao.getUserByEmail("testemail@example.com");
@@ -149,7 +149,7 @@ public class UserDAOTest {
     @Test //#T0006
     public void testRegistrationSuccess() throws SQLException {
         long userID = generateUniqueUserID();
-        user newUser = new user(userID, "newuser@example.com", "securepassword", "New", "User", "Example", "1990-01-01", "1234567890", "Other", "2024-01-01", "Customer", true);
+        user newUser = new user(userID, "newuser@example.com", "securepassword", "New", "User", "Example", "1990-01-01", "1234567890", "Other", "2024-01-01", "Customer");
         boolean result = userDao.createUser(newUser);
         assertTrue(result, "Registration should succeed.");
         user registeredUser = userDao.getUserByEmail("newuser@example.com");

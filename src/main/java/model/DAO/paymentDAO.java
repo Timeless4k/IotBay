@@ -11,11 +11,23 @@ import model.payment;
 public class paymentDAO {
     private Connection conn;
 
+    /**
+     * Constructor to initialize the paymentDAO with a database connection.
+     * 
+     * @param connection the database connection
+     * @throws SQLException if a database access error occurs
+     */
     public paymentDAO(Connection connection) throws SQLException {
         this.conn = connection;
         conn.setAutoCommit(false);
     }
 
+    /**
+     * Creates a new payment record in the database.
+     * 
+     * @param pay the payment object containing payment details
+     * @return true if the payment was successfully created, false otherwise
+     */
     public boolean createPayment(payment pay) {
         String sql = "INSERT INTO payments (PaymentID, PaymentAmount, PaymentMethod, PaymentDate, PaymentStatus, CardID) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -44,8 +56,12 @@ public class paymentDAO {
         }
         return false;
     }
-    
 
+    /**
+     * Generates a unique payment ID.
+     * 
+     * @return a unique payment ID
+     */
     private long generateUniquePaymentID() {
         // Generate a unique payment ID (you can implement your own logic)
         long paymentID = 0;
@@ -72,12 +88,24 @@ public class paymentDAO {
         return paymentID;
     }
 
+    /**
+     * Generates a random payment ID.
+     * 
+     * @return a randomly generated payment ID
+     */
     private long generateRandomPaymentID() {
         // Implement your logic to generate a random payment ID
         // You can use UUID or any other method to generate unique IDs
         return Math.abs(new Random().nextLong()); // Example: Using random long value
     }
 
+    /**
+     * Retrieves a list of payments for a specific user.
+     * 
+     * @param userID the ID of the user
+     * @return a list of payments associated with the user
+     * @throws SQLException if a database access error occurs
+     */
     public List<payment> getPaymentsForUser(long userID) throws SQLException {
         List<payment> payments = new ArrayList<>();
         String sql = "SELECT p.*, c.CardNumber FROM payments p " +
@@ -101,6 +129,15 @@ public class paymentDAO {
         return payments;
     }
 
+    /**
+     * Searches for payments based on user ID, payment ID, and payment date.
+     * 
+     * @param userID the ID of the user
+     * @param paymentID the ID of the payment (can be null)
+     * @param paymentDate the date of the payment (can be null or empty)
+     * @return a list of payments matching the search criteria
+     * @throws SQLException if a database access error occurs
+     */
     public List<payment> searchPayments(long userID, Long paymentID, String paymentDate) throws SQLException {
         List<payment> payments = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
@@ -108,14 +145,15 @@ public class paymentDAO {
             "JOIN card c ON p.CardID = c.CardID " +
             "WHERE c.UserID = ?"
         );
-
+    
         if (paymentID != null) {
             sql.append(" AND p.PaymentID = ?");
         }
         if (paymentDate != null && !paymentDate.isEmpty()) {
-            sql.append(" AND p.PaymentDate = ?");
+            // Convert the search date to a range that includes the entire day
+            sql.append(" AND p.PaymentDate >= ? AND p.PaymentDate < DATE_ADD(?, INTERVAL 1 DAY)");
         }
-
+    
         try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
             pstmt.setLong(1, userID);
             int index = 2;
@@ -123,7 +161,9 @@ public class paymentDAO {
                 pstmt.setLong(index++, paymentID);
             }
             if (paymentDate != null && !paymentDate.isEmpty()) {
+                // Set the search date for both lower and upper bounds of the range
                 pstmt.setString(index, paymentDate);
+                pstmt.setString(index + 1, paymentDate);
             }
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {

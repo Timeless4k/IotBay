@@ -12,12 +12,14 @@ public class productDAO {
 	private PreparedStatement updateProductSt;
 	private PreparedStatement searchProductNameSt;
 	private PreparedStatement searchProductTypeSt;
+	private PreparedStatement isUniqueST;
 	private String readQuery = "SELECT * FROM productdata";
 	private String CreateQuery = "INSERT INTO productdata VALUES (?,?,?,?,?,?,?,?)";
 	private String DeleteQuery = "DELETE FROM productdata WHERE ProductID=?";
-	private String UpdateQuery = "UPDATE productdata SET ProductName = '?', ProductStatus = '?', ProductReleaseDate = '?', ProductStockLevel = ?, ProductDescription = '?', ProductType = '?', ProductCost = ? WHERE ProductID=?";
+	private String UpdateQuery = "UPDATE productdata SET ProductName = ?, ProductStatus = ?, ProductReleaseDate = ?, ProductStockLevel = ?, ProductDescription = ?, ProductType = ?, ProductCost = ? WHERE ProductID=?";
 	private String SearchQueryName = "SELECT * FROM productdata WHERE ProductName LIKE ? ";
 	private String SearchQueryType = "SELECT * FROM productdata WHERE ProductType LIKE ? ";
+	private String isUnique = "SELECT * FROM productdata WHERE ProductID = ?";
 
     public productDAO(Connection connection) throws SQLException {
 		this.conn = connection;
@@ -28,8 +30,45 @@ public class productDAO {
 		updateProductSt = conn.prepareStatement(UpdateQuery);
 		searchProductNameSt = conn.prepareStatement(SearchQueryName);
 		searchProductTypeSt = conn.prepareStatement(SearchQueryType);
+		isUniqueST = conn.prepareStatement(isUnique);
 	}
 
+	/**
+	 * Checks if a product ID is unique in the database.
+	 *
+	 * @param check the product ID to check
+	 * @return true if the product ID is unique, false otherwise
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean checkpID(long check) throws SQLException{
+		isUniqueST.setLong(1, check);
+		ResultSet rs = isUniqueST.executeQuery();
+		return !rs.next();
+	}
+
+	/**
+	 * Retrieves a product with the specified ID from the database.
+	 *
+	 * @param pID the ID of the product to retrieve
+	 * @return the product with the specified ID
+	 * @throws SQLException if an error occurs while accessing the database
+	 */
+	public product getProduct(long pID) throws SQLException {
+		isUniqueST.setLong(1, pID);
+		ResultSet rs = isUniqueST.executeQuery();
+		product p = new product();
+		while (rs.next()) {
+				p.setpID(rs.getLong(1));
+				p.setName(rs.getString(2));
+				p.setStatus(rs.getString(3));
+				p.setReleaseDate(rs.getString(4));
+				p.setStock(rs.getLong(5));
+				p.setDescription(rs.getString(6));
+				p.setType(rs.getString(7));
+				p.setPrice(rs.getDouble(8));
+		}
+		return p;
+	}
 	
 	/**
 	 * This Method retreives products from the DB using result sets and prepared statements

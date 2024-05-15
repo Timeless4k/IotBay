@@ -22,18 +22,20 @@ import model.DAO.userDAO;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-
+    // Handles POST requests for user login
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Connection conn = (Connection) session.getAttribute("acticonn");
        
         // FOR THE ERRORS!
         if (conn == null) {
+            // Log and send an error response if the database connection is not established
             System.err.println("Database connection error: Database connection not established");
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error");
             return;
         }
 
+        // Initialize DAOs with error handling
         userDAO userDao = null;
         try {
             userDao = new userDAO(conn);
@@ -52,14 +54,17 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        // Retrieve email and password from the request
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         try {
+            // Authenticate user
             user user = userDao.getUserByEmail(email);
-            if (user != null && user.getPassword().equals(password) && user.getActivationStatus()) {
+            if (user != null && user.getPassword().equals(password)) { 
                 accesslogDAO.logLogin(user);
 
+                // Retrieve and store access logs in the session
                 ResultSet accessLogsRs = accesslogDAO.getLogsForUser(user);
                 List<accesslog> accessLogList = new ArrayList<>();
                 try {
@@ -78,18 +83,16 @@ public class LoginServlet extends HttpServlet {
                     e.printStackTrace();
                 }
 
+
                 session.setAttribute("user", user);
-                session.setAttribute("logs", accessLogList);
                 response.sendRedirect("account.jsp#profile");
             } else {
+
+                // Redirect to login page with error message
                 response.sendRedirect("login.jsp?error=invalid");
             }
         } finally {
-            // try {
-            //     conn.close();
-            // } catch (SQLException e) {
-            //     System.err.println("Error closing database connection: " + e.getMessage());
-            // }
+
         }
     }
 }

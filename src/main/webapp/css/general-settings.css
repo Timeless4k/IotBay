@@ -85,7 +85,7 @@ select {
 }
 
 input[type="submit"] {
-    background-color: #4CAF50;
+    background-color: #007bff;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -95,7 +95,7 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #007bff;
 }
 
 table {
@@ -111,7 +111,7 @@ th, td {
 }
 
 th {
-    background-color: #4CAF50;
+    background-color: #007bff;
     color: white;
 }
 
@@ -140,7 +140,7 @@ footer {
 
 /* General Container Style */
 .container {
-    max-width: 1800px; /* Set a max-width for the container */
+    max-width: 2200px; /* Set a max-width for the container */
     margin: 20px auto; /* Center the container */
     padding: 20px;
     background: #fff;
@@ -194,13 +194,13 @@ input[type="submit"], button {
 /* Edit Button */
 a[href^="UserServlet?action=update"] {
     display: inline-block;
-    background-color: #007bff; 
+    background-color: #007bff;
     color: white;
     text-align: center;
     padding: 6px 12px;
     margin: 0 5px;
     border-radius: 4px;
-    text-decoration: none; 
+    text-decoration: none;
     cursor: pointer;
 }
 
@@ -218,8 +218,23 @@ a[href^="UserServlet?action=delete"] {
 }
 
 /* Hover States */
-input[type="submit"]:hover, button:hover, 
-a[href^="UserServlet?action=update"]:hover, 
+input[type="submit"]:hover, button:hover,
+a[href^="UserServlet?action=update"]:hover,
 a[href^="UserServlet?action=delete"]:hover {
     opacity: 0.8;
+}
+
+#activationForm button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 8px;
+}
+
+
+#activationForm button:hover {
+    background-color: #0056b3;
 }

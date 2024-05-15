@@ -3,13 +3,12 @@
 <%@ page import="model.product" %>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
-    <link rel="stylesheet" href="css/product.css" type="text/css">
-    <link rel="icon" type="image/png" href="images/Logo.webp">
-    <title>IoTBay - Products</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
+    <head>
+        <link rel="stylesheet" href="css\style.css" type="text/css">
+        <link rel="stylesheet" href="css\product.css" type="text/css">
+        <link rel="icon" type="image/png" href="images/Logo.webp">
+        <title>IoTBay - Products</title>
+    </head>
 
 <body>
 <% ArrayList<product> productlist = (ArrayList<product>) session.getAttribute("productList"); %>

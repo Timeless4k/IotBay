@@ -14,7 +14,7 @@ public class accesslogDAO {
 
     public accesslogDAO(Connection connection) throws SQLException {
         this.conn = connection;
-        conn.setAutoCommit(false);  // Start with transaction block
+        conn.setAutoCommit(false); 
        
         // Prepare statements
         loginLogoutSt = conn.prepareStatement(
@@ -52,7 +52,6 @@ public class accesslogDAO {
     }
 
     public boolean logLogout(user user) {
-        // This example assumes you have a method to update the logout time
         try {
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Australia/Sydney"));
             String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));

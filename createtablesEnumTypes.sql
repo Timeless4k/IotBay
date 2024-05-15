@@ -129,6 +129,16 @@ DROP INDEX `UserID` ;
 ;
     
 
+ALTER TABLE `iotbay`.`orderlineitem` 
+DROP FOREIGN KEY `orderlineitem_ibfk_2`;
+ALTER TABLE `iotbay`.`orderlineitem` 
+ADD CONSTRAINT `orderlineitem_ibfk_2`
+  FOREIGN KEY (`ProductID`)
+  REFERENCES `iotbay`.`productdata` (`ProductID`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+
 
 insert into User values(
     1111111111,
