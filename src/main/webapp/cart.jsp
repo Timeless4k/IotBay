@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +14,6 @@
 
     <header>
         <img src="images/Logo.png" alt="IoTBay Logo" class="logo" onclick="window.location='main.jsp'">
-        
         <nav class="navbar">
             <ul>
                 <li><a href="#best-sellers">Best Sellers</a></li>
@@ -23,7 +21,6 @@
                 <li><a href="product.jsp">Catalog</a></li>
             </ul>
         </nav>
-
         <div class="nav-icons">
             <a href="cart.jsp">
                 <img src="images/shopping-bag.png" alt="Cart" class="cart-icon">
@@ -68,7 +65,7 @@
             <div class="total">
                 <h2>Total: $${total}</h2>
             </div>
-            <a href="checkout.jsp" class="button">Proceed to Checkout</a>
+            <a href="shipment.jsp" class="button">Proceed to Checkout</a> <!-- Link now points to Shipment page -->
         </c:if>
         <c:if test="${empty cart}">
             <p>Your cart is empty.</p>

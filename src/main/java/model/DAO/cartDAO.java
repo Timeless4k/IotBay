@@ -18,10 +18,9 @@ public class cartDAO {
             statement.setLong(1, item.getUserID());
             statement.setLong(2, item.getProductID());
             statement.setInt(3, item.getQuantity());
-            int affectedRows = statement.executeUpdate(); // Corrected to execute only once
-            return affectedRows > 0;
+            return statement.executeUpdate() > 0;
         }
-    }    
+    }
 
     public boolean updateCartItem(cart item) throws SQLException {
         String sql = "UPDATE cart SET quantity = ? WHERE userID = ? AND productID = ?";
@@ -29,7 +28,6 @@ public class cartDAO {
             statement.setInt(1, item.getQuantity());
             statement.setLong(2, item.getUserID());
             statement.setLong(3, item.getProductID());
-            statement.executeUpdate();
             return statement.executeUpdate() > 0;
         }
     }
@@ -39,7 +37,6 @@ public class cartDAO {
         try (PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setLong(1, userID);
             statement.setLong(2, productID);
-            statement.executeUpdate();
             return statement.executeUpdate() > 0;
         }
     }
@@ -47,9 +44,8 @@ public class cartDAO {
     public List<cart> getCart(long userID) throws SQLException {
         List<cart> items = new ArrayList<>();
         String sql = "SELECT * FROM cart WHERE userID = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setLong(1, userID);
-            ResultSet resultSet = statement.executeQuery();
+        try (PreparedStatement statement = conn.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 items.add(new cart(
                     resultSet.getLong("userID"),
@@ -63,13 +59,12 @@ public class cartDAO {
 
     public int getCartItemCount(long userID) throws SQLException {
         String sql = "SELECT SUM(quantity) AS total FROM cart WHERE userID = ?";
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setLong(1, userID);
-            ResultSet resultSet = statement.executeQuery();
+        try (PreparedStatement statement = conn.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
             if (resultSet.next()) {
-                return resultSet.getInt("total"); // Ensure the column fetched matches the SUM alias
+                return resultSet.getInt("total");
             }
-            return 0; // Return 0 if no items are found
+            return 0;
         }
     }
 }

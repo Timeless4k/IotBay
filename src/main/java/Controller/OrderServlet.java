@@ -46,24 +46,26 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
-    private void createOrder(HttpServletRequest request, HttpServletResponse response, orderDAO orderDao) throws IOException, ServletException {
+    private void createOrder(HttpServletRequest request, HttpServletResponse response, orderDAO orderDao) throws IOException {
         try {
             long orderID = Long.parseLong(request.getParameter("orderID"));
             long userID = Long.parseLong(request.getParameter("userID"));
-            String date = request.getParameter("date");
+            LocalDate date = LocalDate.parse(request.getParameter("date"));
             String status = request.getParameter("status");
             double totalAmount = Double.parseDouble(request.getParameter("totalAmount"));
-
-            order newOrder = new order(orderID, userID, java.sql.Date.valueOf(date).toLocalDate(), status, totalAmount);
+    
+            order newOrder = new order(orderID, userID, date, status, totalAmount);
             if (orderDao.createOrder(newOrder)) {
                 response.sendRedirect("orderSuccess.jsp");
             } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().println("Failed to create order.");
             }
-        } catch (SQLException e) {
-            throw new ServletException("SQL error while creating order", e);
+        } catch (NumberFormatException | SQLException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println("Invalid input or server error: " + e.getMessage());
         }
-    }
+    }    
 
     private void readOrder(HttpServletRequest request, HttpServletResponse response, orderDAO orderDao) throws IOException, ServletException {
         try {
