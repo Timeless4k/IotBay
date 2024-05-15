@@ -76,7 +76,7 @@ public class orderDAO {
 
 
     /* Check if Order ID exists */
-    private boolean orderIDExists(long orderID) throws SQLException {
+    public boolean orderIDExists(long orderID) throws SQLException {
         checkOrderID.setLong(1, orderID);
         ResultSet rs = checkOrderID.executeQuery();
         if (rs.next()) {
