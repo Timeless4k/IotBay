@@ -67,27 +67,35 @@ CREATE TABLE ShipmentData(
     primary key(ShipmentID)
 );
 
-CREATE TABLE Orders(
-    OrderID BIGINT,
-    OrderDate datetime,
-    OrderStatus varchar(20),
-    OrderDeliveryStatus ENUM('Being Prepared', "Delivered", 'Not Submitted', "On It's Way"),
+CREATE TABLE Orders (
+    OrderID BIGINT AUTO_INCREMENT PRIMARY KEY,
+    UserID BIGINT,
+    OrderDate DATETIME,
+    OrderStatus ENUM('Pending', 'Complete', 'Not submitted'),
+    OrderDeliveryStatus ENUM('Being Prepared', 'Delivered', 'Not Submitted', "On It's Way"),
     PaymentID BIGINT,
     ShippingID BIGINT,
-    UserID BIGINT,
-    primary key(OrderID),
-    foreign key(UserID) references User(UserID),
-    foreign key(PaymentID) references Payments(PaymentID),
-    foreign key(ShippingID) references ShipmentData(ShipmentID)
+    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (PaymentID) REFERENCES Payments(PaymentID),
+    FOREIGN KEY (ShippingID) REFERENCES ShipmentData(ShipmentID)
 );
 
-CREATE TABLE OrderLineItem(
+CREATE TABLE OrderLineItem (
     OrderID BIGINT,
     ProductID BIGINT,
-    OrderAmount int(99),
-    primary key(OrderID, ProductID),
-    foreign key(OrderID) references Orders(OrderID),
-    foreign key(ProductID) references ProductData(ProductID)
+    OrderAmount INT,
+    PRIMARY KEY (OrderID, ProductID),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES ProductData(ProductID)
+);
+
+CREATE TABLE Cart (
+    UserID BIGINT,
+    ProductID BIGINT,
+    Quantity INT,
+    PRIMARY KEY (UserID, ProductID),
+    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (ProductID) REFERENCES ProductData(ProductID)
 );
 
 ALTER TABLE `iotbay`.`Card` 
@@ -478,5 +486,47 @@ INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VAL
 INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('20', '1111111122', '3');
 INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('21', '1111111122', '3');
 
+-- Orders entries
+INSERT INTO Orders (UserID, OrderDate, OrderStatus, OrderDeliveryStatus, PaymentID, ShippingID) VALUES
+(1111111111, NOW(), 'Complete', 'Delivered', 111111111, 1),
+(2222222222, NOW(), 'Complete', 'Delivered', 111111112, 2),
+(3333333333, NOW(), 'Complete', 'Delivered', 111111113, 3),
+(4444444444, NOW(), 'Pending', 'On It\'s Way', 111111114, 4),
+(5555555555, NOW(), 'Complete', 'Delivered', 111111115, 5),
+(6666666666, NOW(), 'Complete', 'Delivered', 111111116, 6),
+(7777777777, NOW(), 'Complete', 'Delivered', 111111117, 7),
+(8888888888, NOW(), 'Complete', 'Delivered', 111111118, 8),
+(9999999999, NOW(), 'Complete', 'Delivered', 111111119, 9),
+(1111111112, NOW(), 'Complete', 'Delivered', 111111120, 10),
+(1111111113, NOW(), 'Pending', 'Being Prepared', 111111121, 11),
+(1111111114, NOW(), 'Complete', 'Delivered', 111111122, 12),
+(1111111115, NOW(), 'Complete', 'Delivered', 111111123, 13),
+(1111111116, NOW(), 'Pending', 'Being Prepared', 111111124, 14),
+(1111111117, NOW(), 'Complete', 'Delivered', 111111125, 15),
+(1111111118, NOW(), 'Complete', 'Delivered', 111111126, 16),
+(1111111119, NOW(), 'Complete', 'Delivered', 111111127, 17),
+(1111111120, NOW(), 'Complete', 'Delivered', 111111128, 18),
+(1111111121, NOW(), 'Complete', 'Delivered', 111111129, 19),
+(1111111122, NOW(), 'Complete', 'Delivered', 111111130, 20);
 
-
+INSERT INTO Cart (UserID, ProductID, Quantity) VALUES
+(1111111111, 2111111111, 2),
+(1111111111, 2222222222, 1),
+(2222222222, 2333333333, 3),
+(3333333333, 2444444444, 2),
+(4444444444, 2555555555, 1),
+(5555555555, 2666666666, 2),
+(6666666666, 2111111111, 3),
+(7777777777, 2222222222, 2),
+(8888888888, 2333333333, 1),
+(9999999999, 2444444444, 2),
+(1111111112, 2555555555, 2),
+(1111111113, 2666666666, 3),
+(1111111114, 2111111111, 2),
+(1111111115, 2222222222, 1),
+(1111111116, 2333333333, 2),
+(1111111117, 2444444444, 1),
+(1111111118, 2555555555, 2),
+(1111111119, 2666666666, 1),
+(1111111120, 2111111111, 3),
+(1111111121, 2222222222, 2);
