@@ -26,9 +26,8 @@ public class userDAO {
 
     public userDAO(Connection connection) throws SQLException {
         this.conn = connection;
-        conn.setAutoCommit(false);  // Start with transaction block
+        conn.setAutoCommit(false);  
        
-        // Prepare statements
         createUserSt = conn.prepareStatement(
             "INSERT INTO User (UserID, UserFirstName, UserMiddleName, UserLastName, UserType, UserEmail, UserPhone, UserGender, PasswordHash, UserCreationDate, ActivationFlag, VerificationCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             Statement.RETURN_GENERATED_KEYS);

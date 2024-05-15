@@ -21,11 +21,13 @@ import util.ValidationUtils;
 
 public class RegisterServlet extends HttpServlet {
 
+    // Handles POST requests for user registration
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Connection conn = (Connection) session.getAttribute("acticonn");
 
         if (conn == null) {
+            // Log and send an error response if the database connection is not established
             System.err.println("Database connection not established");
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error");
             return;
@@ -34,6 +36,7 @@ public class RegisterServlet extends HttpServlet {
         try {
             userDAO UDAO = new userDAO(conn);
 
+            // Retrieve registration details from the request
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             String firstName = request.getParameter("firstName");
@@ -42,6 +45,7 @@ public class RegisterServlet extends HttpServlet {
             String mobilePhone = request.getParameter("mobilePhone");
             String gender = request.getParameter("gender");
 
+            // Just for checking the values
             System.out.println(email);
             System.out.println(ValidationUtils.isValidEmail(email));
             System.out.println(password);
@@ -51,21 +55,24 @@ public class RegisterServlet extends HttpServlet {
             System.out.println(gender);
             System.out.println(ValidationUtils.isValidGender(gender));
 
+            // Validate input fields
             if (!ValidationUtils.isValidEmail(email) || !ValidationUtils.isValidPassword(password) ||
                 !ValidationUtils.isValidPhone(mobilePhone) || !ValidationUtils.isValidGender(gender)) {
                 response.sendRedirect("register.jsp?error=validationFailed");
                 return;
             }
 
+            // Check for existing user
             user existingUser = UDAO.getUserByEmail(email);
             if (existingUser != null) {
                 response.sendRedirect("register.jsp?error=duplicate");
                 return;
             }
 
+            // Create new user
             user newUser = new user();
             newUser.setEmail(email);
-            newUser.setPassword(password); // Remember to hash password before storing
+            newUser.setPassword(password); 
             newUser.setFirstName(firstName);
             newUser.setMiddleName(middleName);
             newUser.setLastName(lastName);
@@ -79,6 +86,7 @@ public class RegisterServlet extends HttpServlet {
                 accesslogDAO accesslogDAO = new accesslogDAO(conn);
                 accesslogDAO.logLogin(newUser);
 
+                // Retrieve and store access logs in the session
                 ResultSet accessLogsRs = accesslogDAO.getLogsForUser(newUser);
                 List<accesslog> accessLogList = new ArrayList<>();
                 try {
@@ -98,6 +106,7 @@ public class RegisterServlet extends HttpServlet {
                 }
                 session.setAttribute("logs", accessLogList);
                 
+                // Set user in the session and redirect to welcome page                
                 session.setAttribute("user", newUser);
                 response.sendRedirect("welcome.jsp");
             } else {
