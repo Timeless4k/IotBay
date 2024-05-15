@@ -155,13 +155,10 @@ import javax.servlet.http.HttpSession;
 
 import java.util.List;
 
-<<<<<<< Updated upstream
 import model.user;
 
 import java.io.PrintWriter;
 
-=======
->>>>>>> Stashed changes
 @WebServlet("/ShipmentServlet")
 public class ShipmentServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -198,6 +195,9 @@ public class ShipmentServlet extends HttpServlet {
                 case "read":
                     readShipment(request, response);
                     break;
+                case "readForCurrentOrder":
+                    readForCurrentOrder(request, response);
+                    break;
                 default:
                     // Handle unknown action
                     break;
@@ -226,6 +226,13 @@ public class ShipmentServlet extends HttpServlet {
                 // Generate a unique shipment ID
                 String shipmentID = SDAO.generateUniqueShipmentID();
 
+                System.out.println("GENERATED LOOOK HEREEEEEEE:" + shipmentID);
+
+                // Pass the shipmentID to readForCurrentOrder method
+                session.setAttribute("currentShipmentID", shipmentID);
+
+                System.out.println("SET SESSION LOOOK HEREEEEEEE:" + shipmentID);
+
                 // Create a Shipment object
                 shipment shipment = new shipment(shipmentID, shipmentAddress, shipmentDate, shipmentMethod);
 
@@ -234,11 +241,17 @@ public class ShipmentServlet extends HttpServlet {
 
                 connection.commit();
 
+                // // Pass the shipmentID to readForCurrentOrder method
+                // readForCurrentOrder(request, response, shipmentID);
+
                 // // Redirect or forward to a success page
                 // response.sendRedirect("CardServlet?action=displayAll");
 
                 // Redirect or forward to a success page
-                response.sendRedirect("payment.jsp");
+                response.sendRedirect("shipmentConfirmation.jsp");
+
+                // // Redirect or forward to a success page
+                // response.sendRedirect("payment.jsp");
             } catch (SQLException e) {
                 // Handle database operation failure
                 e.printStackTrace(); // Log the exception or handle it according to your application's error handling strategy
@@ -252,7 +265,6 @@ public class ShipmentServlet extends HttpServlet {
     }
 
 
-<<<<<<< Updated upstream
     // private void readShipment(HttpServletRequest request, HttpServletResponse response)
     //     throws ServletException, IOException {
     //     // Retrieve the connection from the session
@@ -305,18 +317,10 @@ public class ShipmentServlet extends HttpServlet {
 
     protected void readShipment(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-=======
-    private void readShipment(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-        // Retrieve the user ID from the session
-        String userId = (String) request.getSession().getAttribute("userId");
-
->>>>>>> Stashed changes
         // Retrieve the connection from the session
         HttpSession session = request.getSession();
         Connection connection = (Connection) session.getAttribute("acticonn");
 
-<<<<<<< Updated upstream
         // Retrieve the user ID from the session
         // You have to get the session out of the request first, not straight from the request itself
         user user = (user) session.getAttribute("user");
@@ -328,14 +332,11 @@ public class ShipmentServlet extends HttpServlet {
         // Print statement to check if connection is retrieved correctly
         System.out.println("(READ SHIPMENT) Connection: " + connection);
 
-=======
->>>>>>> Stashed changes
         // Check if the connection is not null
         if (connection != null) {
             try {
                 // Create a new ShipmentDAO instance with the connection, for database operations
                 SDAO = new shipmentDAO(connection);
-<<<<<<< Updated upstream
                 
                 // Print statement to indicate DAO instance creation
                 System.out.println("(READ SHIPMENT) ShipmentDAO instance created.");
@@ -372,11 +373,6 @@ public class ShipmentServlet extends HttpServlet {
                 // Write JSON response to PrintWriter
                 out.println(json.toString());
                 
-=======
-
-                // Call the DAO method to retrieve shipment data from the database based on the user ID
-                SDAO.readShipment(userId);
->>>>>>> Stashed changes
             } catch (SQLException e) {
                 // Handle database operation failure
                 e.printStackTrace(); // Log the exception or handle it according to your application's error handling strategy
@@ -434,15 +430,188 @@ public class ShipmentServlet extends HttpServlet {
     // }
 
 
-    private void updateShipment(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void readForCurrentOrder(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Connection connection = (Connection) session.getAttribute("acticonn");
 
+        // user user = (user) session.getAttribute("user");
+        // long userId = user.getuID();
+        // String userIdString = String.valueOf(userId);
+
+        // Read current shipmentID
+        String shipmentID = (String) session.getAttribute("currentShipmentID");
+        System.out.println("(READ FOR CURRENT ORDER, SHIPMENT) Current Shipment ID: " + shipmentID);
+
+        if (connection != null) {
+            try {
+                shipmentDAO SDAO = new shipmentDAO(connection);
+                shipment shipment = SDAO.readForCurrentOrder(shipmentID);
+                
+                if (shipment != null) {
+                    // Construct JSON response
+                    StringBuilder json = new StringBuilder();
+                    json.append("[");
+                    json.append("{");
+                    json.append("\"shipmentID\":").append(shipment.getShipmentID()).append(",");
+                    json.append("\"shipmentAddress\":\"").append(shipment.getShipmentAddress()).append("\",");
+                    json.append("\"shipmentDate\":\"").append(shipment.getShipmentDate()).append("\",");
+                    json.append("\"shipmentMethod\":\"").append(shipment.getShipmentMethod()).append("\"");
+                    json.append("}");
+                    json.append("]");                    
+
+                    // Set content type to indicate JSON response
+                    response.setContentType("application/json");
+
+                    // Get PrintWriter to write JSON response
+                    PrintWriter out = response.getWriter();
+
+                    // Write JSON response to PrintWriter
+                    out.println(json.toString());
+                } else {
+                    // Shipment not found, handle accordingly
+                    response.sendRedirect("error.jsp");
+                }
+            } catch (SQLException e) {
+                // Handle exceptions
+                e.printStackTrace(); // Log the exception or handle it according to your application's error handling strategy
+                response.sendRedirect("error.jsp");
+            }
+        } else {
+            throw new ServletException("Connection attribute 'acticonn' is null. Check your session setup.");
+        }
     }
 
 
-    private void deleteShipment(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    // protected void readForCurrentOrder(HttpServletRequest request, HttpServletResponse response)
+    //     throws ServletException, IOException {
+    //     // Retrieve the connection from the session
+    //     HttpSession session = request.getSession();
+    //     Connection connection = (Connection) session.getAttribute("acticonn");
 
+    //     // Retrieve the user ID from the session
+    //     // You have to get the session out of the request first, not straight from the request itself
+    //     user user = (user) session.getAttribute("user");
+    //     long userId = user.getuID();
+    //     String userIdString = String.valueOf(userId);        
+    //     // Print statement to check if user ID is retrieved correctly
+    //     System.out.println("(READ SHIPMENT) User ID: " + userId);
+        
+    //     // Print statement to check if connection is retrieved correctly
+    //     System.out.println("(READ SHIPMENT) Connection: " + connection);
+
+    //     // Check if the connection is not null
+    //     if (connection != null) {
+    //         try {
+    //             // Create a new ShipmentDAO instance with the connection, for database operations
+    //             SDAO = new shipmentDAO(connection);
+                
+    //             // Print statement to indicate DAO instance creation
+    //             System.out.println("(READ SHIPMENT) ShipmentDAO instance created.");
+
+    //             // Call the DAO method to retrieve shipment data from the database based on the user ID
+    //             SDAO.readForCurrentOrder(userIdString);
+                
+    //             // Manually construct the JSON response
+                // StringBuilder json = new StringBuilder();
+                // json.append("[");
+                // json.append("{");
+                // json.append("\"shipmentID\":").append(shipment.getShipmentID()).append(",");
+                // json.append("\"shipmentAddress\":\"").append(shipment.getShipmentAddress()).append("\",");
+                // json.append("\"shipmentDate\":\"").append(shipment.getShipmentDate()).append("\",");
+                // json.append("\"shipmentMethod\":\"").append(shipment.getShipmentMethod()).append("\"");
+                // json.append("}");
+                // json.append("]");
+
+    //             // Set content type to indicate JSON response
+    //             response.setContentType("application/json");
+                
+    //             // Get PrintWriter to write JSON response
+    //             PrintWriter out = response.getWriter();
+                
+    //             // Write JSON response to PrintWriter
+    //             out.println(json.toString());
+                
+    //         } catch (SQLException e) {
+    //             // Handle database operation failure
+    //             e.printStackTrace(); // Log the exception or handle it according to your application's error handling strategy
+    //             // Redirect or forward to an error page 
+    //             response.sendRedirect("error.jsp");
+    //         }
+    //     } else {
+    //         // If the connection is null, throw a ServletException
+    //         throw new ServletException("Connection attribute 'acticonn' is null. Check your session setup.");
+    //     }
+    // }
+
+
+    // private void updateShipment(HttpServletRequest request, HttpServletResponse response)
+    //         throws ServletException, IOException {
+
+    // }
+
+    private void updateShipment(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Connection connection = (Connection) session.getAttribute("acticonn");
+
+        // Retrieve shipment details from the request parameters
+        // String shipmentId = request.getParameter("shipmentId");
+
+        String shipmentId = (String) session.getAttribute("currentShipmentID");
+        System.out.println("(UPDATE SHIPMENT) Current Shipment ID: " + shipmentId);
+
+        String shipmentAddress = request.getParameter("shipmentAddress");
+        String shipmentDate = request.getParameter("shipmentDate");
+        String shipmentMethod = request.getParameter("shipmentMethod");
+
+        // Update shipment details in the database
+        try {
+            shipmentDAO SDAO = new shipmentDAO(connection);
+            SDAO.updateShipment(shipmentId, shipmentAddress, shipmentDate, shipmentMethod);
+
+            connection.commit();
+
+            response.sendRedirect("payment.jsp");
+        } catch (Exception e) {
+            // Handle exceptions
+            e.printStackTrace();
+            // Optionally, forward to an error page
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+    }
+
+
+    // private void deleteShipment(HttpServletRequest request, HttpServletResponse response)
+    //         throws ServletException, IOException {
+
+    // }
+
+
+    private void deleteShipment(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Connection connection = (Connection) session.getAttribute("acticonn");
+
+        String shipmentId = (String) session.getAttribute("currentShipmentID");
+        System.out.println("(DELETE SHIPMENT) Current Shipment ID: " + shipmentId);    
+        
+        // Update shipment details in the database
+        try {
+            shipmentDAO SDAO = new shipmentDAO(connection);
+            SDAO.deleteShipment(shipmentId);
+
+            connection.commit();
+
+            response.sendRedirect("shipment.jsp");
+        } catch (Exception e) {
+            // Handle exceptions
+            e.printStackTrace();
+            // Optionally, forward to an error page
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
     }
 
 }
