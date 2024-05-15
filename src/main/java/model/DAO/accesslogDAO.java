@@ -11,6 +11,7 @@ public class accesslogDAO {
     private Connection conn;
     private PreparedStatement loginLogoutSt;
     private PreparedStatement getLogsForUserSt;
+    private PreparedStatement getLogsByLoginDateSt;
 
     public accesslogDAO(Connection connection) throws SQLException {
         this.conn = connection;
@@ -22,12 +23,12 @@ public class accesslogDAO {
             Statement.RETURN_GENERATED_KEYS);
         getLogsForUserSt = conn.prepareStatement(
             "SELECT * FROM accessdata WHERE UserID = ? ORDER BY LoginTime DESC");
+        getLogsByLoginDateSt = conn.prepareStatement(
+            "SELECT * FROM accessdata WHERE UserID = ? AND DATE(LoginTime) = ? ORDER BY LoginTime DESC");
     }
 
     public boolean logLogin(user user) {
         try {
-            // ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Australia/Sydney"));
-            // String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Australia/Sydney"));
             String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
@@ -75,7 +76,6 @@ public class accesslogDAO {
         }
         return false;
     }
-    
 
     public ResultSet getLogsForUser(user user) {
         try {
@@ -83,6 +83,17 @@ public class accesslogDAO {
             return getLogsForUserSt.executeQuery();
         } catch (SQLException e) {
             System.err.println("Get logs failed: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public ResultSet getLogsByLoginDate(long userID, String loginDate) {
+        try {
+            getLogsByLoginDateSt.setLong(1, userID);
+            getLogsByLoginDateSt.setString(2, loginDate);
+            return getLogsByLoginDateSt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("Get logs by login date failed: " + e.getMessage());
         }
         return null;
     }

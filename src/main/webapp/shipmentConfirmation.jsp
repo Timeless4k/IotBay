@@ -111,14 +111,17 @@ search in the dao by that shipment id, and display the data. -->
 
         <br><br>
 
-        <!-- Button to trigger the update form -->
-        <button onclick="showUpdateForm()">Update Shipment</button>
+        
+        <div class="shipment_confirmation_container">
+            <!-- Button to trigger the update form -->
+            <button onclick="showUpdateForm()" class="shipment_confirmation_button">Update Shipment</button>
 
-        <!-- Button to delete shipment -->
-        <form action="/ShipmentServlet" method="post">
-            <input type="hidden" name="action" value="delete">
-            <button type="submit">Delete Shipment</button>
-        </form>        
+            <!-- Button to delete shipment -->
+            <form action="/ShipmentServlet" method="post">
+                <input type="hidden" name="action" value="delete">
+                <button type="submit" class="shipment_confirmation_button_two">Delete Shipment</button>
+            </form>
+        </div>
 
         <!-- Update form -->
         <div id="updateForm" style="display: none;">

@@ -64,6 +64,11 @@
 
         <div id="access" class="content-section" style="display:none;">
             <h2>Access Logs</h2>
+            <form action="SearchAccessLogsServlet" method="get">
+                <label for="loginDate">Login Date:</label>
+                <input type="date" id="loginDate" name="loginDate" required>
+                <button type="submit">Search</button>
+            </form>
             <table border="1">
                 <thead>
                     <tr>
