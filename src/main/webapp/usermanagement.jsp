@@ -42,6 +42,36 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 4px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-deactivate {
+            background-color: #dc3545;
+        }
+        .btn-deactivate:hover {
+            background-color: #c82333;
+        }
+        .btn-activate {
+            background-color: #28a745;
+        }
+        .btn-activate:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>  
@@ -135,14 +165,14 @@
                         <td><c:out value="${user.creationDate}"/></td>
                         <td><c:if test="${user.activationStatus}">Active</c:if><c:if test="${!user.activationStatus}">Inactive</c:if></td>
                         <td>
-                            <button onclick="openModal('${user.uID}', '${user.firstName}', '${user.middleName}', '${user.lastName}', '${user.uType}', '${user.email}', '${user.mobilePhone}', '${user.gender}', '${user.creationDate}', '${user.activationStatus}')">Edit</button>
-                            <a href="UserServlet?action=delete&email=${user.email}">Delete</a>
+                            <button class="btn" onclick="openModal('${user.uID}', '${user.firstName}', '${user.middleName}', '${user.lastName}', '${user.uType}', '${user.email}', '${user.mobilePhone}', '${user.gender}', '${user.creationDate}', '${user.activationStatus}')">Edit</button>
+                            <a href="UserServlet?action=delete&email=${user.email}" class="btn btn-deactivate">Delete</a>
                             <c:choose>
                                 <c:when test="${user.activationStatus}">
-                                    <a href="UserServlet?action=deactivate&userId=${user.uID}">Deactivate</a>
+                                    <a href="UserServlet?action=deactivate&userId=${user.uID}" class="btn btn-deactivate">Deactivate</a>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="UserServlet?action=activate&userId=${user.uID}">Activate</a>
+                                    <a href="UserServlet?action=activate&userId=${user.uID}" class="btn btn-activate">Activate</a>
                                 </c:otherwise>
                             </c:choose>
                         </td>
@@ -208,5 +238,12 @@
             window.location.href = "UserServlet?action=displayAll";
         }
     </script>
+
+<script>
+    // Check if the users are loaded, if not redirect to load them
+    if (!${not empty users}) {
+        window.location.href = "UserServlet?action=displayAll";
+    }
+</script>
 </body>
 </html>

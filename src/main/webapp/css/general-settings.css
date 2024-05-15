@@ -140,7 +140,7 @@ footer {
 
 /* General Container Style */
 .container {
-    max-width: 1800px; /* Set a max-width for the container */
+    max-width: 2200px; /* Set a max-width for the container */
     margin: 20px auto; /* Center the container */
     padding: 20px;
     background: #fff;
