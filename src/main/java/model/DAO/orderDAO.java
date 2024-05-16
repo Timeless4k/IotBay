@@ -119,30 +119,23 @@ public class orderDAO {
     }
 
     /* Creating a new order in the database, if it's returning true, the order successfully created. */
-    public boolean createOrder(long orderID, String orderName, String orderType, long orderQuantity, String orderDate) throws SQLException {
-        String sql = "INSERT INTO orders (OrderID, OrderName, OrderType, OrderQuantity, OrderDate) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, orderID);
-            pstmt.setString(2, orderName);
-            pstmt.setString(3, orderType);
-            pstmt.setLong(4, orderQuantity);
-            pstmt.setString(5, orderDate);
-            
-            int affectedRows = pstmt.executeUpdate();
-            if (affectedRows > 0) {
-                conn.commit();
-                return true;
-            }
-        } catch (SQLException e) {
-            System.err.println("Create order failed: " + e.getMessage());
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                System.err.println("Transaction rollback failed: " + ex.getMessage());
-            }
+    public boolean createOrder(String orderName, String orderType, long orderQuantity, String orderDate) throws SQLException {
+        
+        long orderID = uniqueOrderID();
+
+        createOrder.setLong(1, orderID);
+        createOrder.setString(2, orderName);
+        createOrder.setString(3, orderType);
+        createOrder.setLong(4, orderQuantity);
+        createOrder.setString(5, orderDate);
+        
+        if (createOrder.executeUpdate() > 0) {
+            conn.commit(); // Commit the transaction if the insert was successful
+            return true;
         }
-        return false;
-    }    
+    return false;
+    }
+      
 
     /* Updating a new order in the database base off. */
     public void updateOrder(long orderID, String orderName, String orderType, long orderQuantity, String orderDate) throws SQLException {
