@@ -10,15 +10,17 @@ public class orderDAO {
     private Connection conn;
 
     private PreparedStatement fetchOrder;
+    private PreparedStatement fetchAllOrders;
     private PreparedStatement createOrder;
     private PreparedStatement updateOrder;
     private PreparedStatement deleteOrder;
     private PreparedStatement searchOrderID;
     private PreparedStatement searchOrderDate;
     private PreparedStatement checkOrderID;
-
-    private String readQuery = "SELECT * FROM orders";
-    private String CreateQuery = "INSERT INTO orders VALUES (?,?,?,?,?)";
+    
+    private String readQuery = "SELECT * FROM orders WHERE OrderID = ?";
+    private String readAllQuery = "SELECT * FROM orders";
+    private String CreateQuery = "INSERT INTO orders (OrderID, OrderName, OrderType, OrderQuantity, OrderDate) VALUES (?, ?, ?, ?, ?)";
     private String UpdateQuery = "UPDATE orders SET OrderName = ?, OrderType = ?, OrderQuantity = ?, OrderDate = ? WHERE OrderID=?";
     private String DeleteQuery = "DELETE FROM orders WHERE OrderID=?";
     private String SearchQueryID = "SELECT * FROM orders WHERE OrderID LIKE ? ";
@@ -31,6 +33,7 @@ public class orderDAO {
         conn.setAutoCommit(false);
 
         fetchOrder = conn.prepareStatement(readQuery);
+        fetchAllOrders = conn.prepareStatement(readAllQuery);
         createOrder = conn.prepareStatement(CreateQuery);
         deleteOrder = conn.prepareStatement(DeleteQuery);
         updateOrder = conn.prepareStatement(UpdateQuery);
@@ -95,8 +98,8 @@ public class orderDAO {
 
     /* Fetching the existed data that are already sets */
     public ArrayList<order> fetchOrders() throws SQLException {
-        ResultSet rs = fetchOrder.executeQuery();
-
+        ResultSet rs = fetchAllOrders.executeQuery();
+    
         ArrayList<order> orders = new ArrayList<>(); // The ArrayList that holds orders
         while (rs.next()) { // Retrieving variables from db query
             long orderID = rs.getLong(1);
@@ -104,23 +107,35 @@ public class orderDAO {
             String orderType = rs.getString(3);
             long orderQuantity = rs.getLong(4);
             String orderDate = rs.getString(5);
-
+    
             order o = new order();
             o.setOrderID(orderID);
             o.setOrderName(orderName);
             o.setOrderType(orderType);
             o.setOrderQuantity(orderQuantity);
             o.setOrderDate(orderDate);
-
+    
             orders.add(o); // Adding object to end of orders array
         }
-
+    
         return orders;
     }
 
     /* Creating a new order in the database, if it's returning true, the order successfully created. */
     public boolean createOrder(String orderName, String orderType, long orderQuantity, String orderDate) throws SQLException {
-        
+        if (orderName == null || orderName.isEmpty()) {
+            throw new SQLException("Order name cannot be null or empty");
+        }
+        if (orderType == null || orderType.isEmpty()) {
+            throw new SQLException("Order type cannot be null or empty");
+        }
+        if (orderQuantity < 0) {
+            throw new SQLException("Order quantity cannot be negative");
+        }
+        if (orderDate == null || orderDate.isEmpty()) {
+            throw new SQLException("Order date cannot be null or empty");
+        }
+
         long orderID = uniqueOrderID();
 
         createOrder.setLong(1, orderID);
@@ -128,12 +143,12 @@ public class orderDAO {
         createOrder.setString(3, orderType);
         createOrder.setLong(4, orderQuantity);
         createOrder.setString(5, orderDate);
-        
+
         if (createOrder.executeUpdate() > 0) {
             conn.commit(); // Commit the transaction if the insert was successful
             return true;
         }
-    return false;
+        return false;
     }
       
 
@@ -143,20 +158,22 @@ public class orderDAO {
             throw new SQLException("Order ID " + orderID + " does not exist.");
         }
 
-        updateOrder.setLong(5, orderID);
         updateOrder.setString(1, orderName);
         updateOrder.setString(2, orderType);
         updateOrder.setLong(3, orderQuantity);
         updateOrder.setString(4, orderDate);
+        updateOrder.setLong(5, orderID);
 
         updateOrder.executeUpdate();
     }
+
 
     /* Deleting an order from the DB based off orderID */
     public void deleteOrder(long orderID) throws SQLException{
         deleteOrder.setLong(1, orderID);
         deleteOrder.executeUpdate();
     }
+    
 
     /* Searching with filtering ID and the date */
     public ArrayList<order> searchOrderBy(String type, String query) throws SQLException {

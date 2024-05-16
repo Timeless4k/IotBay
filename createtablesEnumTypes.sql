@@ -67,12 +67,12 @@ CREATE TABLE ShipmentData(
     primary key(ShipmentID)
 );
 
-CREATE TABLE Orders(
-    OrderID BIGINT,
-    OrderName varchar(50),
-    OrderType varchar(150),
-    OrderQuantity BIGINT,
-    OrderDate datetime
+CREATE TABLE Orders (
+    OrderID BIGINT PRIMARY KEY,
+    OrderName VARCHAR(50) NOT NULL,
+    OrderType VARCHAR(150) NOT NULL,
+    OrderQuantity BIGINT CHECK (OrderQuantity >= 0),
+    OrderDate DATETIME NOT NULL
 );
 
 ALTER TABLE `iotbay`.`Card` 
