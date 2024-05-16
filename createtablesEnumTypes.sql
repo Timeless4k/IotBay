@@ -83,19 +83,6 @@ ADD CONSTRAINT `Card_ibfk_1`
   REFERENCES `iotbay`.`user` (`UserID`)
   ON DELETE CASCADE;
 
-ALTER TABLE `iotbay`.`orders` 
-DROP FOREIGN KEY `orders_ibfk_2`,
-DROP FOREIGN KEY `orders_ibfk_3`;
-ALTER TABLE `iotbay`.`orders` 
-ADD CONSTRAINT `orders_ibfk_2`
-  FOREIGN KEY (`PaymentID`)
-  REFERENCES `iotbay`.`payments` (`PaymentID`)
-  ON DELETE CASCADE,
-ADD CONSTRAINT `orders_ibfk_3`
-  FOREIGN KEY (`ShippingID`)
-  REFERENCES `iotbay`.`shipmentdata` (`ShipmentID`)
-  ON DELETE CASCADE;
-
 ALTER TABLE `iotbay`.`accessdata` 
 CHANGE COLUMN `LogID` `LogID` BIGINT NOT NULL AUTO_INCREMENT ;
 
@@ -104,17 +91,6 @@ DROP FOREIGN KEY `accessdata_ibfk_1`;
 ALTER TABLE `iotbay`.`accessdata` 
 DROP INDEX `UserID` ;
 ;
-    
-
-ALTER TABLE `iotbay`.`orderlineitem` 
-DROP FOREIGN KEY `orderlineitem_ibfk_2`;
-ALTER TABLE `iotbay`.`orderlineitem` 
-ADD CONSTRAINT `orderlineitem_ibfk_2`
-  FOREIGN KEY (`ProductID`)
-  REFERENCES `iotbay`.`productdata` (`ProductID`)
-  ON DELETE CASCADE
-  ON UPDATE CASCADE;
-
 
 
 insert into User values(
@@ -417,51 +393,6 @@ INSERT INTO `iotbay`.`shipmentdata` (`ShipmentID`, `ShipmentAddress`, `ShipmentT
 INSERT INTO `iotbay`.`shipmentdata` (`ShipmentID`) VALUES ('21');
 INSERT INTO `iotbay`.`shipmentdata` (`ShipmentID`) VALUES ('22');
 INSERT INTO `iotbay`.`shipmentdata` (`ShipmentID`) VALUES ('23');
-
-
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `UserID`) VALUES ('1', '2024-05-13', 'Pending', 'On It\'s Way', '111111111', '1111111111');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('2', '2024-05-13', 'Complete', 'Delivered', '111111113', '1', '1111111112');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `UserID`) VALUES ('3', '2024-05-13', 'Not submitted', 'Not Submitted', '111111111', '1111111111');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `UserID`) VALUES ('4', '2024-05-13', 'Not submitted', 'Not Submitted', '111111113', '1111111112');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('5', '2024-05-13', 'Complete', 'Delivered', '111111111', '2', '1111111111');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('6', '2024-05-13', 'Not submitted', 'Not Submitted', '111111113', '21', '1111111112');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('7', '2024-05-13', 'Complete', 'Delivered', '111111113', '3', '1111111112');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('8', '2024-05-13', 'Complete', 'Delivered', '111111111', '4', '1111111111');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('9', '2024-05-13', 'Complete', 'Delivered', '111111114', '5', '1111111113');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('10', '2024-05-13', 'Complete', 'Delivered', '111111111', '6', '1111111111');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('11', '2024-05-13', 'Complete', 'Delivered', '111111114', '7', '1111111113');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('12', '2024-05-13', 'Complete', 'Delivered', '111111111', '8', '1111111111');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('13', '2024-05-13', 'Not submitted', 'Not Submitted', '111111114', '22', '1111111113');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('14', '2024-05-13', 'Complete', 'Delivered', '111111114', '9', '1111111113');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('15', '2024-05-13', 'Not submitted', 'Not Submitted', '111111114', '23', '1111111113');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('16', '2024-05-13', 'Complete', 'Delivered', '111111114', '10', '1111111113');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('17', '2024-05-13', 'Complete', 'Delivered', '111111114', '11', '1111111113');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('18', '2024-05-13', 'Complete', 'Delivered', '111111114', '12', '1111111113');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('19', '2024-05-13', 'Complete', 'Delivered', '111111114', '13', '1111111113');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('20', '2024-05-13', 'Complete', 'Delivered', '111111114', '14', '1111111113');
-INSERT INTO `iotbay`.`orders` (`OrderID`, `OrderDate`, `OrderStatus`, `OrderDeliveryStatus`, `PaymentID`, `ShippingID`, `UserID`) VALUES ('21', '2024-05-13', 'Not submitted', 'Not submitted', '21', '21', '4444444444');
-
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('2', '1111111117', '5');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('2', '1111111121', '10');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('2', '1111111119', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('1', '1111111117', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('1', '1111111121', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('1', '1111111119', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('7', '2111111111', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('8', '2222222222', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('9', '2333333333', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('10', '2444444444', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('11', '2555555555', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('12', '2666666666', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('13', '1111111118', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('14', '1111111118', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('15', '1111111118', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('16', '1111111118', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('17', '1111111122', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('18', '1111111122', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('19', '1111111122', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('20', '1111111122', '3');
-INSERT INTO `iotbay`.`orderlineitem` (`OrderID`, `ProductID`, `OrderAmount`) VALUES ('21', '1111111122', '3');
 
 INSERT INTO Orders (OrderID, OrderName, OrderType, OrderQuantity, OrderDate) VALUES
 (1, 'PlayStation 5', 'Console', 10, '2023-01-01 10:00:00'),
