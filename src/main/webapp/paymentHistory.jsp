@@ -25,7 +25,7 @@
             <ul>
                 <li><a href="/account.jsp#profile">Profile</a></li>
                 <li><a href="PaymentHistoryServlet">Payment History</a></li>
-                <li><a href="order.jsp">Order History</a></li>
+                <li><a href="orders.jsp">Order History</a></li>
                 <li><a href="shipmentDetails.jsp">Shipment Details</a></li>
                 <li><a href="/account.jsp#access">Access Logs</a></li>
                 <c:if test="${user.uType == 'Admin'}">

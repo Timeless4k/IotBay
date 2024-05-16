@@ -4,163 +4,172 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
   version="3.1">
+
+  <!-- Servlet Declarations -->
   <servlet>
     <servlet-name>ConnServlet</servlet-name>
     <servlet-class>Controller.ConnServlet</servlet-class>
     <load-on-startup>0</load-on-startup>
-    <!-- IS automatically loaded on start -->
   </servlet>
-
+  
   <servlet>
     <servlet-name>RegisterServlet</servlet-name>
     <servlet-class>Controller.RegisterServlet</servlet-class>
   </servlet>
-
+  
   <servlet>
     <servlet-name>GuestUserServlet</servlet-name>
     <servlet-class>Controller.GuestUserServlet</servlet-class>
   </servlet>
-
+  
   <servlet>
     <servlet-name>SearchAllProductServlet</servlet-name>
     <servlet-class>Controller.SearchAllProductServlet</servlet-class>
   </servlet>
-
-    <servlet>
+  
+  <servlet>
     <servlet-name>UserSearchServlet</servlet-name>
     <servlet-class>Controller.UserSearchServlet</servlet-class>
   </servlet>
-
-<servlet>
+  
+  <servlet>
     <servlet-name>UpdateProductServlet</servlet-name>
     <servlet-class>Controller.UpdateProductServlet</servlet-class>
   </servlet>
-
-<servlet>
+  
+  <servlet>
     <servlet-name>PaymentHistoryServlet</servlet-name>
     <servlet-class>Controller.PaymentHistoryServlet</servlet-class>
   </servlet>
-
-<servlet>
+  
+  <servlet>
     <servlet-name>ProductNameSearchServlet</servlet-name>
     <servlet-class>Controller.ProductNameSearchServlet</servlet-class>
   </servlet>
-
-<servlet>
+  
+  <servlet>
     <servlet-name>LoginServlet</servlet-name>
     <servlet-class>Controller.LoginServlet</servlet-class>
   </servlet>
-
+  
   <servlet>
     <servlet-name>LogoutServlet</servlet-name>
     <servlet-class>Controller.LogoutServlet</servlet-class>
   </servlet>
-
-<servlet>
+  
+  <servlet>
     <servlet-name>UserServlet</servlet-name>
     <servlet-class>Controller.UserServlet</servlet-class>
   </servlet>
-
+  
   <servlet>
     <servlet-name>CardServlet</servlet-name>
     <servlet-class>Controller.CardServlet</servlet-class>
   </servlet>
-
+  
   <servlet>
     <servlet-name>PaymentServlet</servlet-name>
     <servlet-class>Controller.PaymentServlet</servlet-class>
   </servlet>
-
-<servlet>
+  
+  <servlet>
     <servlet-name>OrderServlet</servlet-name>
     <servlet-class>Controller.OrderServlet</servlet-class>
-</servlet>
-
-<servlet>
+  </servlet>
+  
+  <servlet>
     <servlet-name>ActualUpdateProductServlet</servlet-name>
     <servlet-class>Controller.ActualUpdateProductServlet</servlet-class>
-</servlet>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>OrderUpdateServlet</servlet-name>
+    <servlet-class>Controller.OrderUpdateServlet</servlet-class>
+  </servlet>
 
-<servlet-mapping>
-    <servlet-name>ActualUpdateProductServlet</servlet-name>
-    <url-pattern>/ActualUpdateProductServlet</url-pattern>
-</servlet-mapping>
-
-<servlet-mapping>
-    <servlet-name>OrderServlet</servlet-name>
-    <url-pattern>/OrderServlet</url-pattern>
-</servlet-mapping>
-
+  <!-- Servlet Mappings -->
   <servlet-mapping>
     <servlet-name>ConnServlet</servlet-name>
     <url-pattern>/ConnServlet</url-pattern>
   </servlet-mapping>
-
+  
   <servlet-mapping>
     <servlet-name>RegisterServlet</servlet-name>
     <url-pattern>/RegisterServlet</url-pattern>
   </servlet-mapping>
-
+  
   <servlet-mapping>
     <servlet-name>GuestUserServlet</servlet-name>
     <url-pattern>/GuestUserServlet</url-pattern>
   </servlet-mapping>
-
+  
   <servlet-mapping>
     <servlet-name>SearchAllProductServlet</servlet-name>
     <url-pattern>/SearchAllProductServlet</url-pattern>
   </servlet-mapping>
-
-    <servlet-mapping>
-    <servlet-name>PaymentHistoryServlet</servlet-name>
-    <url-pattern>/PaymentHistoryServlet</url-pattern>
-  </servlet-mapping>
-
-<servlet-mapping>
+  
+  <servlet-mapping>
     <servlet-name>UserSearchServlet</servlet-name>
     <url-pattern>/UserSearchServlet</url-pattern>
   </servlet-mapping>
-
-<servlet-mapping>
+  
+  <servlet-mapping>
     <servlet-name>UpdateProductServlet</servlet-name>
     <url-pattern>/UpdateProductServlet</url-pattern>
   </servlet-mapping>
-
-
-<servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>PaymentHistoryServlet</servlet-name>
+    <url-pattern>/PaymentHistoryServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
     <servlet-name>ProductNameSearchServlet</servlet-name>
     <url-pattern>/ProductNameSearchServlet</url-pattern>
   </servlet-mapping>
-
-
-
+  
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
-
+  
   <servlet-mapping>
     <servlet-name>LogoutServlet</servlet-name>
     <url-pattern>/LogoutServlet</url-pattern>
   </servlet-mapping>
-
+  
   <servlet-mapping>
     <servlet-name>UserServlet</servlet-name>
     <url-pattern>/UserServlet</url-pattern>
   </servlet-mapping>
-
-    <servlet-mapping>
-    <servlet-name>PaymentServlet</servlet-name>
-    <url-pattern>/PaymentServlet</url-pattern>
-  </servlet-mapping>
-
-      <servlet-mapping>
+  
+  <servlet-mapping>
     <servlet-name>CardServlet</servlet-name>
     <url-pattern>/CardServlet</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>PaymentServlet</servlet-name>
+    <url-pattern>/PaymentServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>OrderServlet</servlet-name>
+    <url-pattern>/OrderServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>ActualUpdateProductServlet</servlet-name>
+    <url-pattern>/ActualUpdateProductServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>OrderUpdateServlet</servlet-name>
+    <url-pattern>/OrderUpdateServlet</url-pattern>
+  </servlet-mapping>
 
+  <!-- Session Configuration -->
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
-
 </web-app>

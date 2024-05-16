@@ -42,6 +42,10 @@ public class orderDAO {
         checkOrderID = conn.prepareStatement(CheckOrderIDQuery);
     }
 
+    public Connection getConnection() {
+        return this.conn;
+    }
+    
     /* Unique Order ID Generation */
     public long randomOrderID(){
         return Math.abs(new Random().nextLong());
@@ -85,8 +89,11 @@ public class orderDAO {
     public order getOrder(long orderID) throws SQLException {
         fetchOrder.setLong(1, orderID);
         ResultSet rs = fetchOrder.executeQuery();
-        order o = new order();
+        order o = null;
         while (rs.next()) {
+            if (o == null) {
+                o = new order();
+            }
             o.setOrderID(rs.getLong(1));
             o.setOrderName(rs.getString(2));
             o.setOrderType(rs.getString(3));
@@ -96,30 +103,24 @@ public class orderDAO {
         return o;
     }
 
-    /* Fetching the existed data that are already sets */
+    /* Fetching the existing data that are already set */
     public ArrayList<order> fetchOrders() throws SQLException {
         ResultSet rs = fetchAllOrders.executeQuery();
-    
         ArrayList<order> orders = new ArrayList<>(); // The ArrayList that holds orders
         while (rs.next()) { // Retrieving variables from db query
-            long orderID = rs.getLong(1);
-            String orderName = rs.getString(2);
-            String orderType = rs.getString(3);
-            long orderQuantity = rs.getLong(4);
-            String orderDate = rs.getString(5);
-    
-            order o = new order();
-            o.setOrderID(orderID);
-            o.setOrderName(orderName);
-            o.setOrderType(orderType);
-            o.setOrderQuantity(orderQuantity);
-            o.setOrderDate(orderDate);
-    
-            orders.add(o); // Adding object to end of orders array
+            order o = new order(); 
+            o.setOrderID(rs.getLong(1));
+            o.setOrderName(rs.getString(2));
+            o.setOrderType(rs.getString(3));
+            o.setOrderQuantity(rs.getLong(4));
+            o.setOrderDate(rs.getString(5));
+            orders.add(o); 
         }
-    
+        if (rs != null) {
+            rs.close();
+        }
         return orders;
-    }
+    }  
 
     /* Creating a new order in the database, if it's returning true, the order successfully created. */
     public boolean createOrder(String orderName, String orderType, long orderQuantity, String orderDate) throws SQLException {

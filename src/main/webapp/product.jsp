@@ -29,7 +29,7 @@
             </nav>
     
             <div class="nav-icons">
-                <a href="cart.jsp">
+                <a href="orders.jsp">
                     <img src="images/shopping-bag.png" alt="Cart" class="cart-icon">
                 </a>
                 <div class="account-menu">
