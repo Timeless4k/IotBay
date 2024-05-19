@@ -20,6 +20,16 @@ public class UpdateProductServlet extends HttpServlet {
     private Connection conn;
     private productDAO PDAO;
 
+    /**
+     * Handles the HTTP POST request. This method is responsible for processing the form data
+     * submitted by the client and performing the corresponding action based on the "action"
+     * parameter.
+     *
+     * @param request  the HttpServletRequest object that contains the request parameters and attributes
+     * @param response the HttpServletResponse object that contains the response to be sent back to the client
+     * @throws ServletException if there is a servlet-related problem
+     * @throws IOException      if there is an I/O problem
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -55,6 +65,15 @@ public class UpdateProductServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Handles HTTP GET requests for updating a product.
+     * This instanciates the productDAO object and adds it to the session before running the showProduct method.
+     *
+     * @param request  the HttpServletRequest object that contains the request information
+     * @param response the HttpServletResponse object that contains the response information
+     * @throws ServletException if there is a servlet-related problem
+     * @throws IOException      if there is an I/O problem
+     */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
@@ -73,11 +92,19 @@ public class UpdateProductServlet extends HttpServlet {
         }
         System.out.println("Get request for productmanagement.jsp");
         showProduct(request, response, session);
-
-        
     }
 
-    public void showProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+    /**
+     * Retrieves the list of products from the database, stores it to an attribute and displays them on the product management page.
+     *
+     * @param request  the HttpServletRequest object
+     * @param response the HttpServletResponse object
+     * @param session  the HttpSession object
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException      if an I/O error occurs
+     */
+    public void showProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+            throws ServletException, IOException {
         try {
             System.out.println("Showing product");
             session.setAttribute("products", PDAO.fetchProducts());
@@ -87,6 +114,14 @@ public class UpdateProductServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Updates a product based on the provided information using the productDAO.
+     *
+     * @param request  the HttpServletRequest object containing the request parameters
+     * @param response the HttpServletResponse object for sending the response
+     * @throws ServletException if there is a servlet error
+     * @throws IOException      if there is an I/O error
+     */
     public void updateProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             System.out.println("Updating product");
@@ -107,6 +142,11 @@ public class UpdateProductServlet extends HttpServlet {
         response.sendRedirect("UpdateProductServlet");
     }
 
+    /**
+     * Generates a unique ID for a product.
+     * 
+     * @return The generated unique ID.
+     */
     public long genID() {
         Random random = new Random();
         long pID;
@@ -123,7 +163,17 @@ public class UpdateProductServlet extends HttpServlet {
         return pID;
     }
 
-    public void addProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+    /**
+     * Adds a new product to the database using the productDAO based off data from the session.
+     *
+     * @param request  the HttpServletRequest object containing the request parameters
+     * @param response the HttpServletResponse object for sending the response
+     * @param session  the HttpSession object for managing session data
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException      if an I/O error occurs
+     */
+    public void addProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+    throws ServletException, IOException {
         try {
             System.out.println("Adding product");
             String pName = request.getParameter("name");
@@ -142,6 +192,14 @@ public class UpdateProductServlet extends HttpServlet {
         response.sendRedirect("UpdateProductServlet");
     }
 
+    /**
+     * Deletes a product from the database based on the provided product ID.
+     *
+     * @param request  the HttpServletRequest object containing the request parameters
+     * @param response the HttpServletResponse object used to send the response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException      if an I/O error occurs
+     */
     public void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             System.out.println("Deleting product");

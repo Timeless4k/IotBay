@@ -19,6 +19,16 @@ public class ActualUpdateProductServlet extends HttpServlet {
     private Connection conn;
     private productDAO PDAO;
 
+    /**
+     * Handles the HTTP POST request. Retrieves the requested product from the database
+     * and sets it as an attribute in the session. Then forwards the request to the
+     * "productupdatepage.jsp" for further processing.
+     *
+     * @param request  the HttpServletRequest object that contains the request information
+     * @param response the HttpServletResponse object that contains the response information
+     * @throws ServletException if there is a servlet-related exception
+     * @throws IOException      if there is an I/O exception
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");

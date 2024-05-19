@@ -31,6 +31,14 @@ public class ConnServlet extends HttpServlet {
         
     }
 
+    /**
+        * Handles HTTP GET requests.
+        *
+        * @param request  the HttpServletRequest object representing the client's request
+        * @param response the HttpServletResponse object representing the server's response
+        * @throws IOException      if an I/O error occurs while processing the request
+        * @throws ServletException if a servlet-specific error occurs while processing the request
+        */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
