@@ -20,6 +20,16 @@ public class ProductNameSearchServlet extends HttpServlet {
     private String query;
 
 
+    /**
+     * Handles HTTP GET requests. Retrieves the search type and query parameters from the request,
+     * performs a search using the productDAO, and sets the search results in the session attribute.
+     * Finally, it redirects the request to the "product.jsp" page to reload the results.
+     *
+     * @param request  the HttpServletRequest object that contains the request information
+     * @param response the HttpServletResponse object that contains the response information
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException      if an I/O error occurs
+     */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
