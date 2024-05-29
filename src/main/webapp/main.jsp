@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>IoTBay - Main</title>
+    <link rel="stylesheet" href="css/general-settings.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/png" href="images/Logo.webp">
 </head>
@@ -19,7 +20,7 @@
             <ul>
                 <li><a href="#best-sellers">Best Sellers</a></li>
                 <li><a href="#new-arrivals">New Arrivals</a></li>
-                <li><a href="product.jsp">Catalog</a></li>
+                <li><a href="ProductNameSearchServlet?SearchType=ProductName&SearchQuery=">Catalog</a></li>
             </ul>
         </nav>
 
@@ -33,9 +34,12 @@
                     <div >
                         ${user.firstName} ${user.lastName}
                     </div>
-                    <a href="account.jsp">Account</a>
+                    <a href="account.jsp#profile">Account</a>
+                    <!-- <a href="register.jsp">Register</a> -->
                     <!-- <a href="settings.jsp">Settings</a> -->
-                    <a href="logout.jsp">Logout</a>
+                    <form action="logout" method="post">
+                        <input type="submit" value="Logout">
+                    </form>
                 </div>
             </div>
         </div>

@@ -62,7 +62,17 @@ public class shipment {
     //     this.shipmentMethod = shipmentMethod;
     // }
 
-    public shipment(String shipmentAddress, String shipmentDate, String shipmentMethod) {
+
+    // public shipment(String shipmentID, String shipmentAddress, String shipmentDate, String shipmentMethod) {
+    //     this.shipmentID = shipmentID;
+    //     this.shipmentAddress = shipmentAddress;
+    //     this.shipmentDate = shipmentDate;
+    //     this.shipmentMethod = shipmentMethod;
+    // }
+
+
+    public shipment(String shipmentID, String shipmentAddress, String shipmentDate, String shipmentMethod) {
+        this.shipmentID = shipmentID;
         this.shipmentAddress = shipmentAddress;
         this.shipmentDate = shipmentDate;
         this.shipmentMethod = shipmentMethod;

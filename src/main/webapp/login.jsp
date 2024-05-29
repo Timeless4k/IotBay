@@ -33,7 +33,6 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
                 <div style="margin-top: 5px;">
-                    <a href="forgotPassword.jsp" style="font-size: 14px; color: #008CBA; text-decoration: none;">Forgot password?</a>
                 </div>
             </div>
             <div>
@@ -43,6 +42,9 @@
         <hr>
         <div style="text-align: center; margin-top: 20px;">
             <p>Not an IoTBay customer yet? <a href="register.jsp">Register now.</a></p>
+            <form action="/GuestUserServlet" method="post">
+                <input type="submit" value="Guest Access">
+            </form>
         </div>
     </div>
 </div>

@@ -75,7 +75,7 @@ public class product {
     }
 
     public String getDescription() {
-        return this.pReleaseDate;
+        return this.pDescription;
     }
 
     public void setDescription(String Desc) {
@@ -87,6 +87,6 @@ public class product {
     }
 
     public void setType(String type) {
-        this.pDescription = type;
+        this.pType = type;
     }
 }

@@ -17,10 +17,16 @@ public class cardDAO {
     private PreparedStatement createCardSt;
     private PreparedStatement updateCardSt;
 
+    /**
+     * Constructor to initialize the cardDAO with a database connection and prepare statements.
+     * 
+     * @param connection the database connection
+     * @throws SQLException if a database access error occurs
+     */
     public cardDAO(Connection connection) throws SQLException {
         this.conn = connection;
 
-        // Prepare statements
+        // Prepare SQL statements
         getCardsForUserSt = conn.prepareStatement(
             "SELECT * FROM Card WHERE UserID = ?");
         getCardByIdSt = conn.prepareStatement(
@@ -29,17 +35,20 @@ public class cardDAO {
             "DELETE FROM Card WHERE CardID = ?");
         createCardSt = conn.prepareStatement(
             "INSERT INTO Card (CardID, CardNumber, CardHolderName, CardExpiry, CardCVV, UserID) VALUES (?, ?, ?, ?, ?, ?)");
-        updateCardSt = conn.prepareStatement("UPDATE Card SET CardNumber = ?, CardHolderName = ?, CardExpiry = ?, CardCVV = ? WHERE CardID = ? AND UserID = ?");
-        }
+        updateCardSt = conn.prepareStatement(
+            "UPDATE Card SET CardNumber = ?, CardHolderName = ?, CardExpiry = ?, CardCVV = ? WHERE CardID = ? AND UserID = ?");
+    }
 
-
+    /**
+     * Retrieves a list of cards for a specific user.
+     * 
+     * @param userID the ID of the user
+     * @return a list of cards associated with the user
+     */
     public List<card> getCardsForUser(long userID) {
         List<card> cardList = new ArrayList<>();
         ResultSet rs = null;
-        PreparedStatement getCardsForUserSt = null;
         try {
-            getCardsForUserSt = conn.prepareStatement(
-                "SELECT * FROM Card WHERE UserID = ?");
             getCardsForUserSt.setLong(1, userID);
             rs = getCardsForUserSt.executeQuery();
             while (rs.next()) {
@@ -49,9 +58,8 @@ public class cardDAO {
         } catch (SQLException e) {
             System.err.println("Error fetching cards for user: " + e.getMessage());
         } finally {
-            // Close PreparedStatement and ResultSet
+            // Close ResultSet (PreparedStatement will be closed when the connection is closed)
             try {
-                if (getCardsForUserSt != null) getCardsForUserSt.close();
                 if (rs != null) rs.close();
             } catch (SQLException e) {
                 System.err.println("Error closing resources: " + e.getMessage());
@@ -60,6 +68,12 @@ public class cardDAO {
         return cardList;
     }
 
+    /**
+     * Retrieves a card by its ID.
+     * 
+     * @param cardId the ID of the card
+     * @return the card object if found, otherwise null
+     */
     public card getCardById(long cardId) {
         ResultSet rs = null;
         try {
@@ -80,6 +94,12 @@ public class cardDAO {
         return null;
     }
 
+    /**
+     * Deletes a card by its ID.
+     * 
+     * @param cardId the ID of the card to be deleted
+     * @return true if the card was successfully deleted, false otherwise
+     */
     public boolean deleteCard(long cardId) {
         PreparedStatement deleteCardSt = null;
         try {
@@ -102,6 +122,12 @@ public class cardDAO {
         }
     }
        
+    /**
+     * Creates a new card in the database.
+     * 
+     * @param newCard the card object to be created
+     * @return true if the card was successfully created, false otherwise
+     */
     public boolean createCard(card newCard) {
         PreparedStatement createCardSt = null;
         try {
@@ -131,6 +157,11 @@ public class cardDAO {
         }
     }
 
+    /**
+     * Generates a unique card ID.
+     * 
+     * @return a unique card ID
+     */
     private long generateUniqueCardId() {
         // Generate a random card ID and check if it already exists in the database
         Random random = new Random();
@@ -142,8 +173,13 @@ public class cardDAO {
         } while (!uniqueId);
         return cardId;
     }
- 
 
+    /**
+     * Checks if a card ID is unique.
+     * 
+     * @param cardId the card ID to check
+     * @return true if the card ID is unique, false otherwise
+     */
     private boolean isCardIdUnique(long cardId) {
         ResultSet rs = null;
         try {
@@ -168,6 +204,12 @@ public class cardDAO {
         return false;
     }
 
+    /**
+     * Updates an existing card in the database.
+     * 
+     * @param cardToUpdate the card object with updated details
+     * @return true if the card was successfully updated, false otherwise
+     */
     public boolean updateCard(card cardToUpdate) {
         try {
             updateCardSt.setLong(1, cardToUpdate.getCardNumber());
@@ -175,8 +217,7 @@ public class cardDAO {
             updateCardSt.setString(3, cardToUpdate.getCardExpiry());
             updateCardSt.setInt(4, cardToUpdate.getCardCVV());
             updateCardSt.setLong(5, cardToUpdate.getCardID());
-            updateCardSt.setLong(6, cardToUpdate.getUserID());
-
+            updateCardSt.setLong(6, cardToUpdate.getUserID()); // Set the UserID parameter
             int rowsAffected = updateCardSt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -185,6 +226,13 @@ public class cardDAO {
         }
     }
 
+    /**
+     * Extracts a card object from a ResultSet.
+     * 
+     * @param rs the ResultSet containing card data
+     * @return a card object
+     * @throws SQLException if a database access error occurs
+     */
     private card extractCardFromResultSet(ResultSet rs) throws SQLException {
         card card = new card();
         card.setCardID(rs.getLong("CardID"));

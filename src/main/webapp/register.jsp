@@ -5,18 +5,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Register your account</title>
-    <!-- Link to your CSS file -->
     <link rel="stylesheet" href="register.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <header>
-        <img src="images/Logo.png" alt="IoTBay Logo" class="logo" onclick="window.location='index.jsp'">
-        <div class="login-button">
-            <a href="index.jsp" class="button-link">Back to Page</a>
-        </div>
-    </header>
+<header>
+    <img src="images/Logo.png" alt="IoTBay Logo" class="logo" onclick="window.location='index.jsp'">
+    <div class="login-button">
+        <a href="index.jsp" class="button-link">Back to Page</a>
+    </div>
+</header>
 
 <div class="center-screen">
     <div class="form-container">
@@ -35,15 +34,15 @@
             </div>
             <div>
                 <label for="firstName">First name:</label>
-                <input type="text" id="firstName" name="firstName" required>
+                <input type="text" id="firstName" name="firstName" oninput="validateNameInput(this)" required>
             </div>
             <div>
-                <label for="middleName">Middle name:</label>
-                <input type="text" id="middleName" name="middleName" optional>
+                <label for="middleName">Middle name (optional):</label>
+                <input type="text" id="middleName" name="middleName" oninput="validateNameInput(this)">
             </div>
             <div>
                 <label for="lastName">Last name:</label>
-                <input type="text" id="lastName" name="lastName" optional>
+                <input type="text" id="lastName" name="lastName" oninput="validateNameInput(this)" required>
             </div>
             <div>
                 <label>Gender:</label>
@@ -56,7 +55,7 @@
             </div>
             <div>
                 <label for="mobilePhone">Mobile phone:</label>
-                <input type="tel" id="mobilePhone" name="mobilePhone" optional>
+                <input type="tel" id="mobilePhone" name="mobilePhone" onkeypress="return isNumberKey(event)">
             </div>
             <div>
                 <input type="submit" value="Register">
@@ -64,6 +63,21 @@
         </form>
     </div>
 </div>
+<script>
+    function validateNameInput(input) {
+        input.value = input.value.replace(/[^a-zA-Z\s'-]/g, '');
+    }
+
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        console.log(charCode, !(charCode > 31 && (charCode < 48 || charCode > 57)))
+        return !(charCode > 31 && (charCode < 48 || charCode > 57));
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+</script>
 <!-- Additional footer elements here -->
 
 </body>

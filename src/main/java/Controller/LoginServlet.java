@@ -1,6 +1,8 @@
 package Controller;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,34 +13,36 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.user;
+
 import model.accesslog;
-import model.DAO.userDAO;
+import model.user;
 import model.DAO.accesslogDAO;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import model.DAO.userDAO;
+
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-
+    // Handles POST requests for user login
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Connection conn = (Connection) session.getAttribute("acticonn");
-        
+       
         // FOR THE ERRORS!
         if (conn == null) {
+            // Log and send an error response if the database connection is not established
             System.err.println("Database connection error: Database connection not established");
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error");
-            return; 
+            return;
         }
 
+        // Initialize DAOs with error handling
         userDAO userDao = null;
         try {
             userDao = new userDAO(conn);
         } catch (SQLException e) {
             System.err.println("Error creating userDAO: " + e.getMessage());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error creating userDAO");
-            return; 
+            return;
         }
 
         accesslogDAO accesslogDAO = null;
@@ -50,14 +54,18 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        // Retrieve email and password from the request
         String email = request.getParameter("email");
-        String password = request.getParameter("password"); 
+        String password = request.getParameter("password");
 
         try {
+            // Authenticate user
             user user = userDao.getUserByEmail(email);
-            if (user != null && user.getPassword().equals(password)) { 
+            if (user != null && user.getPassword().equals(password) && user.getActivationStatus()) {
+                // Log successful login
                 accesslogDAO.logLogin(user);
 
+                // Retrieve and store access logs in the session
                 ResultSet accessLogsRs = accesslogDAO.getLogsForUser(user);
                 List<accesslog> accessLogList = new ArrayList<>();
                 try {
@@ -75,20 +83,18 @@ public class LoginServlet extends HttpServlet {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
-
-                session.setAttribute("user", user);
                 session.setAttribute("logs", accessLogList);
-                response.sendRedirect("account.jsp");
+            
+                // Set user in the session and redirect to profile
+                session.setAttribute("user", user);
+                response.sendRedirect("account.jsp#profile");
             } else {
+
+                // Redirect to login page with error message
                 response.sendRedirect("login.jsp?error=invalid");
             }
         } finally {
-            // try {
-            //     conn.close();
-            // } catch (SQLException e) {
-            //     System.err.println("Error closing database connection: " + e.getMessage());
-            // }
+
         }
     }
 }

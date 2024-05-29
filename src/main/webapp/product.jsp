@@ -4,8 +4,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="css\style.css" type="text/css">
-        <link rel="stylesheet" href="css\product.css" type="text/css">
+    
+        <link rel="stylesheet" href="css/product.css" type="text/css">
+        <link rel="stylesheet" href="css/style.css" type="text/css">
         <link rel="icon" type="image/png" href="images/Logo.webp">
         <title>IoTBay - Products</title>
     </head>
@@ -17,7 +18,7 @@
         </div>
     
         <header>
-            <img src="images/Logo.png" alt="IoTBay Logo" class="logo" onclick="window.location='index.jsp'">
+            <img src="images/Logo.png" alt="IoTBay Logo" class="logo">
             
             <nav class="navbar">
                 <ul>

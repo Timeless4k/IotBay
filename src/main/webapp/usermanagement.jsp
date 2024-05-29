@@ -1,20 +1,113 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.*, model.user, model.payment"%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>User Management</title>
-    <link rel="stylesheet" href="css/account.css">
+    <link rel="stylesheet" href="css/general-settings.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Modal Styles -->
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #007bff;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 4px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-deactivate {
+            background-color: #dc3545;
+        }
+        .btn-deactivate:hover {
+            background-color: #c82333;
+        }
+        .btn-activate {
+            background-color: #28a745;
+        }
+        .btn-activate:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>  
+    <header>
+        <img src="images/Logo.png" alt="IoTBay Logo" class="logo" onclick="window.location='main.jsp'">
+        <nav class="navbar">
+            <ul>
+                <li><a href="/account.jsp#profile">Profile</a></li>
+                <li><a href="PaymentHistoryServlet">Payment History</a></li>
+                <li><a href="order.jsp">Order History</a></li>
+                <li><a href="shipmentDetails.jsp">Shipment Details</a></li>
+                <li><a href="/account.jsp#access">Access Logs</a></li>
+                <c:if test="${user.uType == 'Admin'}">
+                    <li><a href=UserServlet?action=displayAll>User Management</a></li>
+                </c:if>
+                <c:if test="${user.uType == 'Employee'}">
+                    <li><a href=productmanagement.jsp>Product Management</a></li>
+                </c:if>
+                <form action="logout" method="post">
+                    <input type="submit" value="Logout">
+                </form>
+            </ul>
+        </nav>
+    </header>
     <div class="container">
         <h1>User Management</h1>
-        <a href="UserServlet?action=displayAll">Refresh User List</a>
-
-
-
-
+        <!-- Search Form -->
+        <form id="searchForm" action="UserSearchServlet" method="post">
+            <input type="text" name="fullName" placeholder="Enter full name">
+            <input type="text" name="phoneNumber" placeholder="Enter phone number">
+            <button type="submit">Search</button>
+            <button type="button" onclick="clearForm()">Clear</button> <!-- Use type="button" to prevent form submission -->
+        </form>
+    </div>
+   
+    <div class="container">
         <!-- User Creation Form -->
         <h2>Add New User</h2>
         <form action="UserServlet" method="post">
@@ -39,8 +132,8 @@
             </select><br>
             <button type="submit">Add User</button>
         </form>
-
-
+    </div>
+    <div class="container">
         <h2>User List</h2>
         <table border="1">
             <thead>
@@ -54,6 +147,7 @@
                     <th>Phone</th>
                     <th>Gender</th>
                     <th>Creation Date</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -69,25 +163,87 @@
                         <td><c:out value="${user.mobilePhone}"/></td>
                         <td><c:out value="${user.gender}"/></td>
                         <td><c:out value="${user.creationDate}"/></td>
+                        <td><c:if test="${user.activationStatus}">Active</c:if><c:if test="${!user.activationStatus}">Inactive</c:if></td>
                         <td>
-                            <a href="UserServlet?action=delete&email=${user.email}">Delete</a>
-                            <a href="UserServlet?action=update&email=${user.email}">update</a> <!-- Add link for edit -->
+                            <button class="btn" onclick="openModal('${user.uID}', '${user.firstName}', '${user.middleName}', '${user.lastName}', '${user.uType}', '${user.email}', '${user.mobilePhone}', '${user.gender}', '${user.creationDate}', '${user.activationStatus}')">Edit</button>
+                            <a href="UserServlet?action=delete&email=${user.email}" class="btn btn-deactivate">Delete</a>
+                            <c:choose>
+                                <c:when test="${user.activationStatus}">
+                                    <a href="UserServlet?action=deactivate&userId=${user.uID}" class="btn btn-deactivate">Deactivate</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="UserServlet?action=activate&userId=${user.uID}" class="btn btn-activate">Activate</a>
+                                </c:otherwise>
+                            </c:choose>
                         </td>
                     </tr>      
                 </c:forEach>
             </tbody>
         </table>
     </div>
-</body>
+
+    <!-- Modal for editing user -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <form id="editUserForm" action="UserServlet" method="post">
+                <input type="hidden" name="action" value="update"> <!-- Ensure action is set to "update" -->
+                <input type="hidden" id="userId" name="userId">
+                First Name: <input type="text" id="firstName" name="firstName" required><br>
+                Middle Name: <input type="text" id="middleName" name="middleName"><br>
+                Last Name: <input type="text" id="lastName" name="lastName" required><br>
+                Email: <input type="email" id="email" name="email" required><br>
+                Phone: <input type="text" id="phone" name="phone" required><br>
+                Gender:
+                <select id="gender" name="gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select><br>
+                Creation Date: <input type="text" id="creationDate" name="creationDate" readonly><br> <!-- Display creation date here -->
+                User Type:
+                <select id="userType" name="userType" required>
+                    <option value="Employee">Employee</option>
+                    <option value="Customer">Customer</option>
+                    <option value="Admin">Admin</option>
+                </select><br>
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script to handle modal functionality -->
+    <script>
+        function openModal(userId, firstName, middleName, lastName, userType, email, phone, gender, creationDate) {
+            document.getElementById('userId').value = userId;
+            document.getElementById('firstName').value = firstName;
+            document.getElementById('middleName').value = middleName;
+            document.getElementById('lastName').value = lastName;
+            document.getElementById('email').value = email;
+            document.getElementById('phone').value = phone;
+            document.getElementById('gender').value = gender;
+            document.getElementById('creationDate').value = creationDate;
+            document.getElementById('userType').value = userType;
+            document.getElementById('editUserModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('editUserModal').style.display = 'none';
+        }
+
+        function clearForm() {
+            // Reset the form
+            document.getElementById('searchForm').reset();
+            // Redirect to UserServlet?action=displayAll
+            window.location.href = "UserServlet?action=displayAll";
+        }
+    </script>
+
 <script>
     // Check if the users are loaded, if not redirect to load them
     if (!${not empty users}) {
         window.location.href = "UserServlet?action=displayAll";
     }
 </script>
+</body>
 </html>
-
-
-
-
-

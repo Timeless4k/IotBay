@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import model.card;
 import model.DAO.cardDAO;
 import model.user;
-
+import util.ValidationUtils;
 
 public class CardServlet extends HttpServlet {
 
@@ -56,12 +56,14 @@ public class CardServlet extends HttpServlet {
         }
     }
     
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         handleRequest(request, response);
     }
 
+    /**
+     * Handles both GET and POST requests.
+     */
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         conn = (Connection) session.getAttribute("acticonn");
@@ -109,28 +111,61 @@ public class CardServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Displays all cards associated with the logged-in user.
+     */
     private void displayAllCards(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<card> cardList = cardDao.getCardsForUser(loggedInUser.getuID());
         request.setAttribute("cardList", cardList);
         request.getRequestDispatcher("payment.jsp").forward(request, response);
     }
     
-
-    private void editCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+     * Edits the details of an existing card.
+     */
+    private void editCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         try {
             long cardID = Long.parseLong(request.getParameter("cardID"));
-            long cardNumber = Long.parseLong(request.getParameter("cardNumber"));
+            String cardNumber = request.getParameter("cardNumber");
             String cardHolderName = request.getParameter("cardHolderName");
             String cardExpiry = request.getParameter("cardExpiry");
-            int cardCVV = Integer.parseInt(request.getParameter("cardCVV"));
-            long userID = ((user) request.getSession().getAttribute("user")).getuID();
+            String cardCVV = request.getParameter("cardCVV");
     
-            card cardToUpdate = new card(cardID, cardNumber, cardHolderName, cardExpiry, cardCVV, userID);
+            // Validate inputs
+            if (!ValidationUtils.isValidCardNumber(cardNumber)) {
+                response.getWriter().print("Invalid card number format.");
+                return;
+            }
+            if (!ValidationUtils.isValidCardHolderName(cardHolderName)) {
+                response.getWriter().print("Invalid card holder name.");
+                return;
+            }
+            if (!ValidationUtils.isValidCardCVV(cardCVV)) {
+                response.getWriter().print("Invalid card CVV. Must be 3 or 4 digits.");
+                return;
+            }
+    
+            // Retrieve the logged-in user from the session
+            user loggedInUser = (user) request.getSession().getAttribute("user");
+            if (loggedInUser == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+            long userID = loggedInUser.getuID();
+    
+            // Logging to check received parameters
+            System.out.println("Received parameters - cardID: " + cardID + ", cardNumber: " + cardNumber + ", cardHolderName: " + cardHolderName + ", cardExpiry: " + cardExpiry + ", cardCVV: " + cardCVV);
+    
+            card cardToUpdate = new card(cardID, Long.parseLong(cardNumber), cardHolderName, cardExpiry, Integer.parseInt(cardCVV), userID);
+    
+            // Update the card in the database
+            cardDAO cardDao = new cardDAO((Connection) request.getSession().getAttribute("acticonn"));
     
             boolean success = cardDao.updateCard(cardToUpdate);
     
             if (success) {
-                response.sendRedirect("payment.jsp"); // Redirect or dispatch to reflect the update
+                // Redirect to the displayAll action to show the updated card list
+                response.sendRedirect("CardServlet?action=displayAll");
             } else {
                 response.sendRedirect("error.jsp"); // Handle update failure
             }
@@ -139,6 +174,9 @@ public class CardServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Deletes an existing card by its ID.
+     */
     private void deleteCard(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         long cardId = Long.parseLong(request.getParameter("cardId"));
         card deleteCard = cardDao.getCardById(cardId);
@@ -152,8 +190,11 @@ public class CardServlet extends HttpServlet {
         } else {
             response.sendRedirect("error.jsp");
         }
-    }
+    }  
 
+    /**
+     * Converts a date string in MM/yyyy format to the last day of that month in yyyy-MM-dd format.
+     */
     private String convertToLastDayOfMonth(String expiry) {
         try {
             SimpleDateFormat originalFormat = new SimpleDateFormat("MM/yyyy");
@@ -169,11 +210,14 @@ public class CardServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Creates a new card with the provided details and saves it to the database.
+     */
     private void createCard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        long cardNumber = Long.parseLong(request.getParameter("cardNumber"));
+        String cardNumber = request.getParameter("cardNumber");
         String cardHolderName = request.getParameter("cardHolderName");
         String cardExpiry = request.getParameter("cardExpiry"); // The expiry date from the form
-        int cardCVV = Integer.parseInt(request.getParameter("cardCVV"));
+        String cardCVV = request.getParameter("cardCVV");
     
         HttpSession session = request.getSession();
         user loggedInUser = (user) session.getAttribute("user");
@@ -182,6 +226,24 @@ public class CardServlet extends HttpServlet {
             return;
         }
         long userID = loggedInUser.getuID();
+    
+        // Validate inputs
+        if (!ValidationUtils.isValidCardNumber(cardNumber)) {
+            response.getWriter().print("Invalid card number format.");
+            return;
+        }
+        if (!ValidationUtils.isValidCardHolderName(cardHolderName)) {
+            response.getWriter().print("Invalid card holder name.");
+            return;
+        }
+        if (!ValidationUtils.isValidCardExpiry(cardExpiry)) {
+            response.getWriter().print("Invalid card expiry date format. Use MM/yyyy or date is in the past.");
+            return;
+        }
+        if (!ValidationUtils.isValidCardCVV(cardCVV)) {
+            response.getWriter().print("Invalid card CVV. Must be 3 or 4 digits.");
+            return;
+        }
     
         try {
             conn.setAutoCommit(false);
@@ -192,16 +254,14 @@ public class CardServlet extends HttpServlet {
                 throw new Exception("Invalid date format");
             }
     
-            card newCard = new card(0, cardNumber, cardHolderName, formattedExpiryDate, cardCVV, userID);
+            card newCard = new card(0, Long.parseLong(cardNumber), cardHolderName, formattedExpiryDate, Integer.parseInt(cardCVV), userID);
     
             boolean success = cardDao.createCard(newCard);
     
             if (success) {
                 conn.commit();
                 // Fetch updated list of cards to reflect the new addition
-                List<card> cardList = cardDao.getCardsForUser(loggedInUser.getuID());
-                request.setAttribute("cardList", cardList);
-                request.getRequestDispatcher("payment.jsp").forward(request, response); // Forward to JSP with updated list
+                response.sendRedirect("CardServlet?action=displayAll"); // Redirect to avoid form resubmission
             } else {
                 conn.rollback();
                 response.sendRedirect("error.jsp");
@@ -214,7 +274,4 @@ public class CardServlet extends HttpServlet {
             conn.setAutoCommit(true);
         }
     }
-    
-
-
 }

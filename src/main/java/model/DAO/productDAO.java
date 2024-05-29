@@ -12,24 +12,63 @@ public class productDAO {
 	private PreparedStatement updateProductSt;
 	private PreparedStatement searchProductNameSt;
 	private PreparedStatement searchProductTypeSt;
+	private PreparedStatement isUniqueST;
 	private String readQuery = "SELECT * FROM productdata";
 	private String CreateQuery = "INSERT INTO productdata VALUES (?,?,?,?,?,?,?,?)";
 	private String DeleteQuery = "DELETE FROM productdata WHERE ProductID=?";
-	private String UpdateQuery = "UPDATE productdata SET ProductName = '?', ProductStatus = '?', ProductReleaseDate = '?', ProductStockLevel = ?, ProductDescription = '?', ProductType = '?', ProductCost = ? WHERE ProductID=?";
+	private String UpdateQuery = "UPDATE productdata SET ProductName = ?, ProductStatus = ?, ProductReleaseDate = ?, ProductStockLevel = ?, ProductDescription = ?, ProductType = ?, ProductCost = ? WHERE ProductID=?";
 	private String SearchQueryName = "SELECT * FROM productdata WHERE ProductName LIKE ? ";
 	private String SearchQueryType = "SELECT * FROM productdata WHERE ProductType LIKE ? ";
+	private String isUnique = "SELECT * FROM productdata WHERE ProductID = ?";
 
     public productDAO(Connection connection) throws SQLException {
 		this.conn = connection;
-		conn.setAutoCommit(true);
+		conn.setAutoCommit(false);
 		fetchProdSt = conn.prepareStatement(readQuery);
 		addProductSt = conn.prepareStatement(CreateQuery);
 		removeProductSt = conn.prepareStatement(DeleteQuery);
 		updateProductSt = conn.prepareStatement(UpdateQuery);
 		searchProductNameSt = conn.prepareStatement(SearchQueryName);
 		searchProductTypeSt = conn.prepareStatement(SearchQueryType);
+		isUniqueST = conn.prepareStatement(isUnique);
 	}
 
+	/**
+	 * Checks if a product ID is unique in the database.
+	 *
+	 * @param check the product ID to check
+	 * @return true if the product ID is unique, false otherwise
+	 * @throws SQLException if a database access error occurs
+	 */
+	public boolean checkpID(long check) throws SQLException{
+		isUniqueST.setLong(1, check);
+		ResultSet rs = isUniqueST.executeQuery();
+		return !rs.next();
+	}
+
+	/**
+	 * Retrieves a product with the specified ID from the database.
+	 *
+	 * @param pID the ID of the product to retrieve
+	 * @return the product with the specified ID
+	 * @throws SQLException if an error occurs while accessing the database
+	 */
+	public product getProduct(long pID) throws SQLException {
+		isUniqueST.setLong(1, pID);
+		ResultSet rs = isUniqueST.executeQuery();
+		product p = new product();
+		while (rs.next()) {
+				p.setpID(rs.getLong(1));
+				p.setName(rs.getString(2));
+				p.setStatus(rs.getString(3));
+				p.setReleaseDate(rs.getString(4));
+				p.setStock(rs.getLong(5));
+				p.setDescription(rs.getString(6));
+				p.setType(rs.getString(7));
+				p.setPrice(rs.getDouble(8));
+		}
+		return p;
+	}
 	
 	/**
 	 * This Method retreives products from the DB using result sets and prepared statements
@@ -77,7 +116,7 @@ public class productDAO {
 	 * @param price
 	 * @throws SQLException
 	 */
-	public void addProduct(long pID, String Name, String Status, String rDate, long Slevel, String desc, String pType, double price) throws SQLException{
+	public boolean addProduct(long pID, String Name, String Status, String rDate, long Slevel, String desc, String pType, double price) throws SQLException{
 		addProductSt.setLong(1, pID);
 		addProductSt.setString(2, Name);
 		addProductSt.setString(3, Status);
@@ -86,7 +125,7 @@ public class productDAO {
 		addProductSt.setString(6, desc);
 		addProductSt.setString(7, pType);
 		addProductSt.setDouble(8, price);
-		addProductSt.executeUpdate();
+		return (addProductSt.executeUpdate()>0);
 	}
 	/**
 	 * Removes a product from the DB based off product ID
@@ -138,9 +177,6 @@ public class productDAO {
 			searchProductTypeSt.setString(1, "%" + query + "%");
 			rs = searchProductTypeSt.executeQuery();
 		}
-		
-		
-
 		ArrayList<product> products = new ArrayList<product>(); // ArrayList to hold products
 		while (rs.next()) { // go to next item in rs table then run
 			long pID = rs.getLong(1); //retrieve variables from db query
@@ -150,7 +186,7 @@ public class productDAO {
             long pStockLevel = rs.getLong(5);
             String pDescription = rs.getString(6);
 			String pType = rs.getString(7);
-            double pPrice = rs.getLong(8);
+            double pPrice = Double.parseDouble(rs.getString(8));
 
 			product p = new product();
 			p.setpID(pID);

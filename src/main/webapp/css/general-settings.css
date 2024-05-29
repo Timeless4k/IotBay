@@ -1,0 +1,240 @@
+/* General Body and Container Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    background: #fff;
+    padding: 20px;
+}
+
+/* Header Styles */
+header {
+    background-color: #fff;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    cursor: pointer;
+    height: 60px;  /* Adjust logo size */
+}
+
+/* Navigation Styles */
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.navbar li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    color: #007bff;
+}
+
+/* Main Content and Sidebar Styles */
+.sidebar,
+.main-content {
+    margin-top: 20px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+}
+
+.sidebar {
+    float: left;
+    width: 20%;
+    margin-right: 2%; /* Space between sidebar and content */
+}
+
+.main-content {
+    float: left;
+    width: 78%;
+}
+
+/* Form and Table Styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: auto;
+}
+
+input[type="submit"]:hover {
+    background-color: #007bff;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Clear both sides to avoid overlap */
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    clear: both;
+}
+
+/* General Container Style */
+.container {
+    max-width: 2200px; /* Set a max-width for the container */
+    margin: 20px auto; /* Center the container */
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Form and Table Styling */
+input[type="text"], input[type="email"], input[type="password"], select {
+    width: 100%; /* Full width */
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+table {
+    width: 100%; /* Full width of its container */
+    margin-top: 20px; /* Space above the table */
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+th {
+    background-color: #007bff; /* Accent color for headers */
+    color: white;
+}
+
+/* Button Styling */
+input[type="submit"], button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 8px;
+    align-items: center;
+}
+
+/* Edit Button */
+a[href^="UserServlet?action=update"] {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 6px 12px;
+    margin: 0 5px;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Delete Button */
+a[href^="UserServlet?action=delete"] {
+    display: inline-block;
+    background-color: #dc3545; /* Red for delete */
+    color: white;
+    text-align: center;
+    padding: 6px 12px;
+    margin: 0 5px;
+    border-radius: 4px;
+    text-decoration: none; /* Remove underline from anchor tags */
+    cursor: pointer;
+}
+
+/* Hover States */
+input[type="submit"]:hover, button:hover,
+a[href^="UserServlet?action=update"]:hover,
+a[href^="UserServlet?action=delete"]:hover {
+    opacity: 0.8;
+}
+
+#activationForm button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 8px;
+}
+
+
+#activationForm button:hover {
+    background-color: #0056b3;
+}

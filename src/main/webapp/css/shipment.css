@@ -146,3 +146,26 @@ body {
     color: white;
     background-color: black;;
 }
+
+.shipment_confirmation_button {
+    color: white;
+    background-color: black;
+
+    width: 130px;
+    height: 50px;
+}
+
+.shipment_confirmation_button_two {
+    color: white;
+    background-color: black;
+
+    width: 130px;
+    height: 50px;
+
+    margin-right: 1060px;
+}
+
+.shipment_confirmation_container {
+    display: flex;
+    justify-content: space-between;
+}

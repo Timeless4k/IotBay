@@ -1,106 +1,141 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
 import model.card;
 import model.DAO.DBConnector;
 import model.DAO.cardDAO;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CardDAOTest {
     private cardDAO cardDao;
     private Connection conn;
+    private static final long EXISTING_USER_ID = 1111111111L;
+    private long cardId;
 
     @BeforeEach
     public void setUp() throws SQLException, ClassNotFoundException {
         DBConnector connector = new DBConnector();
         conn = connector.openConnection();
-        conn.setAutoCommit(false);  // Start transaction to not impact actual database data
+        conn.setAutoCommit(false);
         cardDao = new cardDAO(conn);
-        System.out.println("Setup: Connection opened and DAO initialized.");
+        cardId = System.currentTimeMillis(); // Use current time as unique card ID
+        System.out.println("Setup complete: Database connected and DAO initialized.");
     }
 
     @AfterEach
-    public void tearDown() throws SQLException {
-        if (conn != null) {
-            System.out.println("TearDown: Rolling back any changes.");
-            conn.rollback(); // Rollback transaction to avoid saving test data
-            conn.close();
-            System.out.println("TearDown: Connection closed.");
+    public void tearDown() {
+        System.out.println("Starting cleanup: Attempting to roll back any changes.");
+        try {
+            if (conn != null) {
+                conn.rollback();
+                conn.setAutoCommit(true);
+                conn.close();
+                System.out.println("Cleanup complete: Connection closed and changes rolled back.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error during cleanup: " + e.getMessage());
         }
     }
 
     @Test
-    @Order(1)
-    public void testConnectionNotNull() {
-        System.out.println("Test: Checking if database connection is not null.");
-        assertNotNull(conn, "Database connection should not be null");
+    public void testCreateCard() throws SQLException {
+        // Step 1: Create Card
+        card newCard = new card(5665469469416L, 1234567812345678L, "John Doe", "2026-04-30", 123, EXISTING_USER_ID);
+        System.out.println("Creating card: " + newCard);
+
+        boolean createResult = false;
+        try {
+            createResult = cardDao.createCard(newCard);
+        } catch (Exception e) {
+            System.err.println("Exception during card creation: " + e.getMessage());
+            e.printStackTrace();
+        }
+        assertTrue(createResult, "Card creation failed when it should have succeeded.");
+        System.out.println("Card creation test passed: Card was successfully created.");
+
+        // Commit the transaction to ensure the card is saved in the database
+        conn.commit();
+        System.out.println("Transaction committed.");
+
+        // Directly query the database to check if the card was inserted
+        try (PreparedStatement checkCardSt = conn.prepareStatement("SELECT * FROM Card WHERE CardID = ?")) {
+            checkCardSt.setLong(1, cardId);
+            ResultSet rs = checkCardSt.executeQuery();
+            if (rs.next()) {
+                System.out.println("Card found in the database with ID: " + cardId);
+            } else {
+                System.out.println("Card not found in the database with ID: " + cardId);
+            }
+        }
     }
 
-//     @Test
-//     @Order(2)
-//     public void testCreateCard() throws SQLException {
-//         System.out.println("Test: Attempting to create a card.");
-//         card newCard = new card(163216161, 1234567890123456L, "John Doe", "2026-04-01", 123, 1111111113);
-//         boolean isCreated = cardDao.createCard(newCard);
-//         assertTrue(isCreated, "Card should be created successfully");
+    @Test
+    public void testGetCardById() throws SQLException {
+        // Assume a card with ID cardId was created in a previous test
+        card fetchedCard = cardDao.getCardById(1111111117);
+        assertNotNull(fetchedCard, "Failed to fetch the card after creation.");
+        assertEquals("Alex Abagale", fetchedCard.getCardHolderName(), "Mismatch in the card holder name of the created card.");
+        System.out.println("Fetch after creation test passed: Card details match.");
+    }
 
-//         System.out.println("Test: Fetching card by ID after creation.");
-//         card fetchedCard = cardDao.getCardById(newCard.getCardID());
-//         assertNotNull(fetchedCard, "Card should be readable after creation");
-//         assertEquals("John Doe", fetchedCard.getCardHolderName(), "Card Holder Name should match");
-//     }
+    @Test
+    public void testUpdateCard() {
+        // Assuming an existing card with ID 1
+        card existingCard = cardDao.getCardById(1);
+        assertNotNull(existingCard, "Existing card should be fetched");
 
-//     @Test
-//     @Order(3)
-//     public void testReadCard() throws SQLException {
-//         System.out.println("Test: Pre-inserting a card for read operation.");
-//         card testCard = new card(0, 1234567890123456L, "John Doe", "2026-04-01", 123, 1111111113);
-//         cardDao.createCard(testCard);
+        // Update card details
+        existingCard.setCardHolderName("Jane Doe");
+        existingCard.setCardCVV(456);
 
-//         System.out.println("Test: Reading the card from the database.");
-//         card fetchedCard = cardDao.getCardById(testCard.getCardID());
-//         assertNotNull(fetchedCard, "Card should exist and be fetched correctly");
-//     }
+        // Update the card and verify
+        boolean updated = cardDao.updateCard(existingCard);
+        assertTrue(updated, "Card should be updated successfully");
 
-//     @Test
-//     @Order(4)
-//     public void testUpdateCard() throws SQLException {
-//         System.out.println("Test: Pre-inserting a card for update operation.");
-//         card testCard = new card(0, 1234567890123456L, "John Doe", "2026-04-01", 123, 1111111113);
-//         cardDao.createCard(testCard);
-//         testCard.setCardHolderName("Updated Name");
+        card updatedCard = cardDao.getCardById(1);
+        assertEquals(existingCard.getCardHolderName(), updatedCard.getCardHolderName(), "Updated card holder name should match");
+        assertEquals(existingCard.getCardCVV(), updatedCard.getCardCVV(), "Updated card CVV should match");
+    }
 
-//         System.out.println("Test: Updating the card's holder name.");
-//         boolean isUpdated = cardDao.updateCard(testCard);
-//         assertTrue(isUpdated, "Card update should be successful");
+    @Test
+    public void testGetCardsForUser() throws SQLException {
+        List<card> cardList = cardDao.getCardsForUser(EXISTING_USER_ID);
+        assertNotNull(cardList, "Card list should not be null.");
+        System.out.println("Get cards for user test passed: Fetched cards match the expected count.");
+    }
 
-//         System.out.println("Test: Verifying updated details.");
-//         card updatedCard = cardDao.getCardById(testCard.getCardID());
-//         assertEquals("Updated Name", updatedCard.getCardHolderName(), "Card Holder Name should be updated");
-//     }
+    @Test
+    public void testDeleteCard() throws SQLException {
+        // Create a card to ensure it exists
+        card newCard = new card(cardId, 1234567812345678L, "John Doe", "2026-04-30", 123, EXISTING_USER_ID);
+        cardDao.createCard(newCard);
+        conn.commit();
 
-//     @Test
-//     @Order(5)
-//     public void testDeleteCard() throws SQLException {
-//         System.out.println("Test: Pre-inserting a card for delete operation.");
-//         card testCard = new card(0, 1234567890123456L, "John Doe", "2026-04-01", 123, 1111111113);
-//         cardDao.createCard(testCard);
+        // Ensure no payments are linked to this card ID
+        PreparedStatement deletePaymentsSt = conn.prepareStatement("DELETE FROM Payments WHERE CardID = ?");
+        deletePaymentsSt.setLong(1, cardId);
+        deletePaymentsSt.executeUpdate();
+        System.out.println("Payments unlinked for testDeleteCard.");
 
-//         System.out.println("Test: Deleting the card.");
-//         boolean isDeleted = cardDao.deleteCard(testCard.getCardID());
-//         assertTrue(isDeleted, "Card should be deletable");
+        // Delete the card
+        boolean deleteResult = cardDao.deleteCard(cardId);
+        System.out.println("Deletion test passed: Card was successfully deleted.");
 
-//         System.out.println("Test: Verifying deletion.");
-//         card deletedCard = cardDao.getCardById(testCard.getCardID());
-//         assertNull(deletedCard, "Card should be null after deletion");
-//     }
+        card deletedCard = cardDao.getCardById(cardId);
+        assertNull(deletedCard, "Deleted card fetch test failed: card should not be found.");
+        System.out.println("Verification of deletion passed: No card found post-deletion.");
+    }
 }

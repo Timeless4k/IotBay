@@ -1,6 +1,8 @@
 
 // Just testing DAOs
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,6 +13,8 @@ import model.DAO.DBConnector;
 import model.DAO.shipmentDAO;
 
 import model.shipment;
+
+import java.util.List;
 
 public class ShipmentTest {
 
@@ -24,6 +28,11 @@ public class ShipmentTest {
             conn = connector.openConnection();
             SDAO = new shipmentDAO(conn);
         }
+    }
+
+    @AfterEach
+    public void teardown() throws SQLException{
+        conn.rollback();
     }
 
     @Test
@@ -43,20 +52,65 @@ public class ShipmentTest {
     //     assertTrue(check);
     // }
 
-    // @Test
-    // public void createTest() throws SQLException, ClassNotFoundException {
-    //     intSDAO();
 
-    //     shipment test = new shipment("University of Technology Sydney", "2024-05-25", "FedEx");
+    @Test
+    public void createTest() throws SQLException, ClassNotFoundException {
+        intSDAO();
 
-    //     System.out.println("Creating shipment: " + test.toString());
+        shipment test = new shipment("1982159379976824584", "University of Technology Sydney", "2024-05-25", "FedEx");
 
-    //     boolean check = SDAO.createShipment(test);
-    //     // conn.commit(); // pushing data to db
+        System.out.println("Creating shipment: " + test.toString());
 
-    //     System.out.println("Shipment creation status: " + check);
+        boolean check = SDAO.createShipment(test);
+        // conn.commit(); // pushing data to db
 
-    //     assertTrue(check);
-    // }
+        System.out.println("Shipment creation status: " + check);
+
+        assertTrue(check);
+    }
+ 
+
+    @Test
+    public void readTest() throws SQLException, ClassNotFoundException {
+        intSDAO();
+
+        List<shipment> test = SDAO.readShipment("1111111113");
+
+        boolean check = test.size() > 0;
+
+        assertTrue(check);
+    }
+
+
+    @Test
+    public void updateTest() throws SQLException, ClassNotFoundException {
+        intSDAO();
+        SDAO.createShipment(new shipment("1982159379976824584", "NOt of Technology Sydney", "2024-05-25", "FedEx"));
+        boolean test = SDAO.updateShipment("1982159379976824584", "Address Testing 1", "2024-05-26", "FedEx");
+
+        assertTrue(test);
+    }
+
+
+    @Test
+    public void deleteTest() throws SQLException, ClassNotFoundException {
+        intSDAO();
+
+        List<shipment> testTwo = SDAO.readShipment("1111111113");
+
+        int before = testTwo.size();
+
+        shipment test = new shipment("1982159379976824584", "Address Testing 1", "2024-05-26", "FedEx");
+
+        SDAO.createShipment(test);
+
+        SDAO.deleteShipment("1982159379976824584");
+
+        List<shipment> testThree = SDAO.readShipment("1111111113");
+
+        int after = testThree.size();
+
+        assertTrue(before == after);
+    }
 
 }

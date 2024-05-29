@@ -7,7 +7,7 @@
   <servlet>
     <servlet-name>ConnServlet</servlet-name>
     <servlet-class>Controller.ConnServlet</servlet-class>
-    <load-on-startup>0</load-on-startup> 
+    <load-on-startup>0</load-on-startup>
     <!-- IS automatically loaded on start -->
   </servlet>
 
@@ -17,13 +17,18 @@
   </servlet>
 
   <servlet>
+    <servlet-name>GuestUserServlet</servlet-name>
+    <servlet-class>Controller.GuestUserServlet</servlet-class>
+  </servlet>
+
+  <servlet>
     <servlet-name>SearchAllProductServlet</servlet-name>
     <servlet-class>Controller.SearchAllProductServlet</servlet-class>
   </servlet>
 
-  <servlet>
-    <servlet-name>RemoveProductServlet</servlet-name>
-    <servlet-class>Controller.RemoveProductServlet</servlet-class>
+    <servlet>
+    <servlet-name>UserSearchServlet</servlet-name>
+    <servlet-class>Controller.UserSearchServlet</servlet-class>
   </servlet>
 
 <servlet>
@@ -32,18 +37,23 @@
   </servlet>
 
 <servlet>
+    <servlet-name>PaymentHistoryServlet</servlet-name>
+    <servlet-class>Controller.PaymentHistoryServlet</servlet-class>
+  </servlet>
+
+<servlet>
     <servlet-name>ProductNameSearchServlet</servlet-name>
     <servlet-class>Controller.ProductNameSearchServlet</servlet-class>
   </servlet>
 
 <servlet>
-    <servlet-name>AddProductServlet</servlet-name>
-    <servlet-class>Controller.AddProductServlet</servlet-class>
-  </servlet>
-
-<servlet>
     <servlet-name>LoginServlet</servlet-name>
     <servlet-class>Controller.LoginServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>Controller.LogoutServlet</servlet-class>
   </servlet>
 
 <servlet>
@@ -61,6 +71,36 @@
     <servlet-class>Controller.PaymentServlet</servlet-class>
   </servlet>
 
+<servlet>
+    <servlet-name>OrderServlet</servlet-name>
+    <servlet-class>Controller.OrderServlet</servlet-class>
+</servlet>
+
+<servlet>
+    <servlet-name>CartServlet</servlet-name>
+    <servlet-class>Controller.CartServlet</servlet-class>
+</servlet>
+
+<servlet>
+    <servlet-name>ActualUpdateProductServlet</servlet-name>
+    <servlet-class>Controller.ActualUpdateProductServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ActualUpdateProductServlet</servlet-name>
+    <url-pattern>/ActualUpdateProductServlet</url-pattern>
+</servlet-mapping>
+
+<servlet-mapping>
+    <servlet-name>CartServlet</servlet-name>
+    <url-pattern>/CartServlet</url-pattern>
+</servlet-mapping>
+
+<servlet-mapping>
+    <servlet-name>OrderServlet</servlet-name>
+    <url-pattern>/OrderServlet</url-pattern>
+</servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>ConnServlet</servlet-name>
     <url-pattern>/ConnServlet</url-pattern>
@@ -72,13 +112,23 @@
   </servlet-mapping>
 
   <servlet-mapping>
+    <servlet-name>GuestUserServlet</servlet-name>
+    <url-pattern>/GuestUserServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
     <servlet-name>SearchAllProductServlet</servlet-name>
     <url-pattern>/SearchAllProductServlet</url-pattern>
   </servlet-mapping>
 
+    <servlet-mapping>
+    <servlet-name>PaymentHistoryServlet</servlet-name>
+    <url-pattern>/PaymentHistoryServlet</url-pattern>
+  </servlet-mapping>
+
 <servlet-mapping>
-    <servlet-name>RemoveProductServlet</servlet-name>
-    <url-pattern>/RemoveProductServlet</url-pattern>
+    <servlet-name>UserSearchServlet</servlet-name>
+    <url-pattern>/UserSearchServlet</url-pattern>
   </servlet-mapping>
 
 <servlet-mapping>
@@ -92,14 +142,16 @@
     <url-pattern>/ProductNameSearchServlet</url-pattern>
   </servlet-mapping>
 
-<servlet-mapping>
-    <servlet-name>AddProductServlet</servlet-name>
-    <url-pattern>/AddProductServlet</url-pattern>
-  </servlet-mapping>
+
 
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/LoginServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/LogoutServlet</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
